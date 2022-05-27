@@ -13,6 +13,7 @@ import TabOneScreen from '../screens/TabOneScreen';
 import TabTwoScreen from '../screens/TabTwoScreen';
 import { RootStackParamList, RootTabParamList, RootTabScreenProps } from '../types';
 import LinkingConfiguration from './LinkingConfiguration';
+import { BottomTabStyle, BottomTabLabelStyle, HeaderTitleStyle } from '../constants/NavigationStyle';
 
 export default function Navigation({ colorScheme }: { colorScheme: ColorSchemeName }) {
   return (
@@ -47,36 +48,27 @@ function BottomTabNavigator() {
     <BottomTab.Navigator
       initialRouteName="Home"
       screenOptions={{
-        tabBarStyle: { 
-          height: 90,
-          borderTopLeftRadius: 25, 
-          borderTopRightRadius: 25,
-          shadowOffset: {
-            width: 0,
-            height: 12,
-          },
-          shadowOpacity: 0.25,
-          shadowRadius: 16.0,
-          elevation: 10,
-        },
+        tabBarStyle: BottomTabStyle,
+        tabBarLabelStyle: BottomTabLabelStyle,
         tabBarActiveTintColor: Colors[colorScheme].tint,
-        tabBarLabelStyle: {
-          fontSize: 13
-        }
       }}>
       <BottomTab.Screen
         name="Home"
         component={TabOneScreen}
-        options={({ navigation }: RootTabScreenProps<'Home'>) => ({
+        options={{
           title: 'หน้าหลัก',
+          headerTitleStyle: HeaderTitleStyle,
+          headerTransparent: true,
           tabBarIcon: ({ color }) => <TabBarIcon name="home" color={color} />,
-        })}
+        }}
       />
       <BottomTab.Screen
         name="Task"
         component={TabTwoScreen}
         options={{
           title: 'งาน',
+          headerTitleStyle: HeaderTitleStyle,
+          headerTransparent: true,
           tabBarIcon: ({ color }) => <TabBarIcon name="clipboard" color={color} />,
         }}
       />
@@ -85,6 +77,8 @@ function BottomTabNavigator() {
         component={TabTwoScreen}
         options={{
           title: 'เมนู',
+          headerTitleStyle: HeaderTitleStyle,
+          headerTransparent: true,
           tabBarIcon: ({ color }) => <TabBarIcon name="code" color={color} />,
         }}
       />
@@ -93,6 +87,8 @@ function BottomTabNavigator() {
         component={TabTwoScreen}
         options={{
           title: 'แจ้งเตือน',
+          headerTitleStyle: HeaderTitleStyle,
+          headerTransparent: true,
           tabBarIcon: ({ color }) => <TabBarIcon name="bell" color={color} />,
         }}
       />
@@ -101,6 +97,8 @@ function BottomTabNavigator() {
         component={TabTwoScreen}
         options={{
           title: 'ตั้งค่า',
+          headerTitleStyle: HeaderTitleStyle,
+          headerTransparent: true,
           tabBarIcon: ({ color }) => <TabBarIcon name="settings" color={color} />,
         }}
       />
