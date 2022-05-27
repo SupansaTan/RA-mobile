@@ -1,5 +1,4 @@
 import React from 'react';
-import { Feather } from '@expo/vector-icons';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { NavigationContainer, DefaultTheme, DarkTheme } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
@@ -14,6 +13,7 @@ import TabTwoScreen from '../screens/TabTwoScreen';
 import { RootStackParamList, RootTabParamList, RootTabScreenProps } from '../types';
 import LinkingConfiguration from './LinkingConfiguration';
 import { BottomTabStyle, BottomTabLabelStyle, HeaderTitleStyle } from '../constants/NavigationStyle';
+import { TabBarFeatherIcon, TabBarSimpleLineIcon, TabBarMaterialIcon } from './TabBarIcon';
 
 export default function Navigation({ colorScheme }: { colorScheme: ColorSchemeName }) {
   return (
@@ -59,7 +59,7 @@ function BottomTabNavigator() {
           title: 'หน้าหลัก',
           headerTitleStyle: HeaderTitleStyle,
           headerTransparent: true,
-          tabBarIcon: ({ color }) => <TabBarIcon name="home" color={color} />,
+          tabBarIcon: ({ color }) => <TabBarFeatherIcon name="home" color={color} />,
         }}
       />
       <BottomTab.Screen
@@ -69,7 +69,7 @@ function BottomTabNavigator() {
           title: 'งาน',
           headerTitleStyle: HeaderTitleStyle,
           headerTransparent: true,
-          tabBarIcon: ({ color }) => <TabBarIcon name="clipboard" color={color} />,
+          tabBarIcon: ({ color }) => <TabBarFeatherIcon name="clipboard" color={color} />,
         }}
       />
       <BottomTab.Screen
@@ -79,7 +79,7 @@ function BottomTabNavigator() {
           title: 'เมนู',
           headerTitleStyle: HeaderTitleStyle,
           headerTransparent: true,
-          tabBarIcon: ({ color }) => <TabBarIcon name="code" color={color} />,
+          tabBarIcon: ({ color }) => <TabBarSimpleLineIcon name="grid" color={color} />,
         }}
       />
       <BottomTab.Screen
@@ -89,7 +89,7 @@ function BottomTabNavigator() {
           title: 'แจ้งเตือน',
           headerTitleStyle: HeaderTitleStyle,
           headerTransparent: true,
-          tabBarIcon: ({ color }) => <TabBarIcon name="bell" color={color} />,
+          tabBarIcon: ({ color }) => <TabBarMaterialIcon name="bell-outline" color={color} />,
         }}
       />
       <BottomTab.Screen
@@ -99,16 +99,9 @@ function BottomTabNavigator() {
           title: 'ตั้งค่า',
           headerTitleStyle: HeaderTitleStyle,
           headerTransparent: true,
-          tabBarIcon: ({ color }) => <TabBarIcon name="settings" color={color} />,
+          tabBarIcon: ({ color }) => <TabBarFeatherIcon name="settings" color={color} />,
         }}
       />
     </BottomTab.Navigator>
   );
-}
-
-function TabBarIcon(props: {
-  name: React.ComponentProps<typeof Feather>['name'];
-  color: string;
-}) {
-  return <Feather size={28} style={{ marginBottom: -10 }} {...props} />;
 }

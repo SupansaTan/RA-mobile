@@ -1,5 +1,7 @@
+import { Platform } from 'react-native';
+
 export const BottomTabStyle = {
-  height: 75,
+  height: Platform.OS == 'ios' ? 85:75,
   borderTopLeftRadius: 25, 
   borderTopRightRadius: 25,
   shadowOffset: {
@@ -10,7 +12,7 @@ export const BottomTabStyle = {
   shadowRadius: 16.0,
   elevation: 10,
   paddingTop: 10,
-  paddingBottom: 10
+  paddingBottom: Platform.OS == 'ios' ? 20:10
 }
 
 export const BottomTabLabelStyle = {
