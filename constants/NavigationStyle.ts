@@ -18,10 +18,10 @@ export const BottomTabStyle = {
 export const BottomTabLabelStyle = {
   fontSize: 13,
   paddingTop: 10,
-  fontFamily: 'mitr'
+  fontFamily: 'Mitr_400Regular'
 }
 
 export const HeaderTitleStyle = {
-  fontFamily: 'mitr',
+  fontFamily: 'Mitr_400Regular',
   fontSize: 25
 }
