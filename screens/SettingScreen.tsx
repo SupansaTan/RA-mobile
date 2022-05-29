@@ -12,8 +12,8 @@ export default function SettingScreen() {
 
   return (
     <View style={styles.Container}>
+      {/* user profile */}
       <View style={styles.UserInfoWrapper}>
-        {/* user profile */}
         <Avatar style={styles.Avatar} width={80} height={80} />
         <Text style={styles.Username}>{ username }</Text>
         <View style={styles.SeeProfileWrapper}>
