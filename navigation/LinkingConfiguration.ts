@@ -27,12 +27,12 @@ const linking: LinkingOptions<RootStackParamList> = {
           },
           Menu: {
             screens: {
-              TabTwoScreen: 'two',
+              MenuScreen: 'menu',
             },
           },
           Notification: {
             screens: {
-              TabTwoScreen: 'two',
+              NotificationScreen: 'notification',
             },
           },
           Setting: {
