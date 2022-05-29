@@ -4,6 +4,7 @@
  */
 
 import { Text as DefaultText, View as DefaultView } from 'react-native';
+import { MaterialIcons as DefaultMaterialIcons } from '@expo/vector-icons';
 
 import Colors from '../constants/Colors';
 import useColorScheme from '../hooks/useColorScheme';
@@ -29,6 +30,7 @@ type ThemeProps = {
 
 export type TextProps = ThemeProps & DefaultText['props'];
 export type ViewProps = ThemeProps & DefaultView['props'];
+export type MaterialIconsProps =  ThemeProps & DefaultMaterialIcons['props'];
 
 export function Text(props: TextProps) {
   const { style, lightColor, darkColor, ...otherProps } = props;
@@ -42,4 +44,11 @@ export function View(props: ViewProps) {
   const backgroundColor = useThemeColor({ light: lightColor, dark: darkColor }, 'background');
 
   return <DefaultView style={[{ backgroundColor }, style]} {...otherProps} />;
+}
+
+export function MaterialIcons(props: MaterialIconsProps) {
+  const { style, lightColor, darkColor, ...otherProps } = props;
+  const color = useThemeColor({ light: lightColor, dark: darkColor }, 'textSecondary');
+
+  return <DefaultMaterialIcons style={[{ color }, style]} {...otherProps} />;
 }

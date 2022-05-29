@@ -10,6 +10,7 @@ import ModalScreen from '../screens/ModalScreen';
 import NotFoundScreen from '../screens/NotFoundScreen';
 import TabOneScreen from '../screens/TabOneScreen';
 import TabTwoScreen from '../screens/TabTwoScreen';
+import SettingScreen from '../screens/SettingScreen';
 import MenuScreen from '../screens/MenuScreen';
 import NotificationScreen from '../screens/NotificationScreen';
 import { RootStackParamList, RootTabParamList, RootTabScreenProps } from '../types';
@@ -96,7 +97,7 @@ function BottomTabNavigator() {
       />
       <BottomTab.Screen
         name="Setting"
-        component={TabTwoScreen}
+        component={SettingScreen}
         options={{
           title: 'ตั้งค่า',
           headerTitleStyle: HeaderTitleStyle,
