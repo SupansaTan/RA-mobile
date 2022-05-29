@@ -37,7 +37,7 @@ const linking: LinkingOptions<RootStackParamList> = {
           },
           Setting: {
             screens: {
-              TabTwoScreen: 'two',
+              SettingScreen: 'setting',
             },
           }
         },
