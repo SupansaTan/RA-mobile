@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { StyleSheet, Switch } from 'react-native';
+import { StyleSheet, Switch, Platform, TouchableOpacity } from 'react-native';
 import { Fontisto, FontAwesome } from '@expo/vector-icons';
 import Avatar from '../assets/images/avatar.svg';
 import Colors from '../constants/Colors';
@@ -57,12 +57,14 @@ export default function SettingScreen() {
         </View>
 
         {/* log out */}
-        <View style={styles.ItemWrapper}>
-          <View style={styles.ItemTitleWrapper}>
-            <FontAwesome name="sign-out" size={24} color="black" style={styles.ItemIcon} />
-            <Text style={styles.ItemText}>ออกจากระบบ</Text>
+        <TouchableOpacity>
+          <View style={styles.ItemWrapper}>
+            <View style={[styles.ItemTitleWrapper, { paddingTop: Platform.OS === 'ios' ? 5:10 }]}>
+              <FontAwesome name="sign-out" size={24} color="black" style={styles.ItemIcon} />
+              <Text style={styles.ItemText}>ออกจากระบบ</Text>
+            </View>
           </View>
-        </View>
+        </TouchableOpacity>
       </View>
     </View>
   );
@@ -119,7 +121,7 @@ const styles = StyleSheet.create({
   ItemWrapper: {
     width: '100%',
     paddingRight: 10,
-    paddingVertical: 8,
+    paddingTop: Platform.OS === 'ios' ? 12:0,
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between'
