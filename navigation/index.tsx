@@ -13,6 +13,7 @@ import TabTwoScreen from '../screens/TabTwoScreen';
 import SettingScreen from '../screens/SettingScreen';
 import MenuScreen from '../screens/MenuScreen';
 import TaskScreen from '../screens/TaskScreen';
+import HomeScreen from '../screens/HomeScreen';
 import NotificationScreen from '../screens/NotificationScreen';
 import { RootStackParamList, RootTabParamList, RootTabScreenProps } from '../types';
 import LinkingConfiguration from './LinkingConfiguration';
@@ -58,7 +59,7 @@ function BottomTabNavigator() {
       }}>
       <BottomTab.Screen
         name="Home"
-        component={TabOneScreen}
+        component={HomeScreen}
         options={{
           title: 'หน้าหลัก',
           headerTitleStyle: HeaderTitleStyle,
