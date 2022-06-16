@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { StyleSheet, Switch, Platform, TouchableOpacity } from 'react-native';
+import { StyleSheet, Switch, Platform, TouchableOpacity, TextInput } from 'react-native';
 import { Fontisto, FontAwesome } from '@expo/vector-icons';
 import Avatar from '../assets/images/avatar.svg';
 import Colors from '../constants/Colors';
@@ -9,6 +9,7 @@ export default function SettingScreen() {
   const [username, setUsername] = useState<string>('ฟ้า ทลายโจร')
   const [enabledNotify, setEnabledNotify] = useState<boolean>(true)
   const [darkmode, setDarkmode] = useState<boolean>(false)
+  const [number, onChangeNumber] = useState<string>('7')
 
   return (
     <View style={styles.Container}>
@@ -40,6 +41,20 @@ export default function SettingScreen() {
             value={enabledNotify}
           />
         </View>
+        {enabledNotify? 
+        <View style={styles.ContentContainer} >
+          <Text style={styles.ItemText}>วันแจ้งเตือนล่วงหน้า</Text>
+          <View style={styles.InputWrapper}>
+            <TextInput
+            style={styles.InputText}
+            onChangeText={onChangeNumber}
+            value={number}
+            keyboardType="numeric"
+            />
+          </View>  
+        </View> : <></>
+        }
+        
 
         {/* darkmode */}
         <View style={styles.ItemWrapper}>
@@ -78,6 +93,13 @@ const styles = StyleSheet.create({
     paddingHorizontal: 10,
     alignItems: 'flex-start',
     justifyContent: 'flex-start',
+  },
+  ContentContainer: {
+    flexDirection: 'row',
+    padding: 10,
+    marginVertical: 5,
+    backgroundColor: '#fff',
+    borderRadius: 10
   },
   UserInfoWrapper: {
     width: '100%',
@@ -136,5 +158,17 @@ const styles = StyleSheet.create({
   },
   ItemIcon: {
     marginRight: 10
-  }
+  },
+  InputWrapper: {
+    marginLeft: 150,
+    marginRight: 10,
+    width: 50,
+  },
+  InputText: {
+    textAlign: 'center',
+    backgroundColor: '#eeeeee',
+    borderRadius: 10,
+    fontSize: 16,
+    fontFamily: 'Mitr_400Regular',
+  },
 });
