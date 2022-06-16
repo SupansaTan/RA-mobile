@@ -7,7 +7,7 @@ import { RootTabScreenProps } from '../types';
 import { LocationList, LocationIcon } from '../constants/Location';
 import { LocationContentModel } from '../model/Location';
 
-export default function TabOneScreen({ navigation }: RootTabScreenProps<'Home'>) {
+export default function HomeScreen2({ navigation }: RootTabScreenProps<'Home'>) {
   const [locationList, setNocation] = useState(LocationList)
 
   const LocationElement = locationList.map((LocationContentModel, index) => {
