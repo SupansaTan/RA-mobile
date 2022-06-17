@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { StyleSheet, TouchableOpacity, ScrollView } from 'react-native';
 import { MaterialCommunityIcons} from '@expo/vector-icons';
 
-import { Text, View } from '../components/Themed';
+import { Text, View, MaterialIcons } from '../components/Themed';
 import { RootTabScreenProps } from '../types';
 import { LocationList, LocationIcon } from '../constants/Location';
 import { LocationContentModel } from '../model/Location';
@@ -28,7 +28,7 @@ export default function HomeScreen2({ navigation }: RootTabScreenProps<'Home'>) 
 
             {/* icon */}
             <View style={styles.MoreWrapper}>
-              <MaterialCommunityIcons name="menu-right" size={32} color={LocationIcon.iconColor} />
+              <MaterialIcons name="keyboard-arrow-right" size={30} />
             </View>
           </View> 
         </TouchableOpacity>
