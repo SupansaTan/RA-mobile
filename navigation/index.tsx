@@ -59,7 +59,7 @@ function BottomTabNavigator() {
       }}>
       <BottomTab.Screen
         name="Home"
-        component={HomeScreen}
+        component={HomeScreen2}
         options={{
           title: 'หน้าหลัก',
           headerTitleStyle: HeaderTitleStyle,
