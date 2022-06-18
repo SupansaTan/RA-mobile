@@ -14,6 +14,7 @@ import TabTwoScreen from '../screens/TabTwoScreen';
 import SettingScreen from '../screens/SettingScreen';
 import MenuScreen from '../screens/MenuScreen';
 import TaskScreen from '../screens/TaskScreen';
+import TaskScreen2 from '../screens/TaskScreen2';
 import NotificationScreen from '../screens/NotificationScreen';
 import ProfileScreen from '../screens/ProfileScreen';
 import { RootStackParamList, RootTabParamList, RootTabScreenProps } from '../types';
@@ -71,9 +72,9 @@ function BottomTabNavigator() {
       />
       <BottomTab.Screen
         name="Task"
-        component={TaskScreen}
+        component={TaskScreen2}
         options={{
-          title: 'งาน',
+          title: 'งานทั้งหมด',
           headerTitleStyle: HeaderTitleStyle,
           headerTransparent: true,
           tabBarIcon: ({ color }) => <TabBarFeatherIcon name="clipboard" color={color} />,
