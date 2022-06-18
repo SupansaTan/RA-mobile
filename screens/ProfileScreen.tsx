@@ -12,13 +12,16 @@ export default function ProfileScreen() {
 
     const RoleElement = itemList.map((item, index)  => {
         return(
-            <View style={styles.RoleWrapper}>
-                <Text style={styles.TextHeader} >{item.Role}</Text>
-                <View style={styles.Location}>
-                    <MaterialCommunityIcons name="map-marker-radius-outline" size={32} color='#13AF82' />
-                    <Text style={styles.TextDatail} >{item.Location}</Text> 
+            <View key={index}>
+                <View style={styles.RoleWrapper}>
+                    <Text style={styles.TextHeader} >{item.Role}</Text>
+                    <View style={styles.LocationWrapper}>
+                        <MaterialCommunityIcons name="map-marker-radius-outline" size={32} color='#13AF82' />
+                        <Text style={styles.TextDatail} >{item.Location}</Text> 
+                    </View>
                 </View>
             </View>
+            
         )
     })
 
@@ -43,20 +46,19 @@ const styles = StyleSheet.create({
     Container: {
         flex: 1,
         flexGrow:1,
-        paddingTop: 90,
         paddingHorizontal: 10,
         alignItems: 'flex-start',
         justifyContent: 'flex-start',
     },
     RoleWrapper:{
         backgroundColor: '#fff',
-        width: '100%',
+        width: 370,
         padding: 10,
         marginVertical: 5,
         borderRadius: 10,
         alignItems: 'flex-start',
     },
-    Location:{
+    LocationWrapper:{
         flexDirection: 'row',
         backgroundColor: 'transparent',
         marginVertical: 5,
