@@ -9,7 +9,7 @@ export const TaskData = [
         assign: 2
       },
       {
-        title: 'พ.ร.บ.อาชีวอนามัย A',
+        title: 'พ.ร.บ.ความปลอดภัย',
         datetime: '2 พ.ค. 2565 15.00 น.',
         timestatus: 'remain',
         assign: 2
@@ -20,7 +20,7 @@ export const TaskData = [
     type: 'consistance',
     task: [
       {
-        title: 'พ.ร.บ.อาชีวอนามัย B',
+        title: 'พ.ร.บ.ข้อมูลส่วนบุคคล',
         datetime: 'เมื่อวาน 15.00 น.',
         timestatus: 'overdue',
         assign: 2
@@ -31,7 +31,7 @@ export const TaskData = [
     type: 'approve',
     task: [
       {
-        title: 'พ.ร.บ.อาชีวอนามัย C',
+        title: 'พ.ร.บ.การใช้เครื่องจักร',
         datetime: '31 มี.ค. 2565 15.00 น.',
         timestatus: 'remain',
         assign: 2
