@@ -4,12 +4,14 @@ import { Fontisto, FontAwesome } from '@expo/vector-icons';
 import Avatar from '../assets/images/avatar.svg';
 import Colors from '../constants/Colors';
 import { Text, View, MaterialIcons } from '../components/Themed';
+import { useNavigation } from '@react-navigation/native';
 
 export default function SettingScreen() {
   const [username, setUsername] = useState<string>('ฟ้า ทลายโจร')
   const [enabledNotify, setEnabledNotify] = useState<boolean>(true)
   const [darkmode, setDarkmode] = useState<boolean>(false)
   const [number, onChangeNumber] = useState<string>('7')
+  const navigation = useNavigation();
 
   return (
     <View style={styles.Container}>
@@ -18,7 +20,10 @@ export default function SettingScreen() {
         <Avatar style={styles.Avatar} width={80} height={80} />
         <Text style={styles.Username}>{ username }</Text>
         <View style={styles.SeeProfileWrapper}>
-          <Text style={styles.SeeProfileText} lightColor={Colors.light.textSecondary} darkColor={Colors.dark.textSecondary}>ดูโปรไฟล์</Text>
+          <Text style={styles.SeeProfileText} lightColor={Colors.light.textSecondary} darkColor={Colors.dark.textSecondary} 
+            onPress={() => navigation.navigate('Profile')}>
+            ดูโปรไฟล์
+          </Text>
           <MaterialIcons style={styles.RightArrow} name="keyboard-arrow-right" size={24} />
         </View>
       </View>
