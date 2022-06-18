@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { StyleSheet, TouchableOpacity, ScrollView } from 'react-native';
+import { StyleSheet, TouchableOpacity, ScrollView, TextInput } from 'react-native';
 import { MaterialCommunityIcons, Feather  } from '@expo/vector-icons';
 
 import Colors from '../constants/Colors';
@@ -9,6 +9,7 @@ import { TaskData } from '../constants/Task'
 
 export default function TaskScreen2({ path }: { path: string }) {
   const [taskList, setTaskList] = useState(TaskData)
+  const [keyword, onChangeKeyword] = useState<string>('')
 
   const ContentElement = (contentItem: TaskContentModel, i: number, type: string) => {
     return(
@@ -30,13 +31,6 @@ export default function TaskScreen2({ path }: { path: string }) {
               </View>
             </View>
 
-            {/* assignee */}
-            <View style={styles.AssignWrapper}>
-              <View style={styles.AssginCard}>
-                <Feather name="user" size={16} style={{ marginRight: 5, marginBottom: 2 }} color="#4a4a4a" />
-                <Text style={styles.AssignText}>{ contentItem.assign }</Text>
-              </View>
-            </View>
           </View>
         </TouchableOpacity>
       </View>
@@ -68,7 +62,31 @@ export default function TaskScreen2({ path }: { path: string }) {
   return (
     <View style={styles.Container}>
       <ScrollView contentContainerStyle={{ flexGrow:1 }}>
+
+        <View style={styles.SearchWrapper}>
+          {/* search */}
+          <View style={styles.InputWrapper } >
+            <Feather name='search' style={{marginHorizontal:5}} size={20} color={'#6c6c6c'}  />
+            <TextInput
+              style={styles.InputText}
+              onChangeText={onChangeKeyword}
+              value={keyword}
+              placeholder='พ.ร.บ/กฎหมาย'
+            />
+          </View>
+
+          {/* filter */}
+          <TouchableOpacity>
+            <View style={styles.Filter}>
+              <MaterialCommunityIcons name='filter-variant' style={{marginHorizontal:5}} color={'#13AF82'} size={40} />
+              <Text style={[styles.AssignText, {color:'#13AF82'}]}>ตัวกรอง</Text>
+            </View>
+          </TouchableOpacity>
+        </View>
+
+        {/* task */}
         { TaskElement }
+
       </ScrollView>
     </View>
   );
@@ -137,5 +155,33 @@ const styles = StyleSheet.create({
   TextContent: {
     fontSize: 13,
     fontFamily: 'Mitr_400Regular'
+  },
+  SearchWrapper: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginHorizontal: 5,
+    marginVertical: 10,
+    height: 50,
+  },
+  InputWrapper:{
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'flex-start',
+    height: 40,
+    width:250,
+    backgroundColor: '#eeeeee',
+    borderRadius: 10,
+    marginHorizontal: 5,
+  },
+  InputText: {
+    fontSize: 18,
+    fontFamily: 'Mitr_400Regular',
+    height: 40,
+    width:250,
+  },
+  Filter:{
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
   }
 });
