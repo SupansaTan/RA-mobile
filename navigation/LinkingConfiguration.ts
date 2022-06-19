@@ -43,6 +43,7 @@ const linking: LinkingOptions<RootStackParamList> = {
         },
       },
       Profile: 'profile',
+      Tracking: 'tracking',
       Modal: 'modal',
       NotFound: '*',
     },
