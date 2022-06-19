@@ -6,18 +6,20 @@ import RelevantIcon from '../assets/images/relevant.svg';
 import ConsistanceIcon from '../assets/images/consistance.svg';
 import SearchLegalIcon from '../assets/images/search-legal.svg';
 import TrackingIcon from '../assets/images/tracking.svg';
+import { useNavigation } from '@react-navigation/native';
 
 export default function MenuScreen() {
+  const navigation = useNavigation();
 
   const getMenuIcon = (name: string) => {
     switch(name) {
-      case 'relevant':
+      case 'Relevant':
         return <RelevantIcon style={{ marginLeft: -8, marginBottom: -25 }} width={80} height={110} />
-      case 'consistance':
+      case 'Consistance':
         return <ConsistanceIcon style={{ marginRight: -3, marginBottom: 5 }} width={80} height={80} />
-      case 'search':
+      case 'Search':
         return <SearchLegalIcon width={70} height={80} />
-      case 'tracking':
+      case 'Tracking':
         return <TrackingIcon style={{ marginLeft: 10, marginBottom: 26 }} width={90} height={80} />
     }
   }
@@ -25,7 +27,7 @@ export default function MenuScreen() {
   const MenuListElement = MenuList.map((item, index) => {
     return (
       <View style={styles.MenuContainer} key={index}>
-        <TouchableOpacity activeOpacity={0.5}>
+        <TouchableOpacity activeOpacity={0.5} onPress={() => navigation.navigate(item.name)}>
           <View style={styles.MenuWrapper}>
             { getMenuIcon(item.name) }
             <Text style={styles.MenuText}>{ item.title }</Text>

@@ -1,18 +1,18 @@
 export const MenuList = [
   {
-    name: 'relevant',
+    name: 'Relevant',
     title: 'ประเมิน\nความเกี่ยวข้อง'
   },
   {
-    name: 'consistance',
+    name: 'Consistance',
     title: 'ประเมิน\nความสอดคล้อง'
   },
   {
-    name: 'search',
+    name: 'Search',
     title: 'ค้นหากฎหมาย\nและข้อกำหนดอื่นๆ'
   },
   {
-    name: 'tracking',
+    name: 'Tracking',
     title: 'ติดตามสถานะ'
   }
 ]
