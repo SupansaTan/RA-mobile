@@ -1,11 +1,10 @@
 import React, { useState } from 'react';
 import { StyleSheet, Switch, Platform, TouchableOpacity, TextInput } from 'react-native';
-import { Fontisto, FontAwesome } from '@expo/vector-icons';
+import { Feather, MaterialCommunityIcons } from '@expo/vector-icons';
 import Avatar from '../assets/images/avatar.svg';
 import Colors from '../constants/Colors';
 import { Text, View, MaterialIcons } from '../components/Themed';
 import { UserInfo } from '../constants/UserInfo';
-import { MaterialCommunityIcons} from '@expo/vector-icons';
 
 export default function ProfileScreen() {
     const [itemList, setItemList] = useState(UserInfo.Roles)
@@ -16,7 +15,7 @@ export default function ProfileScreen() {
                 <View style={styles.RoleWrapper}>
                     <Text style={styles.TextHeader} >{item.Role}</Text>
                     <View style={styles.LocationWrapper}>
-                        <MaterialCommunityIcons name="map-marker-radius-outline" size={32} color='#13AF82' />
+                        <Feather name="map-pin" size={22} color="#13AF82" />
                         <Text style={styles.TextDatail} >{item.Location}</Text> 
                     </View>
                 </View>
@@ -28,10 +27,12 @@ export default function ProfileScreen() {
     return(
         <View style={styles.Container}>
             <View style={styles.UserWrapper}>
-                <Avatar  width={80} height={80} marginRight={20}/>
+                <Avatar  width={70} height={70} marginRight={20}/>
                 <View style={styles.UserTextWrapper}>
                     <Text style={styles.TextHeader} >{UserInfo.Fname} {UserInfo.Lname}</Text>
-                    <Text style={styles.TextDatail} >{UserInfo.Email}</Text> 
+                    <View style={styles.EmailWrapper}>
+                        <Text style={styles.EmailText} >{UserInfo.Email}</Text> 
+                    </View>
                 </View>
             </View>
 
@@ -60,6 +61,7 @@ const styles = StyleSheet.create({
     },
     LocationWrapper:{
         flexDirection: 'row',
+        alignItems: 'center',
         backgroundColor: 'transparent',
         marginVertical: 5,
     },
@@ -73,12 +75,23 @@ const styles = StyleSheet.create({
     UserTextWrapper:{
         flexDirection: 'column',
     },
+    EmailWrapper: {
+        borderRadius: 50,
+        backgroundColor: '#EEEEEE'
+    },
+    EmailText: {
+        fontSize: 18,
+        fontFamily: 'Mitr_500Medium',
+        paddingVertical: 2,
+        paddingHorizontal: 10,
+    },
     TextHeader:{
-        fontSize: 23,
+        fontSize: 22,
         fontFamily: 'Mitr_500Medium',
     },
     TextDatail:{
         fontSize: 18,
+        color: '#13AF82',
         fontFamily: 'Mitr_500Medium',
         marginHorizontal: 5,
     }
