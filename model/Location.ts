@@ -1,5 +1,5 @@
 export interface LocationContentModel {
-    location: string
-    business: string
-    system: Array<string>
-  }
+  location: string
+  business: string
+  system: Array<string>
+}
