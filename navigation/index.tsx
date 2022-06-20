@@ -45,6 +45,7 @@ function RootNavigator() {
           animation: 'slide_from_right',
           title: 'โปรไฟล์',
           headerShadowVisible: false,
+          headerTitleStyle: HeaderTitleStyle,
           headerStyle: {backgroundColor: '#f8f8f8'}
         }} />
       <Stack.Screen name="Tracking" component={TrackScreen} options={{ animation: 'slide_from_right' }} />
