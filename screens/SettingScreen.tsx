@@ -4,14 +4,13 @@ import { Fontisto, FontAwesome } from '@expo/vector-icons';
 import Avatar from '../assets/images/avatar.svg';
 import Colors from '../constants/Colors';
 import { Text, View, MaterialIcons } from '../components/Themed';
-import { useNavigation } from '@react-navigation/native';
+import { RootTabScreenProps } from '../types';
 
-export default function SettingScreen() {
+export default function SettingScreen({ navigation }: RootTabScreenProps<'Setting'>) {
   const [username, setUsername] = useState<string>('ฟ้า ทลายโจร')
   const [enabledNotify, setEnabledNotify] = useState<boolean>(true)
   const [darkmode, setDarkmode] = useState<boolean>(false)
   const [number, onChangeNumber] = useState<string>('7')
-  const navigation = useNavigation();
 
   return (
     <View style={styles.Container}>
