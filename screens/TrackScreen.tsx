@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Animated, StyleSheet, Switch, TouchableOpacity } from 'react-native';
+import { StyleSheet, TouchableOpacity } from 'react-native';
 import { Text, View, MaterialIcons } from '../components/Themed';
 import { MaterialCommunityIcons} from '@expo/vector-icons';
 import { TrackLocationList, TrackTask } from '../constants/Track';
@@ -71,22 +71,8 @@ export function TrackScreen() {
 
 export function TrackLocationScreen() {
     const [taskList, setTaskList] = useState(TrackTask)
-    const [active, setActive] = useState(0)
-    const [xTabOne, setXTabOne] = useState(0)
-    const [xTabTwo, setXTabTwo] = useState(0)
-    const [translatex , setTranslatex] = useState( new Animated.Value(0))
+    const [status, setStatus] = useState('inprogress')
 
-    const handleSlide = (type: any) => { 
-        Animated.spring(translatex, {
-            toValue: type,
-            useNativeDriver: false
-        }).start()
-    }
-
-    const a = new Animated.Value(1);
-    const b = Animated.divide(1, a);
-
-  
     const TaskElement = (contentItem: TaskContentModel, i: number) => {
         return(
           <View key={'content' + i}>
@@ -109,8 +95,6 @@ export function TrackLocationScreen() {
                         <Avatar  width={20} height={20} marginRight={10}/>
                         <Text style={styles.TextContent}>{ contentItem.assign }</Text> 
                     </View>
-                    
-
                 </View>
     
               </View>
@@ -140,45 +124,24 @@ export function TrackLocationScreen() {
             </View>
 
             <View style={{flexDirection:'row', position:'relative'}}>
-            <View style={{position:'absolute', width:'50%', height:'100%', top:0, left:0, backgroundColor:'#007aff',borderRadius:4,}}/>
-                <TouchableOpacity style={{
-                    flex:1,
-                    justifyContent:'center', 
-                    alignItems:'center',
-                    borderWidth:1, 
-                    borderColor:'#007aff',
-                    borderRightWidth:0,
-                    borderTopRightRadius:0,
-                    borderBottomRightRadius:0,
-                    borderRadius:4,
-                    padding:5,
-                    }}
-                    onLayout={event => setXTabOne(event.nativeEvent.layout.x)}
-                    onPress={() => {setActive(0), handleSlide(xTabOne)}}
+            <View style={{position:'absolute', width:'50%', height:'100%', borderRadius:4,}}/>
+                <TouchableOpacity 
+                    style={[styles.StatusButton, {borderColor: status==='inprogress' ? '#13AF82':'transparent'}]}
+                    onPress={() => setStatus('inprogress')}
                 >
-                    <Text>TabOne</Text>
+                    <Text style={[styles.TextContent, {color: status==='inprogress' ? '#13AF82':'black'}]}>รอดำเนินการ</Text>
                 </TouchableOpacity>
 
-                <TouchableOpacity style={{
-                    flex:1,
-                    justifyContent:'center', 
-                    alignItems:'center',
-                    borderWidth:1, 
-                    borderColor:'#007aff',
-                    borderLeftWidth:0,
-                    borderTopLeftRadius:0,
-                    borderBottomLeftRadius:0,
-                    borderRadius:4,
-                    padding:5,
-                    }}
-                    onLayout={event => setXTabTwo(event.nativeEvent.layout.x)}
-                    onPress={() => setActive(1) }
+                <TouchableOpacity 
+                    style={[styles.StatusButton, {borderColor: status==='successful' ? '#13AF82':'transparent'}]}
+                    onPress={() => setStatus('successful')}
                 >
-                    <Text>TabTwo</Text>
+                    <Text style={[styles.TextContent, {color: status==='successful' ? '#13AF82':'#6C6C6C'}]}>ดำเนินการเรียบร้อย</Text>
                 </TouchableOpacity>  
             </View>
 
-            { TaskElementList(taskList.successful) }
+            { status==='inprogress' ? TaskElementList(taskList.successful):TaskElementList(taskList.inprogress)}
+        
         </View>
     )
 }
@@ -252,5 +215,13 @@ const styles = StyleSheet.create({
         marginLeft: 'auto',
         marginRight: 2,
         backgroundColor: 'transparent'
-      },
+    },
+    StatusButton:{
+        flex:1,
+        justifyContent:'center', 
+        alignItems:'center',
+        borderBottomWidth:2,
+        borderColor:'#13AF82',
+        padding:5,
+    }
 })
