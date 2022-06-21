@@ -78,7 +78,7 @@ export default function TaskScreen2({ path }: { path: string }) {
           {/* filter */}
           <TouchableOpacity>
             <View style={styles.Filter}>
-              <MaterialCommunityIcons name='filter-variant' style={{marginHorizontal:5}} color={'#13AF82'} size={30} />
+              <MaterialCommunityIcons name='filter-variant' style={{marginHorizontal:5}} color={'#13AF82'} size={25} />
               <Text style={[styles.AssignText, {color:'#13AF82'}]}>ตัวกรอง</Text>
             </View>
           </TouchableOpacity>
@@ -109,7 +109,7 @@ const styles = StyleSheet.create({
     fontFamily: 'Mitr_500Medium'
   },
   AssignText: {
-    fontSize: 14,
+    fontSize: 16,
     color: '#4a4a4a',
     justifyContent: 'center',
     fontFamily: 'Mitr_500Medium'
@@ -162,15 +162,16 @@ const styles = StyleSheet.create({
     marginHorizontal: 5,
     marginVertical: 10,
     height: 50,
+    paddingTop: 30,
   },
   InputWrapper:{
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'flex-start',
     height: 40,
-    width: 280,
+    width: 250,
     backgroundColor: '#eeeeee',
-    borderRadius: 10,
+    borderRadius: 20,
     marginHorizontal: 5,
   },
   InputText: {
