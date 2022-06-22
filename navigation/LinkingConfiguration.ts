@@ -45,6 +45,7 @@ const linking: LinkingOptions<RootStackParamList> = {
       Profile: 'profile',
       Tracking: 'tracking',
       TrackingLocation: 'trackinglocation',
+      TaskLocation: 'tasklocation',
       Modal: 'modal',
       NotFound: '*',
     },

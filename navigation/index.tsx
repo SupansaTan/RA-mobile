@@ -15,6 +15,7 @@ import SettingScreen from '../screens/SettingScreen';
 import MenuScreen from '../screens/MenuScreen';
 import TaskScreen from '../screens/TaskScreen';
 import TaskScreen2 from '../screens/TaskScreen2';
+import TaskLocationScreen from '../screens/TaskLocationScreen';
 import NotificationScreen from '../screens/NotificationScreen';
 import ProfileScreen from '../screens/ProfileScreen';
 import {TrackScreen, TrackLocationScreen} from '../screens/TrackScreen';
@@ -59,6 +60,13 @@ function RootNavigator() {
       <Stack.Screen name="Tracking" component={TrackScreen} options={{ 
           animation: 'slide_from_right',
           title: 'ติดตามสถานะ',
+          headerShadowVisible: false,
+          headerTitleStyle: HeaderTitleStyle,
+          headerStyle: {backgroundColor: '#f8f8f8'}
+        }} />
+        <Stack.Screen name="TaskLocation" component={TaskLocationScreen} options={{ 
+          animation: 'slide_from_right',
+          title: 'งานทั้งหมด',
           headerShadowVisible: false,
           headerTitleStyle: HeaderTitleStyle,
           headerStyle: {backgroundColor: '#f8f8f8'}

@@ -18,6 +18,7 @@ export type RootStackParamList = {
   Profile: undefined;
   Tracking: undefined;
   TrackingLocation: undefined;
+  TaskLocation: undefined;
   Modal: undefined;
   NotFound: undefined;
 };
