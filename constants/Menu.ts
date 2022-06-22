@@ -1,5 +1,9 @@
 export const MenuList = [
   {
+    name: 'Task',
+    title: 'งานทั้งหมด'
+  },
+  {
     name: 'Relevant',
     title: 'ประเมิน\nความเกี่ยวข้อง'
   },
