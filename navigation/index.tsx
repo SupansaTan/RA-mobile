@@ -8,17 +8,16 @@ import Colors from '../constants/Colors';
 import useColorScheme from '../hooks/useColorScheme';
 import ModalScreen from '../screens/ModalScreen';
 import NotFoundScreen from '../screens/NotFoundScreen';
-import HomeScreen from '../screens/HomeScreen';
 import HomeScreen2 from '../screens/HomeScreen2';
-import TabTwoScreen from '../screens/TabTwoScreen';
 import SettingScreen from '../screens/SettingScreen';
 import MenuScreen from '../screens/MenuScreen';
-import TaskScreen from '../screens/TaskScreen';
 import TaskScreen2 from '../screens/TaskScreen2';
 import TaskLocationScreen from '../screens/TaskLocationScreen';
 import NotificationScreen from '../screens/NotificationScreen';
 import ProfileScreen from '../screens/ProfileScreen';
 import {TrackScreen, TrackLocationScreen} from '../screens/TrackScreen';
+import SearchScreen from '../screens/SearchScreen';
+import ReportScreen from '../screens/ReportScreen';
 
 import { RootStackParamList, RootTabParamList, RootTabScreenProps } from '../types';
 import LinkingConfiguration from './LinkingConfiguration';
@@ -49,7 +48,15 @@ function RootNavigator() {
           headerTitleStyle: HeaderTitleStyle,
           headerStyle: {backgroundColor: '#f8f8f8'}
         }} />
-        <Stack.Screen name="TrackingLocation" component={TrackLocationScreen} 
+      <Stack.Screen name="Task" component={TaskScreen2} 
+        options={{ 
+          animation: 'slide_from_right',
+          title: 'ติดตามสถานะ',
+          headerShadowVisible: false,
+          headerTitleStyle: HeaderTitleStyle,
+          headerStyle: {backgroundColor: '#f8f8f8'}
+        }} />
+      <Stack.Screen name="TrackingLocation" component={TrackLocationScreen} 
         options={{ 
           animation: 'slide_from_right',
           title: 'ติดตามสถานะ',
@@ -64,9 +71,16 @@ function RootNavigator() {
           headerTitleStyle: HeaderTitleStyle,
           headerStyle: {backgroundColor: '#f8f8f8'}
         }} />
-        <Stack.Screen name="TaskLocation" component={TaskLocationScreen} options={{ 
+      <Stack.Screen name="TaskLocation" component={TaskLocationScreen} options={{ 
           animation: 'slide_from_right',
           title: 'งานทั้งหมด',
+          headerShadowVisible: false,
+          headerTitleStyle: HeaderTitleStyle,
+          headerStyle: {backgroundColor: '#f8f8f8'}
+        }} />
+      <Stack.Screen name="Report" component={ReportScreen} options={{ 
+          animation: 'slide_from_right',
+          title: 'รายงาน',
           headerShadowVisible: false,
           headerTitleStyle: HeaderTitleStyle,
           headerStyle: {backgroundColor: '#f8f8f8'}
@@ -103,23 +117,13 @@ function BottomTabNavigator() {
         }}
       />
       <BottomTab.Screen
-        name="Task"
+        name="Search"
         component={TaskScreen2}
         options={{
           title: 'งานทั้งหมด',
           headerTitleStyle: HeaderTitleStyle,
           headerTransparent: true,
           tabBarIcon: ({ color }) => <TabBarFeatherIcon name="clipboard" color={color} />,
-        }}
-      />
-      <BottomTab.Screen
-        name="Menu"
-        component={MenuScreen}
-        options={{
-          title: 'เมนู',
-          headerTitleStyle: HeaderTitleStyle,
-          headerTransparent: true,
-          tabBarIcon: ({ color }) => <TabBarSimpleLineIcon name="grid" color={color} />,
         }}
       />
       <BottomTab.Screen

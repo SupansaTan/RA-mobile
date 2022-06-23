@@ -20,14 +20,9 @@ const linking: LinkingOptions<RootStackParamList> = {
               HomeScreen: 'home',
             },
           },
-          Task: {
+          Search: {
             screens: {
-              TaskScreen: 'task',
-            },
-          },
-          Menu: {
-            screens: {
-              MenuScreen: 'menu',
+              MenuScreen: 'search',
             },
           },
           Notification: {
@@ -43,9 +38,11 @@ const linking: LinkingOptions<RootStackParamList> = {
         },
       },
       Profile: 'profile',
+      Task: 'task',
       Tracking: 'tracking',
       TrackingLocation: 'trackinglocation',
       TaskLocation: 'tasklocation',
+      Report: 'report',
       Modal: 'modal',
       NotFound: '*',
     },
