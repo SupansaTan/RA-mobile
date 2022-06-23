@@ -118,12 +118,12 @@ function BottomTabNavigator() {
       />
       <BottomTab.Screen
         name="Search"
-        component={TaskScreen2}
+        component={SearchScreen}
         options={{
-          title: 'งานทั้งหมด',
+          title: 'ค้นหากฎหมาย',
           headerTitleStyle: HeaderTitleStyle,
           headerTransparent: true,
-          tabBarIcon: ({ color }) => <TabBarFeatherIcon name="clipboard" color={color} />,
+          tabBarIcon: ({ color }) => <TabBarFeatherIcon name="search" color={color} />,
         }}
       />
       <BottomTab.Screen
