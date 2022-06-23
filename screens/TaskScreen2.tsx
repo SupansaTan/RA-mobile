@@ -4,14 +4,14 @@ import { MaterialCommunityIcons, MaterialIcons } from '@expo/vector-icons';
 
 import Colors from '../constants/Colors';
 import { Text, View } from '../components/Themed';
-import { TaskContentModel } from '../model/Task';
-import { TaskData } from '../constants/Task'
 
 import { RootTabScreenProps } from '../types';
 import { LocationList, LocationIcon } from '../constants/Location';
+import { useNavigation } from '@react-navigation/native';
 
-export default function TaskScreen2({ navigation }: RootTabScreenProps<'Task'>) {
+export default function TaskScreen2() {
     const [locationList, setNocation] = useState(LocationList)
+    const navigation =  useNavigation()
   
     const LocationElement = locationList.map((LocationContentModel, index) => {
       return(
@@ -52,7 +52,6 @@ const styles = StyleSheet.create({
   Container: {
     flex: 1,
     flexGrow:1,
-    paddingTop: 90,
     paddingHorizontal: 10,
     flexDirection: 'row',
     alignItems: 'flex-start',
