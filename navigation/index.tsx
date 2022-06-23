@@ -51,7 +51,7 @@ function RootNavigator() {
       <Stack.Screen name="Task" component={TaskScreen2} 
         options={{ 
           animation: 'slide_from_right',
-          title: 'ติดตามสถานะ',
+          title: 'งานทั้งหมด',
           headerShadowVisible: false,
           headerTitleStyle: HeaderTitleStyle,
           headerStyle: {backgroundColor: '#f8f8f8'}
@@ -80,7 +80,7 @@ function RootNavigator() {
         }} />
       <Stack.Screen name="Report" component={ReportScreen} options={{ 
           animation: 'slide_from_right',
-          title: 'รายงาน',
+          title: 'รายงานสรุปผล',
           headerShadowVisible: false,
           headerTitleStyle: HeaderTitleStyle,
           headerStyle: {backgroundColor: '#f8f8f8'}
