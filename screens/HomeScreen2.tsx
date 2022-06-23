@@ -1,15 +1,12 @@
 import React, { useState } from 'react';
 import { StyleSheet, TouchableOpacity, ScrollView } from 'react-native';
-import { MaterialCommunityIcons, Feather} from '@expo/vector-icons';
+import { Ionicons} from '@expo/vector-icons';
 
 import { Text, View, MaterialIcons } from '../components/Themed';
 import { RootTabScreenProps } from '../types';
 import { UserInfo } from '../constants/UserInfo';
 import { MenuList } from '../constants/Menu';
 
-import RelevantIcon from '../assets/images/relevant.svg';
-import ConsistanceIcon from '../assets/images/consistance.svg';
-import SearchLegalIcon from '../assets/images/search-legal.svg';
 import TrackingIcon from '../assets/images/tracking.svg';
 
 export default function HomeScreen2({ navigation }: RootTabScreenProps<'Home'>) {
@@ -18,13 +15,9 @@ export default function HomeScreen2({ navigation }: RootTabScreenProps<'Home'>) 
   const getMenuIcon = (name: string) => {
     switch(name) {
       case 'Task':
-        return  <Feather name='clipboard' style={styles.IconWrapper} size={50} color={'#13AF82'}/>
-      case 'Relevant':
-        return <RelevantIcon style={{ marginBottom: -20 }} width={60} height={90} />
-      case 'Consistance':
-        return <ConsistanceIcon style={{ marginVertical: -20 }} width={60} height={90} />
-      case 'Search':
-        return <SearchLegalIcon style={{ marginVertical: -20 }} width={60} height={90} />
+        return  <Ionicons name='clipboard-outline' style={styles.IconWrapper} size={50} color={'#13AF82'}/>
+      case 'Report':
+        return  <Ionicons name='book-outline' style={styles.IconWrapper} size={50} color={'#13AF82'}/>
       case 'Tracking':
         return <TrackingIcon style={{  marginVertical: -20 }} width={60} height={90} />
     }
@@ -32,7 +25,7 @@ export default function HomeScreen2({ navigation }: RootTabScreenProps<'Home'>) 
 
   const MenuListElement = MenuList.map((item, index) => {
     return (
-      <View style={styles.MenuContainer} key={index}>
+      <View style={{flexBasis: '50%'}} key={index}>
         <TouchableOpacity activeOpacity={0.5} onPress={() => navigation.navigate(item.name)}>
           <View style={styles.MenuWrapper}>
             { getMenuIcon(item.name) }
@@ -47,9 +40,19 @@ export default function HomeScreen2({ navigation }: RootTabScreenProps<'Home'>) 
     <View style={styles.Container}>
       <ScrollView contentContainerStyle={{ flexGrow:1 }}>
         <View style={styles.ContentContainer}>
-          <Text style={[styles.TextContent, {marginVertical:10}]}> สวัสดี {userinfo.Fname}</Text>
+          <Text style={[styles.TextHeader, {marginVertical:10}]}> สวัสดี {userinfo.Fname}</Text>
 
-          { MenuListElement }
+          <TouchableOpacity activeOpacity={0.5} onPress={() => navigation.navigate('Task')}>
+            <View style={styles.MenuWrapper}>
+              { getMenuIcon('Task') }
+              <Text style={styles.MenuText}> งานทั้งหมด</Text>
+            </View>
+          </TouchableOpacity>
+
+          <View style={styles.MenuContainer} >
+            { MenuListElement }
+          </View>
+         
 
         </View>
       </ScrollView>
@@ -81,14 +84,11 @@ const styles = StyleSheet.create({
   },
   TextHeader: {
     fontSize: 18,
-    fontFamily: 'Mitr_500Medium'
-  },
-  TextContent: {
-    fontSize: 15,
-    fontFamily: 'Mitr_400Regular'
+    fontFamily: 'Mitr_500Medium',
+    color: '#6C6C6C',
   },
   MenuContainer: {
-    flexBasis: '50%'
+    flexDirection: 'row',
   },
   MenuWrapper: {
     margin: 5,
