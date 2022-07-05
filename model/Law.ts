@@ -1,4 +1,11 @@
 export interface LawContentModel {
-    ActType: string
-    LegislationType: string
-  }
+  Title?: string
+  ActType: string
+  LegislationType: string
+  LegislationUnit?: string
+  Category?: string
+  AnnounceDate?: string
+  EnforceDate?: string
+  CancelDate?: string 
+  fileURL?: string
+}
