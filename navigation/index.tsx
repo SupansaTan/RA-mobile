@@ -18,6 +18,7 @@ import ProfileScreen from '../screens/ProfileScreen';
 import {TrackScreen, TrackLocationScreen} from '../screens/TrackScreen';
 import SearchScreen from '../screens/SearchScreen';
 import ReportScreen from '../screens/ReportScreen';
+import { LawSearchScreen } from '../screens/LawSearchScreen';
 
 import { RootStackParamList, RootTabParamList, RootTabScreenProps } from '../types';
 import LinkingConfiguration from './LinkingConfiguration';
@@ -64,21 +65,32 @@ function RootNavigator() {
           headerTitleStyle: HeaderTitleStyle,
           headerStyle: {backgroundColor: '#f8f8f8'}
         }} />
-      <Stack.Screen name="Tracking" component={TrackScreen} options={{ 
+      <Stack.Screen name="Tracking" component={TrackScreen} 
+        options={{ 
           animation: 'slide_from_right',
           title: 'ติดตามสถานะ',
           headerShadowVisible: false,
           headerTitleStyle: HeaderTitleStyle,
           headerStyle: {backgroundColor: '#f8f8f8'}
         }} />
-      <Stack.Screen name="TaskLocation" component={TaskLocationScreen} options={{ 
+      <Stack.Screen name="TaskLocation" component={TaskLocationScreen} 
+        options={{ 
           animation: 'slide_from_right',
           title: 'งานทั้งหมด',
           headerShadowVisible: false,
           headerTitleStyle: HeaderTitleStyle,
           headerStyle: {backgroundColor: '#f8f8f8'}
         }} />
-      <Stack.Screen name="Report" component={ReportScreen} options={{ 
+      <Stack.Screen name="LawSearch" component={LawSearchScreen} 
+        options={{ 
+          animation: 'slide_from_right',
+          title: 'รายละเอียดกฎหมาย',
+          headerShadowVisible: false,
+          headerTitleStyle: HeaderTitleStyle,
+          headerStyle: {backgroundColor: '#f8f8f8'}
+        }} />
+      <Stack.Screen name="Report" component={ReportScreen} 
+        options={{ 
           animation: 'slide_from_right',
           title: 'รายงานสรุปผล',
           headerShadowVisible: false,
