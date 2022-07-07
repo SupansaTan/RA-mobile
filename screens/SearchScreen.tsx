@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
-import { StyleSheet, TouchableOpacity, ScrollView, TextInput } from 'react-native';
-import { MaterialCommunityIcons, Feather} from '@expo/vector-icons';
+import { StyleSheet, TouchableOpacity, ScrollView, TextInput, Modal, Pressable } from 'react-native';
+import { MaterialCommunityIcons, Feather, AntDesign} from '@expo/vector-icons';
+import { Picker } from "@react-native-picker/picker";
 
 import { Text, View, MaterialIcons } from '../components/Themed';
 import { RootTabScreenProps } from '../types';
@@ -10,6 +11,14 @@ import { LawContentModel } from '../model/Law';
 export default function SearchScreen({ navigation }: RootTabScreenProps<'Search'>) {
   const [keyword, onChangeKeyword] = useState<string>('')
   const [lawdata, setLawdata] = useState(LawList)
+  const [modalVisible, setModalVisible] = useState(false)
+  const [law, setLaw] = useState('Unknown')
+  const [actType, setActType] = useState('Unknown')
+  const [legislationType, setLegislationType] = useState('Unknown')
+  const [legislationUnit, setLegislationUnit] = useState('Unknown')
+  const [announceDate, setAnnounceDate] = useState('Unknown')
+  const [enforceDate, setEnforceDate] = useState('Unknown')
+  const [cancelDate, setCancelDate] = useState('Unknown')
 
   const LawElement = lawdata.map((content: LawContentModel, index: number)=> {
     return(
@@ -23,10 +32,19 @@ export default function SearchScreen({ navigation }: RootTabScreenProps<'Search'
         </View>
     )
   })
+
+  const FilterClear = () => {
+    setLaw('Unknown')
+    setActType('Unknown')
+    setLegislationType('Unknown')
+    setLegislationUnit('Unknown')
+    setAnnounceDate('Unknown')
+    setEnforceDate('Unknown')
+    setCancelDate('Unknown')
+  }
   
   return (
     <View style={styles.Container}>
-      {/* <ScrollView contentContainerStyle={{ flexGrow:1 }}> */}
 
       <View>
         <View style={styles.SearchWrapper}>
@@ -42,11 +60,107 @@ export default function SearchScreen({ navigation }: RootTabScreenProps<'Search'
           </View>
 
           {/* filter */}
-          <TouchableOpacity>
+          <TouchableOpacity activeOpacity={0.5} onPress={() =>setModalVisible(true) }>
             <View style={styles.Filter}>
               <MaterialCommunityIcons name='filter-variant' style={{marginHorizontal:5}} color={'#13AF82'} size={25} />
               <Text style={[styles.ContentText, {color:'#13AF82'}]}>ตัวกรอง</Text>
             </View>
+            
+            {/* Filter Modal */}
+            <Modal
+              animationType="slide"
+              transparent={true}
+              visible={modalVisible}
+              onRequestClose={() => {setModalVisible(!modalVisible)}} >
+                
+                <View style={styles.ModalContainer}>
+                  <View style={styles.FilterWrapper}>
+                    <Pressable onPress={() => setModalVisible(!modalVisible)} >
+                      <AntDesign name='left' size={20} color={'black'}/>
+                    </Pressable>
+
+                    <Text style={styles.HeaderText}>ตัวกรอง</Text>
+
+                    <Pressable onPress={() => FilterClear()} >
+                      <Text style={[styles.HeaderText, {color:'#13AF82'}]}>ล้าง</Text>
+                    </Pressable>
+
+                  </View>
+                  
+                  <View style={[styles.FilterWrapper, {marginTop:10, marginBottom:20}]}>
+                    <ScrollView contentContainerStyle={{ flexGrow:1 }}>
+
+                      <Text style={styles.HeaderText}>ค้นหาจาก</Text>
+                      <Picker
+                          selectedValue={law}
+                          onValueChange={(value, index) => setLaw(value)}
+                          mode="dropdown"
+                          style={styles.picker}
+                      >
+                          <Picker.Item label="รายการกฎหมายทั้งหมด" value="Unknown" />
+                          <Picker.Item label="A" value="A" />
+                          <Picker.Item label="B" value="B" />
+                      </Picker>
+                      <Text>Selete: {law}</Text>
+
+                      <Text style={styles.HeaderText}>ประเภทกฎหมาย/ข้อกำหนด</Text>
+                      <Picker
+                          selectedValue={legislationType}
+                          onValueChange={(value, index) => setLegislationType(value)}
+                          mode="dropdown"
+                          style={styles.picker}
+                      >
+                          <Picker.Item label="เลือกประเภทกฎหมาย/ข้อกำหนด" value="Unknown" />
+                          <Picker.Item label="A" value="A" />
+                          <Picker.Item label="B" value="B" />
+                      </Picker>
+                      <Text>Selete: {law}</Text>
+
+                      <Text style={styles.HeaderText}>กระทรวง</Text>
+                      <Picker
+                          selectedValue={legislationUnit}
+                          onValueChange={(value, index) => setLegislationUnit(value)}
+                          mode="dropdown"
+                          style={styles.picker}
+                      >
+                          <Picker.Item label="เลือกกระทรวง" value="Unknown" />
+                          <Picker.Item label="A" value="A" />
+                          <Picker.Item label="B" value="B" />
+                      </Picker>
+                      <Text>Selete: {legislationUnit}</Text>
+
+                      <Text style={styles.HeaderText}>พระราชบัญญัติ</Text>
+                      <Picker
+                          selectedValue={actType}
+                          onValueChange={(value, index) => setActType(value)}
+                          mode="dropdown"
+                          style={styles.picker}
+                      >
+                          <Picker.Item label="เลือกพระราชบัญญัติ" value="Unknown" />
+                          <Picker.Item label="A" value="A" />
+                          <Picker.Item label="B" value="B" />
+                      </Picker>
+                      <Text>Selete: {actType}</Text>
+
+                      <Text style={styles.HeaderText}>วันที่ประกาศ</Text>
+                      
+                      <Text>Selete: {announceDate}</Text>
+
+                      <Text style={styles.HeaderText}>วันที่มีผลบังคับใช้</Text>
+                      
+                      <Text>Selete: {enforceDate}</Text>
+
+                      <Text style={styles.HeaderText}>วันที่ยกเลิก</Text>
+                      
+                      <Text>Selete: {cancelDate}</Text>
+
+                    </ScrollView>
+                  </View> 
+                  
+                </View>
+
+              </Modal>
+
           </TouchableOpacity>
         </View> 
 
@@ -84,7 +198,8 @@ const styles = StyleSheet.create({
   HeaderText: {
     fontSize: 17,
     color: '#000000',
-    fontFamily: 'Mitr_500Medium'
+    fontFamily: 'Mitr_500Medium',
+    marginTop: 5,
   },
   ContentText: {
     fontSize: 15,
@@ -117,6 +232,28 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center',
+  },
+  ModalContainer: {
+    flex: 1,
+    justifyContent: "flex-start",
+    alignItems: 'flex-start',
+    marginTop: 90,
+    backgroundColor: '#fff',
+    padding: 20,
+    borderRadius: 15,
+  },
+  picker: {
+    marginBottom: 10,
+    width: '100%',
+    backgroundColor:'lightgray',
+    
+  },
+  FilterWrapper: {
+    flexDirection:'row', 
+    alignItems:'center', 
+    justifyContent:'space-between', 
+    width:'100%',
+    backgroundColor: '#fff',
   },
 
 });
