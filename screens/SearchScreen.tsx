@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { StyleSheet, TouchableOpacity, ScrollView, TextInput, Modal, Pressable } from 'react-native';
 import { MaterialCommunityIcons, Feather, AntDesign} from '@expo/vector-icons';
 import { Picker } from "@react-native-picker/picker";
+import DateTimePicker from '@react-native-community/datetimepicker';
 
 import { Text, View, MaterialIcons } from '../components/Themed';
 import { RootTabScreenProps } from '../types';
@@ -16,9 +17,31 @@ export default function SearchScreen({ navigation }: RootTabScreenProps<'Search'
   const [actType, setActType] = useState('Unknown')
   const [legislationType, setLegislationType] = useState('Unknown')
   const [legislationUnit, setLegislationUnit] = useState('Unknown')
-  const [announceDate, setAnnounceDate] = useState('Unknown')
-  const [enforceDate, setEnforceDate] = useState('Unknown')
-  const [cancelDate, setCancelDate] = useState('Unknown')
+
+  const [announceDate, setAnnounceDate] = useState(new Date())
+  const [announceshow, setAnnounceshow] = useState(false);
+  const [enforceDate, setEnforceDate] = useState(new Date())
+  const [enforceshow, setEnforceshow] = useState(false);
+  const [cancelDate, setCancelDate] = useState(new Date())
+  const [cancelshow, setCancelshow] = useState(false);
+
+  const AnnounceOnChange = (event:any, selectedDate:any) => {
+    const currentDate = selectedDate;
+    setAnnounceshow(false);
+    setAnnounceDate(currentDate);
+  };
+
+  const EnforceOnChange = (event:any, selectedDate:any) => {
+    const currentDate = selectedDate;
+    setEnforceshow(false);
+    setEnforceDate(currentDate);
+  };
+
+  const CancelOnChange = (event:any, selectedDate:any) => {
+    const currentDate = selectedDate;
+    setCancelshow(false);
+    setCancelDate(currentDate);
+  };
 
   const LawElement = lawdata.map((content: LawContentModel, index: number)=> {
     return(
@@ -38,9 +61,9 @@ export default function SearchScreen({ navigation }: RootTabScreenProps<'Search'
     setActType('Unknown')
     setLegislationType('Unknown')
     setLegislationUnit('Unknown')
-    setAnnounceDate('Unknown')
-    setEnforceDate('Unknown')
-    setCancelDate('Unknown')
+    setAnnounceDate(new Date())
+    setEnforceDate(new Date())
+    setCancelDate(new Date())
   }
   
   return (
@@ -101,7 +124,6 @@ export default function SearchScreen({ navigation }: RootTabScreenProps<'Search'
                           <Picker.Item label="A" value="A" />
                           <Picker.Item label="B" value="B" />
                       </Picker>
-                      <Text>Selete: {law}</Text>
 
                       <Text style={styles.HeaderText}>ประเภทกฎหมาย/ข้อกำหนด</Text>
                       <Picker
@@ -114,7 +136,6 @@ export default function SearchScreen({ navigation }: RootTabScreenProps<'Search'
                           <Picker.Item label="A" value="A" />
                           <Picker.Item label="B" value="B" />
                       </Picker>
-                      <Text>Selete: {law}</Text>
 
                       <Text style={styles.HeaderText}>กระทรวง</Text>
                       <Picker
@@ -127,7 +148,6 @@ export default function SearchScreen({ navigation }: RootTabScreenProps<'Search'
                           <Picker.Item label="A" value="A" />
                           <Picker.Item label="B" value="B" />
                       </Picker>
-                      <Text>Selete: {legislationUnit}</Text>
 
                       <Text style={styles.HeaderText}>พระราชบัญญัติ</Text>
                       <Picker
@@ -140,20 +160,54 @@ export default function SearchScreen({ navigation }: RootTabScreenProps<'Search'
                           <Picker.Item label="A" value="A" />
                           <Picker.Item label="B" value="B" />
                       </Picker>
-                      <Text>Selete: {actType}</Text>
 
                       <Text style={styles.HeaderText}>วันที่ประกาศ</Text>
-                      
-                      <Text>Selete: {announceDate}</Text>
+                      <View>
+                        <Pressable onPress={()=>{setAnnounceshow(true)}} style={styles.DateSelect}>
+                          <Text>{announceDate.toDateString()}</Text>
+                        </Pressable>
+                        {announceshow && (
+                          <DateTimePicker
+                            testID="dateTimePicker"
+                            value={announceDate}
+                            mode={'date'}
+                            is24Hour={true}
+                            onChange={AnnounceOnChange}
+                          />
+                        )}
+                      </View>
 
                       <Text style={styles.HeaderText}>วันที่มีผลบังคับใช้</Text>
-                      
-                      <Text>Selete: {enforceDate}</Text>
+                      <View>
+                        <Pressable onPress={()=>{setEnforceshow(true)}} style={styles.DateSelect}>
+                          <Text>{enforceDate.toDateString()}</Text>
+                        </Pressable>
+                        {enforceshow && (
+                          <DateTimePicker
+                            testID="dateTimePicker"
+                            value={enforceDate}
+                            mode={'date'}
+                            is24Hour={true}
+                            onChange={EnforceOnChange}
+                          />
+                        )}
+                      </View>
 
                       <Text style={styles.HeaderText}>วันที่ยกเลิก</Text>
-                      
-                      <Text>Selete: {cancelDate}</Text>
-
+                      <View>
+                        <Pressable onPress={()=>{setCancelshow(true)}} style={styles.DateSelect}>
+                          <Text>{cancelDate.toDateString()}</Text>
+                        </Pressable>
+                        {cancelshow && (
+                          <DateTimePicker
+                            testID="dateTimePicker"
+                            value={cancelDate}
+                            mode={'date'}
+                            is24Hour={true}
+                            onChange={CancelOnChange}
+                          />
+                        )}
+                      </View>
                     </ScrollView>
                   </View> 
                   
@@ -254,6 +308,13 @@ const styles = StyleSheet.create({
     justifyContent:'space-between', 
     width:'100%',
     backgroundColor: '#fff',
+  },
+  DateSelect:{
+    width:'100%',
+    backgroundColor:'lightgray',
+    borderRadius: 2,
+    padding: 10,
+    marginBottom:10,
   },
 
 });
