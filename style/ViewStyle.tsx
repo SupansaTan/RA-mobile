@@ -1,12 +1,19 @@
 import { StyleSheet } from 'react-native';
 
 export const ViewStyle = StyleSheet.create({
-  Container: {
+  RowContainer: {
     flex: 1,
     flexGrow:1,
-    paddingTop: 90,
     paddingHorizontal: 10,
     flexDirection: 'row',
+    alignItems: 'flex-start',
+    justifyContent: 'center',
+  },
+  ColumnContainer: {
+    flex: 1,
+    flexGrow:1,
+    paddingHorizontal: 10,
+    flexDirection: 'column',
     alignItems: 'flex-start',
     justifyContent: 'center',
   },

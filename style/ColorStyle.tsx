@@ -5,9 +5,9 @@ export const ColorStyle = StyleSheet.create({
     color: '#FF4F4F'
   },
   Warning: {
-    color: '#ffc107'
+    color: '#FF7B00'
   },
   Grey: {
-    color: '#c1c1c1'
+    color: '#6c6c6c'
   }
 });

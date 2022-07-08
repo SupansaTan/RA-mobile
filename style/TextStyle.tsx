@@ -2,7 +2,7 @@ import { StyleSheet } from 'react-native';
 
 export const TextStyle = StyleSheet.create({
   Heading: {
-    fontSize: 22,
+    fontSize: 20,
     fontFamily: 'Mitr_500Medium',
   },
   HeadingGrey: {
