@@ -8,10 +8,9 @@ import Colors from '../constants/Colors';
 import useColorScheme from '../hooks/useColorScheme';
 import ModalScreen from '../screens/ModalScreen';
 import NotFoundScreen from '../screens/NotFoundScreen';
-import HomeScreen2 from '../screens/HomeScreen2';
+import HomeScreen from '../screens/HomeScreen';
 import SettingScreen from '../screens/SettingScreen';
-import MenuScreen from '../screens/MenuScreen';
-import TaskScreen2 from '../screens/TaskScreen2';
+import TaskScreen from '../screens/TaskScreen';
 import TaskLocationScreen from '../screens/TaskLocationScreen';
 import NotificationScreen from '../screens/NotificationScreen';
 import ProfileScreen from '../screens/ProfileScreen';
@@ -49,7 +48,7 @@ function RootNavigator() {
           headerTitleStyle: HeaderTitleStyle,
           headerStyle: {backgroundColor: '#f8f8f8'}
         }} />
-      <Stack.Screen name="Task" component={TaskScreen2} 
+      <Stack.Screen name="Task" component={TaskScreen} 
         options={{ 
           animation: 'slide_from_right',
           title: 'งานทั้งหมด',
@@ -120,7 +119,7 @@ function BottomTabNavigator() {
       }}>
       <BottomTab.Screen
         name="Home"
-        component={HomeScreen2}
+        component={HomeScreen}
         options={{
           title: 'หน้าหลัก',
           headerTitleStyle: HeaderTitleStyle,
