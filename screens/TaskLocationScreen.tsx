@@ -6,6 +6,12 @@ import { Text, View } from '../components/Themed';
 import { TaskContentModel } from '../model/Task';
 import { TaskData } from '../constants/Task'
 
+import Avatar from '../assets/images/avatar.svg';
+import { ViewStyle } from '../style/ViewStyle';
+import { CardStyle } from '../style/CardStyle';
+import { TaskDatetimeStatus } from '../enum/TaskDatetimeStatus.enum';
+import { ColorStyle } from '../style/ColorStyle';
+
 export default function TaskLocationScreen() {
   const [taskList, setTaskList] = useState(TaskData)
   const [keyword, onChangeKeyword] = useState<string>('')
@@ -14,22 +20,18 @@ export default function TaskLocationScreen() {
     return(
       <View key={'content' + i}>
         <TouchableOpacity >
-          <View style={styles.ContentContainer} 
-            accessibilityRole='button'>
+          <View style={ getCardColorClass(contentItem.timestatus) }>
+            <Text style={styles.TextHeader}>{ contentItem.title }</Text>
 
-            {/* title & datetime */}
-            <View style={styles.ContentWrapper}>
-              <Text style={styles.TextHeader}>{ contentItem.title }</Text>
-
-              <View style={styles.DatetimeWrapper}>
-                <MaterialCommunityIcons name="calendar-clock" size={20} color={ contentItem.timestatus=='overdue' ? '#FF4F4F':contentItem.timestatus=='today'? '#FF7B00':'#6c6c6c' } 
-                  style={{ marginRight: 5 }} />
-                <Text style={[styles.TextContent, { color: contentItem.timestatus=='overdue' ? '#FF4F4F':contentItem.timestatus=='today'? '#FF7B00':'#6c6c6c' }]}>
-                  { contentItem.datetime }
-                </Text>
-              </View>
+            <View style={styles.DatetimeWrapper}>
+              <MaterialCommunityIcons name="calendar-clock" size={20}
+                color={ getTextColor(contentItem.timestatus) } 
+                style={{ marginRight: 5 }} />
+              <Text style={[styles.TextContent, 
+                { color: getTextColor(contentItem.timestatus) }]}>
+                { contentItem.datetime }
+              </Text>
             </View>
-
           </View>
         </TouchableOpacity>
       </View>
@@ -89,6 +91,28 @@ export default function TaskLocationScreen() {
       </ScrollView>
     </View>
   );
+}
+
+const getCardColorClass = (status: TaskDatetimeStatus) => {
+  switch(status) {
+    case TaskDatetimeStatus.Overdue:
+      return CardStyle.Danger;
+    case TaskDatetimeStatus.Today:
+      return CardStyle.Warning;
+    case TaskDatetimeStatus.Remain:
+      return CardStyle.Grey;
+  }
+}
+
+const getTextColor = (status: TaskDatetimeStatus) => {
+  switch(status) {
+    case TaskDatetimeStatus.Overdue:
+      return ColorStyle.Danger.color;
+    case TaskDatetimeStatus.Today:
+      return ColorStyle.Warning.color;
+    case TaskDatetimeStatus.Remain:
+      return ColorStyle.Grey.color;
+  }
 }
 
 const styles = StyleSheet.create({
