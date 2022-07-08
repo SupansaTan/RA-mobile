@@ -16,22 +16,22 @@ export const TrackTask = {
     successful: [
         {
             title: 'พ.ร.บ.กองทุนน้ำมัน',
-            datetime: 'วันนี้ 13.00 น.',
-            timestatus: 'today',
+            datetime: 'วันนี้ 13:00',
+            timestatus: 2,
             assign: 'ฟ้า ทลายโจร',
         },
         {
             title: 'พ.ร.บ.การคลัง',
-            datetime: '2 พ.ค. 2565 15.00 น.',
-            timestatus: 'remain',
+            datetime: '02/05/2022 15:00',
+            timestatus: 1,
             assign: 'ภูวดล ชอบนอนหงาย',
         },
     ],
     inprogress: [
         {
             title: 'พ.ร.บ.เงินเดือน',
-            datetime: '1 พ.ค. 2565 16.00 น.',
-            timestatus: 'remain',
+            datetime: '01/05/2022 16:00',
+            timestatus: 1,
             assign: 'ผักบุ้ง ไฟแดง',
         },
     ],
