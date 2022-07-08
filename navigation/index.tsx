@@ -16,7 +16,7 @@ import NotificationScreen from '../screens/NotificationScreen';
 import ProfileScreen from '../screens/ProfileScreen';
 import {TrackScreen, TrackLocationScreen} from '../screens/TrackScreen';
 import SearchScreen from '../screens/SearchScreen';
-import ReportScreen from '../screens/ReportScreen';
+import { ReportScreen, ReportLocationScreen } from '../screens/ReportScreen';
 import { LawSearchScreen } from '../screens/LawSearchScreen';
 
 import { RootStackParamList, RootTabParamList, RootTabScreenProps } from '../types';
@@ -89,6 +89,14 @@ function RootNavigator() {
           headerStyle: {backgroundColor: '#f8f8f8'}
         }} />
       <Stack.Screen name="Report" component={ReportScreen} 
+        options={{ 
+          animation: 'slide_from_right',
+          title: 'รายงานสรุปผล',
+          headerShadowVisible: false,
+          headerTitleStyle: HeaderTitleStyle,
+          headerStyle: {backgroundColor: '#f8f8f8'}
+        }} />
+        <Stack.Screen name="ReportLocation" component={ReportLocationScreen} 
         options={{ 
           animation: 'slide_from_right',
           title: 'รายงานสรุปผล',

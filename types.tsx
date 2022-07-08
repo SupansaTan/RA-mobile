@@ -22,6 +22,7 @@ export type RootStackParamList = {
   TaskLocation: undefined;
   LawSearch: undefined;
   Report: undefined;
+  ReportLocation: undefined;
   Modal: undefined;
   NotFound: undefined;
 };
