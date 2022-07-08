@@ -1,13 +1,15 @@
 import React, { useState } from 'react';
 import { StyleSheet, TouchableOpacity, ScrollView, TextInput } from 'react-native';
-import { MaterialCommunityIcons, MaterialIcons } from '@expo/vector-icons';
+import { Fontisto, MaterialIcons } from '@expo/vector-icons';
 
 import Colors from '../constants/Colors';
 import { Text, View } from '../components/Themed';
 
 import { RootTabScreenProps } from '../types';
-import { LocationList, LocationIcon } from '../constants/Location';
+import { LocationList } from '../constants/Location';
 import { useNavigation } from '@react-navigation/native';
+
+import { ColorStyle } from '../style/ColorStyle';
 
 export default function TaskScreen() {
     const [locationList, setNocation] = useState(LocationList)
@@ -20,13 +22,13 @@ export default function TaskScreen() {
             <View style={styles.ContentContainer}>
               {/* icon */}
               <View style={styles.IconWrapper}>
-                <MaterialCommunityIcons name="map-marker-radius-outline" size={32} color={LocationIcon.iconColor} />
+              <Fontisto name="map-marker-alt" size={30} color={ ColorStyle.Grey.color } style={{ marginHorizontal: 10 }} />
               </View>
   
               {/* title & content */}
               <View style={styles.ContentWrapper}>
                 <Text style={styles.TextHeader}>{ LocationContentModel.location }</Text>
-                <Text style={styles.TextContent}>{ LocationContentModel.business }</Text>
+                <Text style={[styles.TextContent, ColorStyle.Grey]}>{ LocationContentModel.business }</Text>
               </View>
   
               {/* icon */}
