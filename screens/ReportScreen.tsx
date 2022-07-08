@@ -11,6 +11,7 @@ import { ReportDetail } from '../constants/Report';
 import { useNavigation } from '@react-navigation/native';
 
 import { ColorStyle } from '../style/ColorStyle';
+import ProgressCircle from 'react-native-progress-circle'
 
 export function ReportScreen() {
     const [locationList, setLocation] = useState(LocationList)
@@ -80,7 +81,54 @@ export function ReportLocationScreen() {
 
             {/* dashboard */}
             <View style={styles.DashboardWrapper}>
-              <Text>Dashboard</Text>
+              <View style={styles.DashboardContent}>
+                <ProgressCircle
+                  percent={content.inprogressTask / content.totalTask * 100}
+                  radius={50}
+                  borderWidth={8}
+                  color="#13AF82"
+                  shadowColor="#EEEEEE"
+                  bgColor="#fff"
+                >
+                  <Text style={[styles.TextContent, {fontSize:24, color:"#13AF82"}]}>{Math.floor(content.inprogressTask / content.totalTask * 100)}%</Text>
+                </ProgressCircle>
+                <View style={[styles.DashboardText, {justifyContent:'space-around'}]}>
+                  <Text style={styles.TextContent}>ทั้งหมด {content.totalTask}</Text>
+                  <Text style={styles.TextContent}>อยู่ในขั้นตอนการประเมิน {content.inprogressTask}</Text>
+                  <Text style={styles.TextContent}>ประเมินสำเร็จ {content.completeTask}</Text>
+                </View>
+              </View>
+              
+              <View style={styles.DashboardContent}>
+                <View style={[styles.DashboardText, {alignItems:'center'}]}>
+                  <Text style={styles.TextContent}>เกี่ยวข้อง</Text>
+                  <Text>{content.reletedLaw}</Text>
+                </View>
+
+                <View style={{backgroundColor:'#D1D1D1', width:1}}/>
+
+                <View style={[styles.DashboardText, {alignItems:'center'}]}>
+                  <Text style={styles.TextContent}>ไม่เกี่ยวข้อง</Text>
+                  <Text>{content.NonreletedLaw}</Text>
+                </View>
+
+                <View style={{backgroundColor:'#D1D1D1', width:1}}/>
+                
+                <View style={[styles.DashboardText, {alignItems:'center'}]}>
+                  <Text style={styles.TextContent}>สอดคล้อง</Text>
+                  <Text>{content.consistLaw}</Text>
+                </View>
+
+                <View style={{backgroundColor:'#D1D1D1', width:1}}/>
+
+                <View style={[styles.DashboardText, {alignItems:'center'}]}>
+                  <Text style={styles.TextContent}>ไม่สอดคล้อง</Text>
+                  <Text>{content.NonconsistLaw}</Text>
+                </View>
+              </View>
+              
+              
+              
             </View>
 
             {/* progress */}
@@ -143,13 +191,26 @@ const styles = StyleSheet.create({
     backgroundColor:'#fff',
     padding: 10,
     marginVertical:10,
-
+    borderRadius:10,
+    elevation:3,
+  },
+  DashboardContent:{ 
+    flexDirection:'row',
+    backgroundColor:'#fff',
+    justifyContent:'space-around',
+    margin:5,
+  },
+  DashboardText:{
+    margin:5,
+    backgroundColor:'#fff',
+    justifyContent:'center'
   },
   TaskStatusWrapper:{
     flex:1,
     backgroundColor:'#fff',
     padding: 10,
     borderRadius:10,
+    elevation:3,
   },
   MoreTask:{
     backgroundColor:'#DEF4EC',
@@ -159,5 +220,5 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     width:'40%',
     borderRadius:20,
-  }
+  },
 });
