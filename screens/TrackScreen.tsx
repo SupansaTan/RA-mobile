@@ -38,6 +38,15 @@ export function TrackScreen() {
           {/* task process */}
           <View style={styles.ContentWrapper}>
             <View style={styles.TaskWrapper}>
+                <Text style={[styles.TextContent, {color:'#FF4F4F'}]}> รอดำเนินการ </Text>
+                {/* total in process task */}
+                <View style={styles.NumberWrapper}>
+                  <View style={[styles.NumberCard, {backgroundColor: '#FFDBDB'}]}>
+                    <Text style={[styles.TextContent, {color:'#FF4F4F'}]}> {item.inprogress} </Text>
+                  </View>
+              </View>
+            </View>
+            <View style={styles.TaskWrapper}>
                 <Text style={[styles.TextContent, {color:'#13AF82'}]}> ดำเนินการเรียบร้อย </Text>
                 {/* total successful task */}
                 <View style={styles.NumberWrapper}>
@@ -46,19 +55,9 @@ export function TrackScreen() {
                   </View>
                 </View>
             </View>
-
-            <View style={styles.TaskWrapper}>
-                <Text style={[styles.TextContent, {color:'#FF4F4F'}]}> รอดำเนินการ </Text>
-                {/* total in process task */}
-                <View style={styles.NumberWrapper}>
-                <View style={[styles.NumberCard, {backgroundColor: '#FFDBDB'}]}>
-                    <Text style={[styles.TextContent, {color:'#FF4F4F'}]}> {item.inprogress} </Text>
-                </View>
-            </View>
-          </View>
-        </View> 
-      </TouchableOpacity>
-    </View>
+          </View> 
+        </TouchableOpacity>
+      </View>
     )
   })
 
@@ -128,7 +127,7 @@ export function TrackLocationScreen() {
               style={[styles.StatusButton, {borderColor: status==='inprogress' ? '#13AF82':'transparent'}]}
               onPress={() => setStatus('inprogress')}
           >
-              <Text style={[styles.TextContent, {color: status==='inprogress' ? '#13AF82':'black'}]}>รอดำเนินการ</Text>
+              <Text style={[styles.TextContent, {color: status==='inprogress' ? '#13AF82':'#6C6C6C'}]}>รอดำเนินการ</Text>
           </TouchableOpacity>
 
           <TouchableOpacity 
