@@ -140,7 +140,7 @@ export function TrackLocationScreen() {
 
       <View style={[ViewStyle.RowContainer, { marginVertical: 10 }]}>
         <ScrollView contentContainerStyle={{ flexGrow:1 }}>
-        { status==='inprogress' ? TaskElementList(taskList.successful):TaskElementList(taskList.inprogress)}
+        { status==='inprogress' ? TaskElementList(taskList.inprogress):TaskElementList(taskList.successful)}
         </ScrollView>
       </View>
     </View>
