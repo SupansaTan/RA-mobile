@@ -2,10 +2,10 @@ import React, { useState } from 'react';
 import { StyleSheet, TouchableOpacity, ScrollView } from 'react-native';
 import { SimpleLineIcons, MaterialCommunityIcons } from '@expo/vector-icons';
 
-import Colors from '../constants/Colors';
-import { Text, View } from '../components/Themed';
-import { NotifyContentModel } from '../model/Notification';
-import { NotifyList, getIconBgColor, getIconColor } from '../constants/Notification';
+import Colors from '../../constants/Colors';
+import { Text, View } from '../../components/Themed';
+import { NotifyContentModel } from '../../model/Notification';
+import { NotifyList, getIconBgColor, getIconColor } from '../../constants/Notification';
 
 export default function NotificationScreen({ path }: { path: string }) {
   const [notifyList, setNotifyList] = useState(NotifyList)

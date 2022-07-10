@@ -1,10 +1,10 @@
 import React, { useState } from 'react';
 import { StyleSheet, Switch, Platform, TouchableOpacity, TextInput } from 'react-native';
 import { Fontisto, FontAwesome } from '@expo/vector-icons';
-import Avatar from '../assets/images/avatar.svg';
-import Colors from '../constants/Colors';
-import { Text, View, MaterialIcons } from '../components/Themed';
-import { RootTabScreenProps } from '../types';
+import Avatar from '../../assets/images/avatar.svg';
+import Colors from '../../constants/Colors';
+import { Text, View, MaterialIcons } from '../../components/Themed';
+import { RootTabScreenProps } from '../../types';
 
 export default function SettingScreen({ navigation }: RootTabScreenProps<'Setting'>) {
   const [username, setUsername] = useState<string>('ฟ้า ทลายโจร')

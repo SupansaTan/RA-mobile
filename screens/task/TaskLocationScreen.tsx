@@ -1,16 +1,16 @@
 import React, { useState } from 'react';
 import { StyleSheet, TouchableOpacity, ScrollView, TextInput } from 'react-native';
-import { MaterialCommunityIcons, Feather } from '@expo/vector-icons';
+import { MaterialCommunityIcons, Feather, AntDesign } from '@expo/vector-icons';
 
-import { Text, View } from '../components/Themed';
-import { TaskContentModel } from '../model/Task';
-import { TaskData } from '../constants/Task'
+import { Text, View } from '../../components/Themed';
+import { TaskContentModel } from '../../model/Task';
+import { TaskData } from '../../constants/Task'
 
 import Avatar from '../assets/images/avatar.svg';
-import { ViewStyle } from '../style/ViewStyle';
-import { CardStyle } from '../style/CardStyle';
-import { TaskDatetimeStatus } from '../enum/TaskDatetimeStatus.enum';
-import { ColorStyle } from '../style/ColorStyle';
+import { ViewStyle } from '../../style/ViewStyle';
+import { CardStyle } from '../../style/CardStyle';
+import { TaskDatetimeStatus } from '../../enum/TaskDatetimeStatus.enum';
+import { ColorStyle } from '../../style/ColorStyle';
 
 export default function TaskLocationScreen() {
   const [taskList, setTaskList] = useState(TaskData)
@@ -79,7 +79,7 @@ export default function TaskLocationScreen() {
           {/* filter */}
           <TouchableOpacity>
             <View style={styles.Filter}>
-              <MaterialCommunityIcons name='filter-variant' style={{marginHorizontal:5}} color={'#13AF82'} size={25} />
+              <AntDesign name="filter" size={25} color={'#13AF82'} />
               <Text style={[styles.AssignText, {color:'#13AF82'}]}>ตัวกรอง</Text>
             </View>
           </TouchableOpacity>

@@ -4,10 +4,10 @@ import { MaterialCommunityIcons, Feather, AntDesign} from '@expo/vector-icons';
 import { Picker } from "@react-native-picker/picker";
 import DateTimePicker from '@react-native-community/datetimepicker';
 
-import { Text, View, MaterialIcons } from '../components/Themed';
-import { RootTabScreenProps } from '../types';
-import { LawList } from '../constants/Law';
-import { LawContentModel } from '../model/Law';
+import { Text, View, MaterialIcons } from '../../components/Themed';
+import { RootTabScreenProps } from '../../types';
+import { LawList } from '../../constants/Law';
+import { LawContentModel } from '../../model/Law';
 
 export default function SearchScreen({ navigation }: RootTabScreenProps<'Search'>) {
   const [keyword, onChangeKeyword] = useState<string>('')
@@ -85,7 +85,7 @@ export default function SearchScreen({ navigation }: RootTabScreenProps<'Search'
           {/* filter */}
           <TouchableOpacity activeOpacity={0.5} onPress={() =>setModalVisible(true) }>
             <View style={styles.Filter}>
-              <MaterialCommunityIcons name='filter-variant' style={{marginHorizontal:5}} color={'#13AF82'} size={25} />
+              <AntDesign name="filter" size={25} color={'#13AF82'} />
               <Text style={[styles.ContentText, {color:'#13AF82'}]}>ตัวกรอง</Text>
             </View>
             

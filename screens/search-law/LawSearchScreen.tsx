@@ -2,8 +2,8 @@ import React, { useState } from 'react';
 import { StyleSheet, TouchableOpacity, ScrollView} from 'react-native';
 import { MaterialCommunityIcons, Feather} from '@expo/vector-icons';
 
-import { Text, View } from '../components/Themed';
-import LawDetail from '../shared/LawDetail';
+import { Text, View } from '../../components/Themed';
+import LawDetail from '../../shared/LawDetail';
 
 export function LawSearchScreen() {
     return(

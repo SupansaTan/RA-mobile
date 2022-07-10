@@ -2,14 +2,14 @@ import React, { useState } from 'react';
 import { StyleSheet, TouchableOpacity, ScrollView, TextInput } from 'react-native';
 import { Fontisto, MaterialIcons } from '@expo/vector-icons';
 
-import Colors from '../constants/Colors';
-import { Text, View } from '../components/Themed';
+import Colors from '../../constants/Colors';
+import { Text, View } from '../../components/Themed';
 
-import { RootTabScreenProps } from '../types';
-import { LocationList } from '../constants/Location';
+import { RootTabScreenProps } from '../../types';
+import { LocationList } from '../../constants/Location';
 import { useNavigation } from '@react-navigation/native';
 
-import { ColorStyle } from '../style/ColorStyle';
+import { ColorStyle } from '../../style/ColorStyle';
 
 export default function TaskScreen() {
     const [locationList, setNocation] = useState(LocationList)

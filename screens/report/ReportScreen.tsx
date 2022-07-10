@@ -2,15 +2,15 @@ import React, { useState } from 'react';
 import { StyleSheet, TouchableOpacity, ScrollView, TextInput, Pressable } from 'react-native';
 import { Fontisto, MaterialIcons } from '@expo/vector-icons';
 
-import Colors from '../constants/Colors';
-import { Text, View } from '../components/Themed';
+import Colors from '../../constants/Colors';
+import { Text, View } from '../../components/Themed';
 
-import { RootTabScreenProps } from '../types';
-import { LocationList } from '../constants/Location';
-import { ReportDetail } from '../constants/Report';
+import { RootTabScreenProps } from '../../types';
+import { LocationList } from '../../constants/Location';
+import { ReportDetail } from '../../constants/Report';
 import { useNavigation } from '@react-navigation/native';
 
-import { ColorStyle } from '../style/ColorStyle';
+import { ColorStyle } from '../../style/ColorStyle';
 import ProgressCircle from 'react-native-progress-circle'
 
 export function ReportScreen() {
