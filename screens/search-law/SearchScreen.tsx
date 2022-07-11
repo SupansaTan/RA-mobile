@@ -218,7 +218,7 @@ export default function SearchScreen({ navigation }: RootTabScreenProps<'Search'
           </TouchableOpacity>
         </View> 
 
-        <Text style={[styles.ContentText, {margin:5}]}> ผลการค้นหา ( {lawdata.length} ) </Text>
+        <Text style={[styles.ContentText, {margin:5}]}> ผลการค้นหา ({lawdata.length}) </Text>
       </View>
 
       <ScrollView contentContainerStyle={{ flexGrow:1 }}>
@@ -271,10 +271,10 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'flex-start',
     height: 40,
-    width: 250,
+    width: 'auto',
     backgroundColor: '#eeeeee',
     borderRadius: 10,
-    marginHorizontal: 5,
+    marginRight: 5
   },
   InputText: {
     fontSize: 18,
