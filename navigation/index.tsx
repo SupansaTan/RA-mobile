@@ -14,9 +14,11 @@ import TaskScreen from '../screens/task/TaskScreen';
 import TaskLocationScreen from '../screens/task/TaskLocationScreen';
 import NotificationScreen from '../screens/notification/NotificationScreen';
 import ProfileScreen from '../screens/ProfileScreen';
-import {TrackScreen, TrackLocationScreen} from '../screens/TrackScreen';
 import SearchScreen from '../screens/search-law/SearchScreen';
+import { TrackScreen, TrackLocationScreen}  from '../screens/TrackScreen';
 import { ReportScreen, ReportLocationScreen } from '../screens/report/ReportScreen';
+import { ReportTaskProgressScreen } from '../screens/report/TaskProgressScreen';
+import { ReportTaskDetailScreen } from '../screens/report/TaskDetailScreen';
 import { LawSearchScreen } from '../screens/search-law/LawSearchScreen';
 
 import { RootStackParamList, RootTabParamList, RootTabScreenProps } from '../types';
@@ -97,6 +99,22 @@ function RootNavigator() {
           headerStyle: {backgroundColor: '#f8f8f8'}
         }} />
         <Stack.Screen name="ReportLocation" component={ReportLocationScreen} 
+        options={{ 
+          animation: 'slide_from_right',
+          title: 'รายงานสรุปผล',
+          headerShadowVisible: false,
+          headerTitleStyle: HeaderTitleStyle,
+          headerStyle: {backgroundColor: '#f8f8f8'}
+        }} />
+        <Stack.Screen name="ReportTaskProgress" component={ReportTaskProgressScreen} 
+        options={{ 
+          animation: 'slide_from_right',
+          title: 'รายงานสรุปผล',
+          headerShadowVisible: false,
+          headerTitleStyle: HeaderTitleStyle,
+          headerStyle: {backgroundColor: '#f8f8f8'}
+        }} />
+        <Stack.Screen name="ReportTaskDetail" component={ReportTaskDetailScreen} 
         options={{ 
           animation: 'slide_from_right',
           title: 'รายงานสรุปผล',

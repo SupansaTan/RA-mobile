@@ -45,6 +45,8 @@ const linking: LinkingOptions<RootStackParamList> = {
       LawSearch: 'lawsearch',
       Report: 'report',
       ReportLocation: 'reportlocation',
+      ReportTaskProgress: 'reporttaskprogress',
+      ReportTaskDetail: 'reporttaskdetail',
       Modal: 'modal',
       NotFound: '*',
     },

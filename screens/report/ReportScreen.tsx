@@ -55,6 +55,7 @@ export function ReportScreen() {
 
 export function ReportLocationScreen() {
   const [content, setContent] = useState(ReportDetail)
+  const navigation =  useNavigation()
 
   useEffect(() => {
     LogBox.ignoreLogs(['VirtualizedLists should never be nested']);
@@ -64,7 +65,7 @@ export function ReportLocationScreen() {
     return(
       {time: index+1, 
         title: <Text style={styles.TextHeader}>{item.status} ({item.total}) </Text> ,
-        description:  <Pressable style={styles.MoreTask}>
+        description:  <Pressable style={styles.MoreTask} onPress={() => navigation.navigate('ReportTaskProgress')}>
                         <Text>งานทั้งหมด</Text>
                         <MaterialIcons name="keyboard-arrow-right" size={30} />
                       </Pressable>
