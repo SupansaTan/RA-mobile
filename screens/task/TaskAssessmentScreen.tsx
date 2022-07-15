@@ -1,0 +1,171 @@
+import React, { useState } from 'react';
+import { StyleSheet, ScrollView, Pressable, useWindowDimensions, TextInput } from 'react-native';
+import { AntDesign, Feather, FontAwesome5, Fontisto, Ionicons, MaterialCommunityIcons, MaterialIcons } from '@expo/vector-icons';
+import { TabView, SceneMap, TabBar } from 'react-native-tab-view';
+
+import { Text, View } from '../../components/Themed';
+import { useNavigation } from '@react-navigation/native';
+
+const FirstRoute = () => (
+  <View style={[styles.ContentWrapper, {backgroundColor:'transparent'}]} >
+    <MaterialCommunityIcons name='script-text-outline' size={20} style={{marginTop:5, marginHorizontal:10}}/>
+    <View>
+      <Text style={styles.TextHeader}>สาระสำคัญ</Text>
+      <Text>จัดให้มีข้อบังคับเกี่ยวกับการปฏิบัติงานด้านความปลอดภัย อาชีวอนามัยและสภาพแวดล้อมในการทำงานเกี่ยวกับไฟฟ้า</Text>
+    </View>
+  </View>
+);
+
+const SecondRoute = () => (
+  <View style={[styles.ContentWrapper, {backgroundColor:'transparent'}]} >
+    <Feather name='info' size={20} style={{marginTop:5, marginHorizontal:10}}/>
+    <View>
+      <Text style={styles.TextHeader}>เกณฑ์ชี้วัด</Text>
+      <Text>ข้อบังคับความปลอดภัยในการทำงานเกี่ยวกับไฟฟ้า</Text>
+    </View>
+  </View>
+);
+
+const ThirdRoute = () => (
+  <View style={[styles.ContentWrapper, {backgroundColor:'transparent'}]} >
+    <AntDesign name='clockcircleo' size={20} style={{marginTop:5, marginHorizontal:10}}/>
+    <View>
+      <Text style={styles.TextHeader}>ความถี่</Text>
+      <Text>ประเมินความสอดคล้องอย่างน้อยปีละ 1 ครั้ง</Text>
+    </View>
+  </View>
+);
+
+const FourthRoute = () => (
+  <View style={[styles.ContentWrapper, {backgroundColor:'transparent'}]} >
+    <FontAwesome5 name='book' size={20} style={{marginTop:5, marginHorizontal:10}}/>
+    <View>
+      <Text style={styles.TextHeader}>แนวทางปฎิบัติ</Text>
+      <Text >จัดทำข้อบังคับเกี่ยวกับการปฏิบัติงานด้านความปลอดภัยในการทำงานเกี่ยวกับไฟฟ้า</Text>
+    </View>
+  </View>
+);
+
+const renderScene = SceneMap({
+  first: FirstRoute,
+  second: SecondRoute,
+  third: ThirdRoute,
+  fourth: FourthRoute,
+});
+
+
+export default function TaskAssessmentScreen() {
+    const navigation =  useNavigation()
+    const layout = useWindowDimensions();
+
+    const [index, setIndex] = React.useState(0);
+    const [routes] = React.useState([
+      { key: 'first', title: 'สาระสำคัญ' },
+      { key: 'second', title: 'เกณฑ์ชี้วัด' },
+      { key: 'third', title: 'ความถี่' },
+      { key: 'fourth', title: 'แนวทางปฎิบัติ' },
+    ]);
+  
+    return (
+      <View style={styles.Container}>
+        <Text>ข้อที่ x</Text>
+        <ScrollView contentContainerStyle={{flexGrow:1}} scrollEnabled={false}>
+          <TabView
+            navigationState={{ index, routes }}
+            renderScene={renderScene}
+            onIndexChange={setIndex}
+            initialLayout={{ width: layout.width }}
+            style={{width:390, height:50, backgroundColor: 'transparent'}}
+            renderTabBar={props => <TabBar {...props} 
+              indicatorStyle={{backgroundColor: '#13AF82'}}
+              style={{backgroundColor: 'transparent', borderRadius:10}}
+              activeColor={'#13AF82'}
+              inactiveColor={'#B9B9B9'}
+              labelStyle={styles.TextContent}
+            />}
+          />
+        </ScrollView> 
+
+        <View style={styles.GreenCard}>
+          <Text style={styles.TextHeader}>ความเกี่ยวข้อง</Text>
+          <View style={{flexDirection:'row',backgroundColor:'transparent', marginTop:10}}>
+            <Text style={styles.TextContent}>เกี่ยวข้อง</Text>
+            <Text style={styles.TextContent}>ไม่เกี่ยวข้อง</Text>
+          </View>
+        </View>
+        
+        <View style={styles.CommentWrapper}>
+          <Text style={styles.TextHeader}>หมายเหตุ</Text>
+          <TextInput 
+            style={styles.InputText}
+            placeholder={'หมายเหตุ...'}
+          />
+        </View>
+        
+
+        <Pressable onPress={()=> navigation.navigate('TaskResult')} style={styles.button}>
+          <Text style={[styles.TextHeader, {color:'#fff'}]}>สรุปแบบประเมิน</Text>
+        </Pressable>
+      </View>
+    );
+}
+
+const styles = StyleSheet.create({
+  Container: {
+    flex: 1,
+    flexGrow:1,
+    paddingHorizontal: 10,
+    alignItems: 'center',
+    justifyContent: 'center',
+    width:'100%',
+  },
+  TextHeader: {
+    fontSize: 18,
+    fontFamily: 'Mitr_500Medium'
+  },
+  TextContent: {
+    fontSize: 15,
+    fontFamily: 'Mitr_400Regular'
+  },
+  button: {
+    backgroundColor:'#13AF82',
+    width:'100%',
+    height:'7%',
+    borderRadius:20,
+    alignItems:'center',
+    justifyContent:'center',
+    marginVertical:10,
+  },
+  ContentWrapper: {
+    height:'50%',
+    backgroundColor: 'transparent',
+    flexDirection:'row',
+    justifyContent:'flex-start',
+    marginTop:15,
+  },
+  GreenCard: {
+    backgroundColor: '#DEF4EC',
+    alignItems:'flex-start',
+    justifyContent:'center',
+    padding:10,
+    paddingVertical:20,
+    marginHorizontal:10,
+    width:'100%',
+    marginVertical:5,
+  },
+  CommentWrapper:{
+    width:'100%',
+    marginVertical:5,
+  },
+  InputText: {
+    marginVertical:5,
+    borderColor:'black', 
+    borderWidth:1, 
+    borderRadius:5,
+    width:'100%',
+    padding:5,
+    height:100,
+    fontSize: 15,
+    fontFamily: 'Mitr_400Regular',
+  }
+});

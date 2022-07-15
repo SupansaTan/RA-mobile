@@ -11,7 +11,6 @@ import NotFoundScreen from '../screens/NotFoundScreen';
 import HomeScreen from '../screens/HomeScreen';
 import SettingScreen from '../screens/setting/SettingScreen';
 import TaskScreen from '../screens/task/TaskScreen';
-import TaskLocationScreen from '../screens/task/TaskLocationScreen';
 import NotificationScreen from '../screens/notification/NotificationScreen';
 import ProfileScreen from '../screens/ProfileScreen';
 import SearchScreen from '../screens/search-law/SearchScreen';
@@ -20,6 +19,10 @@ import { ReportScreen, ReportLocationScreen } from '../screens/report/ReportScre
 import { ReportTaskProgressScreen } from '../screens/report/TaskProgressScreen';
 import { ReportTaskDetailScreen } from '../screens/report/TaskDetailScreen';
 import { LawSearchScreen } from '../screens/search-law/LawSearchScreen';
+import TaskLocationScreen from '../screens/task/TaskLocationScreen';
+import TaskDetailScreen from '../screens/task/TaskDetailScreen';
+import TaskAssessmentScreen from '../screens/task/TaskAssessmentScreen';
+import TaskResultScreen from '../screens/task/TaskResultScreen';
 
 import { RootStackParamList, RootTabParamList, RootTabScreenProps } from '../types';
 import LinkingConfiguration from './LinkingConfiguration';
@@ -118,6 +121,30 @@ function RootNavigator() {
         options={{ 
           animation: 'slide_from_right',
           title: 'รายงานสรุปผล',
+          headerShadowVisible: false,
+          headerTitleStyle: HeaderTitleStyle,
+          headerStyle: {backgroundColor: '#f8f8f8'}
+        }} />
+        <Stack.Screen name="TaskDetail" component={TaskDetailScreen} 
+        options={{ 
+          animation: 'slide_from_right',
+          title: 'รายละเอียดกฎหมาย',
+          headerShadowVisible: false,
+          headerTitleStyle: HeaderTitleStyle,
+          headerStyle: {backgroundColor: '#f8f8f8'}
+        }} />
+        <Stack.Screen name="TaskAssessment" component={TaskAssessmentScreen} 
+        options={{ 
+          animation: 'slide_from_right',
+          title: '',
+          headerShadowVisible: false,
+          headerTitleStyle: HeaderTitleStyle,
+          headerStyle: {backgroundColor: '#f8f8f8'}
+        }} />
+        <Stack.Screen name="TaskResult" component={TaskResultScreen} 
+        options={{ 
+          animation: 'slide_from_right',
+          title: 'สรุปแบบประเมิน',
           headerShadowVisible: false,
           headerTitleStyle: HeaderTitleStyle,
           headerStyle: {backgroundColor: '#f8f8f8'}

@@ -6,20 +6,21 @@ import { Text, View } from '../../components/Themed';
 import { TaskContentModel } from '../../model/Task';
 import { TaskData } from '../../constants/Task'
 
-import Avatar from '../assets/images/avatar.svg';
-import { ViewStyle } from '../../style/ViewStyle';
 import { CardStyle } from '../../style/CardStyle';
 import { TaskDatetimeStatus } from '../../enum/TaskDatetimeStatus.enum';
 import { ColorStyle } from '../../style/ColorStyle';
+import { useNavigation } from '@react-navigation/native';
 
 export default function TaskLocationScreen() {
   const [taskList, setTaskList] = useState(TaskData)
   const [keyword, onChangeKeyword] = useState<string>('')
+  const navigation =  useNavigation()
+  
 
   const ContentElement = (contentItem: TaskContentModel, i: number, type: string) => {
     return(
       <View key={'content' + i}>
-        <TouchableOpacity >
+        <TouchableOpacity onPress={()=> navigation.navigate('TaskDetail') } >
           <View style={ getCardColorClass(contentItem.timestatus) }>
             <Text style={styles.TextHeader}>{ contentItem.title }</Text>
 
