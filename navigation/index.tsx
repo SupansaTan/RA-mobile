@@ -2,7 +2,7 @@ import React from 'react';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { NavigationContainer, DefaultTheme, DarkTheme } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import { ColorSchemeName, Pressable } from 'react-native';
+import { ColorSchemeName, Appearance } from 'react-native';
 
 import Colors from '../constants/Colors';
 import useColorScheme from '../hooks/useColorScheme';
@@ -41,6 +41,8 @@ export default function Navigation({ colorScheme }: { colorScheme: ColorSchemeNa
 
 const Stack = createNativeStackNavigator<RootStackParamList>();
 
+const HeaderColor = Appearance.getColorScheme()==='dark'? '#000':'#f8f8f8'
+
 function RootNavigator() {
   return (
     <Stack.Navigator>
@@ -51,7 +53,7 @@ function RootNavigator() {
           title: 'โปรไฟล์',
           headerShadowVisible: false,
           headerTitleStyle: HeaderTitleStyle,
-          headerStyle: {backgroundColor: '#f8f8f8'}
+          headerStyle: {backgroundColor: HeaderColor}
         }} />
       <Stack.Screen name="Task" component={TaskScreen} 
         options={{ 
@@ -59,7 +61,7 @@ function RootNavigator() {
           title: 'งานทั้งหมด',
           headerShadowVisible: false,
           headerTitleStyle: HeaderTitleStyle,
-          headerStyle: {backgroundColor: '#f8f8f8'}
+          headerStyle: {backgroundColor: HeaderColor}
         }} />
       <Stack.Screen name="TrackingLocation" component={TrackLocationScreen} 
         options={{ 
@@ -67,7 +69,7 @@ function RootNavigator() {
           title: 'ติดตามสถานะ',
           headerShadowVisible: false,
           headerTitleStyle: HeaderTitleStyle,
-          headerStyle: {backgroundColor: '#f8f8f8'}
+          headerStyle: {backgroundColor: HeaderColor}
         }} />
       <Stack.Screen name="Tracking" component={TrackScreen} 
         options={{ 
@@ -75,7 +77,7 @@ function RootNavigator() {
           title: 'ติดตามสถานะ',
           headerShadowVisible: false,
           headerTitleStyle: HeaderTitleStyle,
-          headerStyle: {backgroundColor: '#f8f8f8'}
+          headerStyle: {backgroundColor: HeaderColor}
         }} />
       <Stack.Screen name="TaskLocation" component={TaskLocationScreen} 
         options={{ 
@@ -83,7 +85,7 @@ function RootNavigator() {
           title: 'งานทั้งหมด',
           headerShadowVisible: false,
           headerTitleStyle: HeaderTitleStyle,
-          headerStyle: {backgroundColor: '#f8f8f8'}
+          headerStyle: {backgroundColor: HeaderColor}
         }} />
       <Stack.Screen name="LawSearch" component={LawSearchScreen} 
         options={{ 
@@ -91,7 +93,7 @@ function RootNavigator() {
           title: 'รายละเอียดกฎหมาย',
           headerShadowVisible: false,
           headerTitleStyle: HeaderTitleStyle,
-          headerStyle: {backgroundColor: '#f8f8f8'}
+          headerStyle: {backgroundColor: HeaderColor}
         }} />
       <Stack.Screen name="Report" component={ReportScreen} 
         options={{ 
@@ -99,7 +101,7 @@ function RootNavigator() {
           title: 'รายงานสรุปผล',
           headerShadowVisible: false,
           headerTitleStyle: HeaderTitleStyle,
-          headerStyle: {backgroundColor: '#f8f8f8'}
+          headerStyle: {backgroundColor: HeaderColor}
         }} />
         <Stack.Screen name="ReportLocation" component={ReportLocationScreen} 
         options={{ 
@@ -107,7 +109,7 @@ function RootNavigator() {
           title: 'รายงานสรุปผล',
           headerShadowVisible: false,
           headerTitleStyle: HeaderTitleStyle,
-          headerStyle: {backgroundColor: '#f8f8f8'}
+          headerStyle: {backgroundColor: HeaderColor}
         }} />
         <Stack.Screen name="ReportTaskProgress" component={ReportTaskProgressScreen} 
         options={{ 
@@ -115,7 +117,7 @@ function RootNavigator() {
           title: 'รายงานสรุปผล',
           headerShadowVisible: false,
           headerTitleStyle: HeaderTitleStyle,
-          headerStyle: {backgroundColor: '#f8f8f8'}
+          headerStyle: {backgroundColor: HeaderColor}
         }} />
         <Stack.Screen name="ReportTaskDetail" component={ReportTaskDetailScreen} 
         options={{ 
@@ -123,7 +125,7 @@ function RootNavigator() {
           title: 'รายงานสรุปผล',
           headerShadowVisible: false,
           headerTitleStyle: HeaderTitleStyle,
-          headerStyle: {backgroundColor: '#f8f8f8'}
+          headerStyle: {backgroundColor: HeaderColor}
         }} />
         <Stack.Screen name="TaskDetail" component={TaskDetailScreen} 
         options={{ 
@@ -131,7 +133,7 @@ function RootNavigator() {
           title: 'รายละเอียดกฎหมาย',
           headerShadowVisible: false,
           headerTitleStyle: HeaderTitleStyle,
-          headerStyle: {backgroundColor: '#f8f8f8'}
+          headerStyle: {backgroundColor: HeaderColor}
         }} />
         <Stack.Screen name="TaskAssessment" component={TaskAssessmentScreen} 
         options={{ 
@@ -139,7 +141,7 @@ function RootNavigator() {
           title: '',
           headerShadowVisible: false,
           headerTitleStyle: HeaderTitleStyle,
-          headerStyle: {backgroundColor: '#f8f8f8'}
+          headerStyle: {backgroundColor: HeaderColor}
         }} />
         <Stack.Screen name="TaskResult" component={TaskResultScreen} 
         options={{ 
@@ -147,7 +149,7 @@ function RootNavigator() {
           title: 'สรุปแบบประเมิน',
           headerShadowVisible: false,
           headerTitleStyle: HeaderTitleStyle,
-          headerStyle: {backgroundColor: '#f8f8f8'}
+          headerStyle: {backgroundColor: HeaderColor}
         }} />
       <Stack.Screen name="NotFound" component={NotFoundScreen} options={{ title: 'Oops!' }} />
       {/* <Stack.Group screenOptions={{ presentation: 'modal' }}>

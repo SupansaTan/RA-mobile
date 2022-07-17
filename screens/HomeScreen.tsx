@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { StyleSheet, TouchableOpacity, ScrollView } from 'react-native';
+import { StyleSheet, TouchableOpacity, ScrollView, Appearance } from 'react-native';
 import { Ionicons, MaterialCommunityIcons } from '@expo/vector-icons';
 
 import { Text, View, MaterialIcons } from '../components/Themed';
@@ -89,7 +89,7 @@ export default function HomeScreen({ navigation }: RootTabScreenProps<'Home'>) {
         </View>
           
         <View>
-          <Text style={styles.TextHeader}>ใกล้ถึงกำหนด</Text>
+          <Text style={[styles.TextHeader,{color:AppearanceColor}]}>ใกล้ถึงกำหนด</Text>
           {TaskElementList}
         </View>
 
@@ -120,6 +120,8 @@ const getTextColor = (status: TaskDatetimeStatus) => {
   }
 }
 
+const AppearanceColor = Appearance.getColorScheme()==='dark'? '#fff':'#000'
+
 const styles = StyleSheet.create({
   Container: {
     flex: 1,
@@ -144,10 +146,12 @@ const styles = StyleSheet.create({
   TextHeader: {
     fontSize: 18,
     fontFamily: 'Mitr_500Medium',
+    color: '#000',
   },
   TextContent: {
     fontSize: 16,
     fontFamily: 'Mitr_500Medium',
+    color: '#000',
   },
   MenuContainer: {
     flexDirection: 'row',
@@ -171,7 +175,8 @@ const styles = StyleSheet.create({
   MenuText: {
     textAlign: 'center',
     fontSize: 18,
-    fontFamily: 'Mitr_500Medium'
+    fontFamily: 'Mitr_500Medium',
+    color: '#000',
   },
   DatetimeWrapper: {
     marginTop: 2,

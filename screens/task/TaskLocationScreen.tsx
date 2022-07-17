@@ -124,6 +124,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'flex-start',
     justifyContent: 'center',
+    paddingTop:10,
   },
   TypeText: {
     fontSize: 16,
@@ -173,11 +174,13 @@ const styles = StyleSheet.create({
   },
   TextHeader: {
     fontSize: 18,
-    fontFamily: 'Mitr_500Medium'
+    fontFamily: 'Mitr_500Medium',
+    color: '#000',
   },
   TextContent: {
     fontSize: 13,
-    fontFamily: 'Mitr_400Regular'
+    fontFamily: 'Mitr_400Regular',
+    color: '#000',
   },
   SearchWrapper: {
     flexDirection: 'row',
@@ -190,7 +193,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'flex-start',
     height: 40,
-    width: 250,
+    width: '75%',
     backgroundColor: '#eeeeee',
     borderRadius: 20,
     marginHorizontal: 5,

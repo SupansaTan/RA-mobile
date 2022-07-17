@@ -163,7 +163,8 @@ const styles = StyleSheet.create({
   },
   TextHeader: {
     fontSize: 18,
-    fontFamily: 'Mitr_500Medium'
+    fontFamily: 'Mitr_500Medium',
+    color: '#000',
   },
   TextContent: {
     fontSize: 13,

@@ -33,12 +33,6 @@ const styles = StyleSheet.create({
   TextHeader: {
     fontSize: 18,
     fontFamily: 'Mitr_500Medium',
-    color:'black',
-  },
-  TextContent: {
-    fontSize: 15,
-    fontFamily: 'Mitr_400Regular',
-    color:'black',
   },
   button: {
     backgroundColor:'#13AF82',
@@ -48,5 +42,7 @@ const styles = StyleSheet.create({
     alignItems:'center',
     justifyContent:'center',
     marginVertical:5,
+    marginBottom:20,
+    
   },
 });

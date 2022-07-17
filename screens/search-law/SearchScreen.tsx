@@ -311,7 +311,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'flex-start',
     height: 40,
-    width: 260,
+    width: '75%',
     backgroundColor: '#eeeeee',
     borderRadius: 10,
     marginHorizontal: 5,

@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { StyleSheet, TouchableOpacity, ScrollView, Pressable, LogBox } from 'react-native';
+import { StyleSheet, TouchableOpacity, ScrollView, Pressable, LogBox, Appearance } from 'react-native';
 import { Fontisto, MaterialIcons } from '@expo/vector-icons';
 
 import Colors from '../../constants/Colors';
@@ -30,7 +30,7 @@ export function ReportScreen() {
   
               {/* title & content */}
               <View style={styles.ContentWrapper}>
-                <Text style={styles.TextHeader}>{ LocationContentModel.location }</Text>
+                <Text style={[styles.TextHeader, {color: Appearance.getColorScheme()=='dark'? '#fff':'#000' }]}>{ LocationContentModel.location }</Text>
                 <Text style={[styles.TextContent, ColorStyle.Grey]}>{ LocationContentModel.business }</Text>
               </View>
   
@@ -66,7 +66,7 @@ export function ReportLocationScreen() {
       {time: index+1, 
         title: <Text style={styles.TextHeader}>{item.status} ({item.total}) </Text> ,
         description:  <Pressable style={styles.MoreTask} onPress={() => navigation.navigate('ReportTaskProgress')}>
-                        <Text>งานทั้งหมด</Text>
+                        <Text style={styles.TextContent}>งานทั้งหมด</Text>
                         <MaterialIcons name="keyboard-arrow-right" size={30} />
                       </Pressable>
       }
@@ -82,7 +82,7 @@ export function ReportLocationScreen() {
             {/* icon */}
             <View style={styles.IconWrapper}>
               <Fontisto name="map-marker-alt" size={30} color={ ColorStyle.Grey.color } style={{ marginHorizontal: 10 }} />
-              <Text style={styles.TextHeader}>{ content.location }</Text>
+              <Text style={[styles.TextHeader, {color: Appearance.getColorScheme()=='dark'? '#fff':'#000' }]}>{ content.location }</Text>
             </View>
 
             {/* dashboard */}
@@ -140,7 +140,7 @@ export function ReportLocationScreen() {
 
             {/* progress */}
             <View>
-              <Text style={styles.TextHeader}>สถานะงานทั้งหมด</Text>
+              <Text style={[styles.TextHeader, {color: Appearance.getColorScheme()=='dark'? '#fff':'#000' }]}>สถานะงานทั้งหมด</Text>
               <View style={styles.TaskStatusWrapper}>
                 <Timeline
                   showTime={false}
@@ -194,10 +194,12 @@ const styles = StyleSheet.create({
     fontSize: 18,
     fontFamily: 'Mitr_500Medium',
     marginTop: 5,
+    color: '#000',
   },
   TextContent: {
     fontSize: 15,
-    fontFamily: 'Mitr_400Regular'
+    fontFamily: 'Mitr_400Regular',
+    color: '#000',
   },
   MoreWrapper: {
     marginLeft: 'auto',

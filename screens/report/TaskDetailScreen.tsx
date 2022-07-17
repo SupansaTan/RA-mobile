@@ -83,17 +83,6 @@ export function ReportTaskDetailScreen() {
     }
   }
 
-  const getstatus = (type:string) => {
-    switch(type){
-      case 'relevant':{
-        return('ประเมินความเกี่ยวข้อง')
-      }
-      case 'consistance':{
-        return('ประเมินความสอดคล้อง')
-      }
-    }
-  }
-
   const showDetail = (content:any) => {
     return(
       <View style={[styles.GreenCard]}>
@@ -114,32 +103,37 @@ export function ReportTaskDetailScreen() {
           <View style={{backgroundColor:'transparent', justifyContent:'center' }}>
             <View style={{flexDirection:'row', backgroundColor:'transparent', alignItems:'center', marginLeft:10}}>
               <Text style={styles.TextContent}>ผ่าน : </Text>
-              <Text>{Math.floor(content.accept / (content.accept+content.reject) * 100)}%</Text>
+              <Text style={styles.TextDetail}>{Math.floor(content.accept / (content.accept+content.reject) * 100)}%</Text>
             </View>
 
             <View style={{flexDirection:'row', backgroundColor:'transparent', alignItems:'center', marginLeft:10}}>
               <Text style={styles.TextContent}>ไม่ผ่าน : </Text>
-              <Text>{Math.floor(content.reject / (content.accept+content.reject) * 100)}%</Text>
+              <Text style={styles.TextDetail}>{Math.floor(content.reject / (content.accept+content.reject) * 100)}%</Text>
             </View>
           </View>
         </View>
         : <></>}
 
         <View style={{flexDirection:'row', backgroundColor:'transparent', alignItems:'center', marginLeft:10}}>
-              <Text style={styles.TextContent}>ประเมินโดย : </Text>
-              <Text>{content.person}</Text>
-            </View>
+          <Text style={styles.TextContent}>ประเมินโดย : </Text>
+          <Text style={styles.TextDetail}>{content.person}</Text>
+        </View>
 
-            <View style={{flexDirection:'row', backgroundColor:'transparent', alignItems:'center', marginLeft:10}}>
-              <Text style={styles.TextContent}>วันที่ประเมิน : </Text>
-              <Text>{content.datetime}</Text>
-            </View>
-        
+        <View style={{flexDirection:'row', backgroundColor:'transparent', alignItems:'center', marginLeft:10}}>
+          <Text style={styles.TextContent}>วันที่ประเมิน : </Text>
+          <Text style={styles.TextDetail}>{content.datetime}</Text>
+        </View>
         
       </View>
     )
   }
 
+  const ShowDropdownIcon = (type:string) => {
+    return(
+      type==='complete'? <></>: 
+      selectShow(type)==true? <Feather name='chevron-up' size={20} color={'#13AF82'}/> : <Feather name='chevron-down' size={20} color={'#13AF82'} />
+    )
+  }
 
   const ProgressElement = taskList.progress.map((content,index) => {
     return(
@@ -147,7 +141,7 @@ export function ReportTaskDetailScreen() {
         <Pressable onPress={()=> enableDetail(content.type)}>
           <View style={{flexDirection:'row', alignItems:'center'}}>
             <Text style={[styles.TextHeader, {color:'#13AF82'}]}>{getTitle(content.type)}</Text>
-            {selectShow(content.type)==true? <Feather name='chevron-up' size={20} color={'#13AF82'}/> : <Feather name='chevron-down' size={20} color={'#13AF82'} />}
+            {ShowDropdownIcon(content.type)}
           </View>
         </Pressable>
         {selectShow(content.type)==true? showDetail(content) : <></>}
@@ -163,8 +157,8 @@ export function ReportTaskDetailScreen() {
         <View style={styles.GreenCard}>
           <Text style={styles.TextHeader}>{taskList.title} </Text>
           <View style={styles.ContentWrapper}>
-            <MaterialCommunityIcons name='clipboard-text-outline' size={30}/>
-            <Text style={{marginHorizontal:5}} >{'\t'}{taskList.lawdetail} </Text>
+            <MaterialCommunityIcons name='clipboard-text-outline' size={30} style={{marginLeft:20}}/>
+            <Text style={[styles.TextDetail,{marginHorizontal:10, marginRight:30}]} >{'\t'}{taskList.lawdetail} </Text>
           </View>
           <View style={styles.ContentWrapper}>
             <Fontisto name="map-marker-alt" size={30} color={'#13AF82'} style={{marginRight:10}}/>
@@ -190,6 +184,8 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'flex-start',
     justifyContent: 'center',
+    marginBottom:50,
+    marginTop:10,
   },
   ContentWrapper:{
     flexDirection:'row',
@@ -202,7 +198,6 @@ const styles = StyleSheet.create({
     backgroundColor:'transparent',
     alignItems: 'flex-start',
     justifyContent: 'center',
-    // padding:10,
     marginTop:10,
   },
   GreenCard: {
@@ -211,14 +206,20 @@ const styles = StyleSheet.create({
     alignItems: 'flex-start',
     justifyContent: 'center',
     padding: 10,
+    width:'80%'
   },
   TextHeader: {
     fontSize: 20,
-    fontFamily: 'Mitr_500Medium'
+    fontFamily: 'Mitr_500Medium',
+    color: '#000',
   },
   TextContent: {
     fontSize: 16,
-    fontFamily: 'Mitr_500Medium'
-  }
+    fontFamily: 'Mitr_500Medium',
+    color: '#000',
+  },
+  TextDetail: {
+    color:'#000'
+  },
 
 });

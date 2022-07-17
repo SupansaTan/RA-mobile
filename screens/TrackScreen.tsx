@@ -195,11 +195,13 @@ const styles = StyleSheet.create({
   },
   TextHeader: {
     fontSize: 20,
-    fontFamily: 'Mitr_500Medium'
+    fontFamily: 'Mitr_500Medium',
+    color: '#000',
   },
   TextContent: {
     fontSize: 15,
-    fontFamily: 'Mitr_500Medium'
+    fontFamily: 'Mitr_500Medium',
+    color: '#000',
   },
   TaskWrapper:{
     flexDirection: 'row',

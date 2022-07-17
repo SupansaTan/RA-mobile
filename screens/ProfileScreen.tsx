@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { StyleSheet, Switch, Platform, TouchableOpacity, TextInput } from 'react-native';
+import { StyleSheet, Appearance } from 'react-native';
 import { Feather, MaterialCommunityIcons } from '@expo/vector-icons';
 import Avatar from '../assets/images/avatar.svg';
 import Colors from '../constants/Colors';
@@ -13,7 +13,7 @@ export default function ProfileScreen() {
         return(
             <View key={index}>
                 <View style={styles.RoleWrapper}>
-                    <Text style={styles.TextHeader} >{item.Role}</Text>
+                    <Text style={[styles.TextHeader, {color:'#000'}]} >{item.Role}</Text>
                     <View style={styles.LocationWrapper}>
                         <Feather name="map-pin" size={22} color="#13AF82" />
                         <Text style={styles.TextDatail} >{item.Location}</Text> 
@@ -31,7 +31,7 @@ export default function ProfileScreen() {
                 <View style={styles.UserTextWrapper}>
                     <Text style={styles.TextHeader} >{UserInfo.Fname} {UserInfo.Lname}</Text>
                     <View style={styles.EmailWrapper}>
-                        <Text style={styles.EmailText} >{UserInfo.Email}</Text> 
+                        <Text style={[styles.EmailText, {color: '#000'}]} >{UserInfo.Email}</Text> 
                     </View>
                 </View>
             </View>
@@ -50,6 +50,7 @@ const styles = StyleSheet.create({
         paddingHorizontal: 10,
         alignItems: 'flex-start',
         justifyContent: 'flex-start',
+        paddingTop:10,
     },
     RoleWrapper:{
         backgroundColor: '#fff',
@@ -77,13 +78,14 @@ const styles = StyleSheet.create({
     },
     EmailWrapper: {
         borderRadius: 50,
-        backgroundColor: '#EEEEEE'
+        backgroundColor: '#EEEEEE',
     },
     EmailText: {
         fontSize: 18,
         fontFamily: 'Mitr_500Medium',
         paddingVertical: 2,
         paddingHorizontal: 10,
+        color: '#000'
     },
     TextHeader:{
         fontSize: 22,
