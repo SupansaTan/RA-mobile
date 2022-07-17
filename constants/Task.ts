@@ -64,7 +64,7 @@ export const TaskRelativeAssessment = [
     standard: 'B1',
     frequency: 'C1',
     practice:'D1',
-    Related:null,
+    Related: false,
   },
   {
     order: 2,
@@ -72,7 +72,7 @@ export const TaskRelativeAssessment = [
     standard: 'B2',
     frequency: 'C2',
     practice:'D2',
-    Related:null,
+    Related: false,
   },
   {
     order: 3,
@@ -80,6 +80,6 @@ export const TaskRelativeAssessment = [
     standard: 'B3',
     frequency: 'C3',
     practice:'D3',
-    Related:null,
+    Related: false,
   },
 ]

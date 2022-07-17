@@ -1,16 +1,18 @@
 import React, { useState } from 'react';
 import { StyleSheet, ScrollView, Pressable, useWindowDimensions, TextInput, Appearance, KeyboardAvoidingView, Platform} from 'react-native';
+import { Button } from 'react-native-elements';
 import { AntDesign, Feather, FontAwesome5,  MaterialCommunityIcons } from '@expo/vector-icons';
 import { TabView, SceneMap, TabBar } from 'react-native-tab-view';
 import { CheckBox } from 'react-native-elements';
 
-import { Text, View } from '../../components/Themed';
+import { MaterialIcons, Text, View } from '../../components/Themed';
 import { useNavigation } from '@react-navigation/native';
 import { TaskRelativeAssessment } from '../../constants/Task';
 
 const AppearanceColor = Appearance.getColorScheme()==='dark'? '#fff':'#000'
 
-const FirstRoute = (data:string) => (
+const FirstRoute = (data:string) => {
+  return(
   <View style={styles.TabViewPage} >
     <MaterialCommunityIcons name='script-text-outline' size={20} color={AppearanceColor} style={{marginTop:5, marginHorizontal:10}}/>
     <View>
@@ -18,9 +20,11 @@ const FirstRoute = (data:string) => (
       <Text>{data}</Text>
     </View>
   </View>
-);
+  )
+}
 
-const SecondRoute = (data:string) => (
+const SecondRoute = (data:string) => {
+  return(
   <View style={styles.TabViewPage} >
     <Feather name='info' size={20} color={AppearanceColor} style={{marginTop:5, marginHorizontal:10}}/>
     <View>
@@ -28,9 +32,11 @@ const SecondRoute = (data:string) => (
       <Text>{data}</Text>
     </View>
   </View>
-);
+  )
+}
 
-const ThirdRoute = (data:string) => (
+const ThirdRoute = (data:string) => {
+  return(
   <View style={styles.TabViewPage} >
     <AntDesign name='clockcircleo' size={20} color={AppearanceColor} style={{marginTop:5, marginHorizontal:10}}/>
     <View>
@@ -38,7 +44,8 @@ const ThirdRoute = (data:string) => (
       <Text>{data}</Text>
     </View>
   </View>
-);
+  )
+}
 
 const FourthRoute = (data:string) => {
   return(
@@ -49,29 +56,17 @@ const FourthRoute = (data:string) => {
         <Text >{data}</Text>
       </View>
     </View>
-    )
-  }
-
-const renderScene = (order:number) =>{
-  const [listdata, SetListdata] = useState(TaskRelativeAssessment);
-  const [data, SetData] = useState(TaskRelativeAssessment[0]);
-  return(
-    SceneMap({
-      first: () => FirstRoute(data.keyreq),
-      second: () => SecondRoute(data.standard),
-      third: () => ThirdRoute(data.frequency),
-      fourth: () => FourthRoute(data.practice),
-    })
   )
-} 
-
+}
 
 export default function TaskAssessmentScreen() {
     const navigation =  useNavigation();
     const layout = useWindowDimensions();
     const [related, setRelated] = useState(false);
     const [nonrelated, setNonrelated] = useState(false)
-    const [keyorder, setkeyorder] = useState(1)
+    const [keyorder, setKeyorder] = useState(1)
+    const [datalist, setDatalist] = useState(TaskRelativeAssessment)
+    const [data, setData] = useState(datalist[(keyorder-1)]);
 
     const [index, setIndex] = React.useState(0);
     const [routes] = React.useState([
@@ -80,14 +75,56 @@ export default function TaskAssessmentScreen() {
       { key: 'third', title: 'ความถี่' },
       { key: 'fourth', title: 'แนวทางปฎิบัติ' },
     ]);
-  
+    
     return (
       <View style={styles.Container}>
-        <Text style={styles.TextHeader}>ข้อที่ {keyorder}</Text>
+        <View style={{flexDirection:'row', alignItems:'center'}}>
+          <Button
+            icon={<AntDesign name='stepbackward' color={AppearanceColor} size={30}/>}
+            buttonStyle={{
+              backgroundColor:'transparent'
+            }}
+            onPress={()=> { setKeyorder(1); setData(datalist[0]); }}
+            disabled={keyorder===1? true:false }
+          />
+          <Button
+            icon={<MaterialIcons name='keyboard-arrow-left' color={AppearanceColor} size={50}/>}
+            buttonStyle={{
+              backgroundColor:'transparent'
+            }}
+            onPress={()=> { setKeyorder(keyorder-1); setData(datalist[keyorder-1]); }}
+            disabled={keyorder===1? true:false }
+          />
+          <Text style={[styles.TextHeader,{marginHorizontal:60}]}>ข้อที่ {keyorder}</Text>
+          <Button
+            icon={<MaterialIcons name='keyboard-arrow-right' color={AppearanceColor} size={50}/>}
+            buttonStyle={{
+              backgroundColor:'transparent'
+            }}
+            onPress={()=> { setKeyorder(keyorder+1); setData(datalist[keyorder-1]); }}
+            disabled={keyorder===datalist.length? true:false }
+          />
+          <Button
+            icon={<AntDesign name='stepforward' color={AppearanceColor} size={30}/>}
+            buttonStyle={{
+              backgroundColor:'transparent'
+            }}
+            onPress={()=> { setKeyorder(datalist.length); setData(datalist[datalist.length-1]); } }
+            disabled={keyorder===datalist.length? true:false }
+          />
+        </View>
+        
         <ScrollView contentContainerStyle={{flexGrow:1}} scrollEnabled={false}>
           <TabView
             navigationState={{ index, routes }}
-            renderScene={renderScene(keyorder)}
+            renderScene={
+              SceneMap({
+                first: () => FirstRoute(data.keyreq),
+                second: () => SecondRoute(data.standard),
+                third: () => ThirdRoute(data.frequency),
+                fourth: () => FourthRoute(data.practice),
+              })
+            }
             onIndexChange={setIndex}
             initialLayout={{ width: layout.width - 100 }}
             style={{width:390, backgroundColor: 'transparent'}}
@@ -107,7 +144,7 @@ export default function TaskAssessmentScreen() {
                 title={'เกี่ยวข้อง'}
                 checked={related}
                 checkedColor={'#13AF82'}
-                onPress={()=> [setRelated(!related) , setNonrelated(false)]}
+                onPress={()=> {setRelated(!related); setNonrelated(false);}}
                 containerStyle={{backgroundColor:'transparent'}}
                 textStyle={styles.GreenCardText}
               />
@@ -116,7 +153,7 @@ export default function TaskAssessmentScreen() {
                 title={'ไม่เกี่ยวข้อง'}
                 checked={nonrelated}
                 checkedColor={'red'}
-                onPress={()=> [setNonrelated(!nonrelated) , setRelated(false)]}
+                onPress={()=> {setNonrelated(!nonrelated); setRelated(false);}}
                 containerStyle={{backgroundColor:'transparent'}}
                 textStyle={styles.GreenCardText}
               />
@@ -125,7 +162,7 @@ export default function TaskAssessmentScreen() {
 
           <KeyboardAvoidingView
             behavior={Platform.OS === "ios" ? "padding" : "height"}
-            keyboardVerticalOffset={5}
+            keyboardVerticalOffset={120}
             style={{flex:1}}
           >
               <View style={styles.CommentWrapper}>
