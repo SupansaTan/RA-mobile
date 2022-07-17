@@ -2,63 +2,76 @@ import React, { useState } from 'react';
 import { StyleSheet, ScrollView, Pressable, useWindowDimensions, TextInput, Appearance, KeyboardAvoidingView, Platform} from 'react-native';
 import { AntDesign, Feather, FontAwesome5,  MaterialCommunityIcons } from '@expo/vector-icons';
 import { TabView, SceneMap, TabBar } from 'react-native-tab-view';
+import { CheckBox } from 'react-native-elements';
 
 import { Text, View } from '../../components/Themed';
 import { useNavigation } from '@react-navigation/native';
+import { TaskRelativeAssessment } from '../../constants/Task';
 
 const AppearanceColor = Appearance.getColorScheme()==='dark'? '#fff':'#000'
 
-const FirstRoute = () => (
-  <View style={[styles.ContentWrapper, {backgroundColor:'transparent'}]} >
+const FirstRoute = (data:string) => (
+  <View style={styles.TabViewPage} >
     <MaterialCommunityIcons name='script-text-outline' size={20} color={AppearanceColor} style={{marginTop:5, marginHorizontal:10}}/>
     <View>
       <Text style={styles.TextHeader}>สาระสำคัญ</Text>
-      <Text>จัดให้มีข้อบังคับเกี่ยวกับการปฏิบัติงานด้านความปลอดภัย อาชีวอนามัยและสภาพแวดล้อมในการทำงานเกี่ยวกับไฟฟ้า</Text>
+      <Text>{data}</Text>
     </View>
   </View>
 );
 
-const SecondRoute = () => (
-  <View style={[styles.ContentWrapper, {backgroundColor:'transparent'}]} >
+const SecondRoute = (data:string) => (
+  <View style={styles.TabViewPage} >
     <Feather name='info' size={20} color={AppearanceColor} style={{marginTop:5, marginHorizontal:10}}/>
     <View>
       <Text style={styles.TextHeader}>เกณฑ์ชี้วัด</Text>
-      <Text>ข้อบังคับความปลอดภัยในการทำงานเกี่ยวกับไฟฟ้า</Text>
+      <Text>{data}</Text>
     </View>
   </View>
 );
 
-const ThirdRoute = () => (
-  <View style={[styles.ContentWrapper, {backgroundColor:'transparent'}]} >
+const ThirdRoute = (data:string) => (
+  <View style={styles.TabViewPage} >
     <AntDesign name='clockcircleo' size={20} color={AppearanceColor} style={{marginTop:5, marginHorizontal:10}}/>
     <View>
       <Text style={styles.TextHeader}>ความถี่</Text>
-      <Text>ประเมินความสอดคล้องอย่างน้อยปีละ 1 ครั้ง</Text>
+      <Text>{data}</Text>
     </View>
   </View>
 );
 
-const FourthRoute = () => (
-  <View style={[styles.ContentWrapper, {backgroundColor:'transparent'}]} >
-    <FontAwesome5 name='book' size={20} color={AppearanceColor} style={{marginTop:5, marginHorizontal:10}}/>
-    <View>
-      <Text style={styles.TextHeader}>แนวทางปฎิบัติ</Text>
-      <Text >จัดทำข้อบังคับเกี่ยวกับการปฏิบัติงานด้านความปลอดภัยในการทำงานเกี่ยวกับไฟฟ้า</Text>
+const FourthRoute = (data:string) => {
+  return(
+    <View style={styles.TabViewPage} >
+      <FontAwesome5 name='book' size={20} color={AppearanceColor} style={{marginTop:5, marginHorizontal:10}}/>
+      <View>
+        <Text style={styles.TextHeader}>แนวทางปฎิบัติ</Text>
+        <Text >{data}</Text>
+      </View>
     </View>
-  </View>
-);
+    )
+  }
 
-const renderScene = SceneMap({
-  first: FirstRoute,
-  second: SecondRoute,
-  third: ThirdRoute,
-  fourth: FourthRoute,
-});
+const renderScene = (order:number) =>{
+  const [listdata, SetListdata] = useState(TaskRelativeAssessment);
+  const [data, SetData] = useState(TaskRelativeAssessment[0]);
+  return(
+    SceneMap({
+      first: () => FirstRoute(data.keyreq),
+      second: () => SecondRoute(data.standard),
+      third: () => ThirdRoute(data.frequency),
+      fourth: () => FourthRoute(data.practice),
+    })
+  )
+} 
 
 
 export default function TaskAssessmentScreen() {
-    const navigation =  useNavigation()
+    const navigation =  useNavigation();
     const layout = useWindowDimensions();
+    const [related, setRelated] = useState(false);
+    const [nonrelated, setNonrelated] = useState(false)
+    const [keyorder, setkeyorder] = useState(1)
 
     const [index, setIndex] = React.useState(0);
     const [routes] = React.useState([
@@ -70,13 +83,13 @@ export default function TaskAssessmentScreen() {
   
     return (
       <View style={styles.Container}>
-        <Text>ข้อที่ x</Text>
-        <ScrollView contentContainerStyle={{flexGrow:1}} scrollEnabled={true}>
+        <Text style={styles.TextHeader}>ข้อที่ {keyorder}</Text>
+        <ScrollView contentContainerStyle={{flexGrow:1}} scrollEnabled={false}>
           <TabView
             navigationState={{ index, routes }}
-            renderScene={renderScene}
+            renderScene={renderScene(keyorder)}
             onIndexChange={setIndex}
-            initialLayout={{ width: layout.width }}
+            initialLayout={{ width: layout.width - 100 }}
             style={{width:390, backgroundColor: 'transparent'}}
             renderTabBar={props => <TabBar {...props} 
               indicatorStyle={{backgroundColor: '#13AF82'}}
@@ -89,8 +102,24 @@ export default function TaskAssessmentScreen() {
           <View style={styles.GreenCard}>
           <Text style={[styles.GreenCardText,{fontSize:18}]}>ความเกี่ยวข้อง</Text>
             <View style={{flexDirection:'row',backgroundColor:'transparent', marginTop:10}}>
-              <Text style={styles.GreenCardText}>เกี่ยวข้อง</Text>
-              <Text style={styles.GreenCardText}>ไม่เกี่ยวข้อง</Text>
+              <CheckBox 
+                center
+                title={'เกี่ยวข้อง'}
+                checked={related}
+                checkedColor={'#13AF82'}
+                onPress={()=> [setRelated(!related) , setNonrelated(false)]}
+                containerStyle={{backgroundColor:'transparent'}}
+                textStyle={styles.GreenCardText}
+              />
+              <CheckBox 
+                center
+                title={'ไม่เกี่ยวข้อง'}
+                checked={nonrelated}
+                checkedColor={'red'}
+                onPress={()=> [setNonrelated(!nonrelated) , setRelated(false)]}
+                containerStyle={{backgroundColor:'transparent'}}
+                textStyle={styles.GreenCardText}
+              />
             </View>
           </View>
 
@@ -126,6 +155,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     width:'100%',
+    paddingTop:10,
   },
   TextHeader: {
     fontSize: 18,
@@ -158,12 +188,12 @@ const styles = StyleSheet.create({
     padding:10,
     paddingVertical:20,
     marginHorizontal:10,
-    width:'95%',
+    width: 375,
     marginVertical:5,
     borderRadius:10,
   },
   GreenCardText: {
-    fontSize: 15,
+    fontSize: 18,
     fontFamily: 'Mitr_400Regular',
     color: '#000'
   },
@@ -182,5 +212,13 @@ const styles = StyleSheet.create({
     height:100,
     fontSize: 15,
     fontFamily: 'Mitr_400Regular',
-  }
+  },
+  TabViewPage: {
+    height:'50%',
+    backgroundColor: 'transparent',
+    flexDirection:'row',
+    justifyContent:'flex-start',
+    marginTop:15,
+    width:'90%',
+  },
 });

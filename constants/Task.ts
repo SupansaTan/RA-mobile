@@ -56,3 +56,30 @@ export const IncomingTask = [
     location:'โรงงานผลิตอาหารสัตว์บกปักธงชัย',
   },
 ]
+
+export const TaskRelativeAssessment = [
+  {
+    order: 1,
+    keyreq: 'A1',
+    standard: 'B1',
+    frequency: 'C1',
+    practice:'D1',
+    Related:null,
+  },
+  {
+    order: 2,
+    keyreq: 'A2',
+    standard: 'B2',
+    frequency: 'C2',
+    practice:'D2',
+    Related:null,
+  },
+  {
+    order: 3,
+    keyreq: 'A3',
+    standard: 'B3',
+    frequency: 'C3',
+    practice:'D3',
+    Related:null,
+  },
+]
