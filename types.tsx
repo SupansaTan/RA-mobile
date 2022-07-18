@@ -20,9 +20,12 @@ export type RootStackParamList = {
   Tracking: undefined;
   TrackingLocation: undefined;
   TaskLocation: undefined;
-  TaskDetail: undefined;
-  TaskAssessment: undefined;
-  TaskResult: undefined;
+  TaskRelevantDetail: undefined;
+  TaskRelevantAssessment: undefined;
+  TaskRelevantResult: undefined;
+  TaskConsistanceDetail: undefined;
+  TaskConsistanceAssessment: undefined;
+  TaskConsistanceResult: undefined;
   LawSearch: undefined;
   Report: undefined;
   ReportLocation: undefined;

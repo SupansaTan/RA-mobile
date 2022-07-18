@@ -7,7 +7,7 @@ import { useNavigation } from '@react-navigation/native';
 import LawDetail from '../../shared/LawDetail';
 
 
-export default function TaskDetailScreen() {
+export default function TaskRelavantDetailScreen() {
     const navigation =  useNavigation()
   
     return (
@@ -15,7 +15,7 @@ export default function TaskDetailScreen() {
             <ScrollView contentContainerStyle={{ flexGrow:1 }}>
                 <LawDetail path="/screens/TaskDetailScreen.tsx"/>
             </ScrollView>
-            <Pressable onPress={()=> navigation.navigate('TaskAssessment')} style={styles.button}>
+            <Pressable onPress={()=> navigation.navigate('TaskRelevantAssessment')} style={styles.button}>
                 <Text style={[styles.TextHeader, {color:'#fff'}]}>เริ่มทำการประเมิน</Text>
             </Pressable>
         </View>

@@ -20,7 +20,7 @@ export default function TaskLocationScreen() {
   const ContentElement = (contentItem: TaskContentModel, i: number, type: string) => {
     return(
       <View key={'content' + i}>
-        <TouchableOpacity onPress={()=> navigation.navigate('TaskDetail') } >
+        <TouchableOpacity onPress={()=> navigation.navigate(type=='relevant'? 'TaskRelevantDetail':'TaskConsistanceDetail') } >
           <View style={ getCardColorClass(contentItem.timestatus) }>
             <Text style={styles.TextHeader}>{ contentItem.title }</Text>
 

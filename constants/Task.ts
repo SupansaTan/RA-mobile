@@ -57,29 +57,90 @@ export const IncomingTask = [
   },
 ]
 
-export const TaskRelativeAssessment = [
+export const TaskRelativeAssessment = {
+  location: 'โรงงานร้อยเพชร',
+  title: 'พ.ร.บ.พลังงานนิวเคลียร์',
+  type: 'relavant',
+  keyact: [
   {
     order: 1,
-    keyreq: 'A1',
-    standard: 'B1',
-    frequency: 'C1',
-    practice:'D1',
-    Related: false,
+    keyreq: 'This is key req 1',
+    standard: 'This is standard 1',
+    frequency: 'This is frequency 1',
+    practice:'This is practice 1',
+    related: true,
+    comment: 'This is comment 1',
   },
   {
     order: 2,
-    keyreq: 'A2',
-    standard: 'B2',
-    frequency: 'C2',
-    practice:'D2',
-    Related: false,
+    keyreq: 'This is key req 2',
+    standard: 'This is standard 2',
+    frequency: 'This is frequency 2',
+    practice:'This is practice 2',
+    related: false,
+    comment: 'This is comment 2',
   },
   {
     order: 3,
-    keyreq: 'A3',
-    standard: 'B3',
-    frequency: 'C3',
-    practice:'D3',
-    Related: false,
+    keyreq: 'This is key req 3',
+    standard: 'This is standard 3',
+    frequency: 'This is frequency 3',
+    practice:'This is practice 3',
+    related: true,
+    comment: '',
+  },
+  {
+    order: 4,
+    keyreq: 'This is key req 4',
+    standard: 'This is standard 4',
+    frequency: 'This is frequency 4',
+    practice:'This is practice 4',
+    related: false,
+    comment: '',
   },
 ]
+}
+
+export const TaskConsistanceAssessment = {
+  location: 'โรงงานร้อยเพชร',
+  title: 'พ.ร.บ.ข้อมูลส่วนบุคคล',
+  type: 'consistance',
+  keyact: [
+  {
+    order: 1,
+    keyreq: 'This is key req 1',
+    standard: 'This is standard 1',
+    frequency: 'This is frequency 1',
+    practice:'This is practice 1',
+    consistance: false,
+    comment: 'This is comment 1',
+  },
+  {
+    order: 2,
+    keyreq: 'This is key req 2',
+    standard: 'This is standard 2',
+    frequency: 'This is frequency 2',
+    practice:'This is practice 2',
+    consistance: true,
+    comment: 'This is comment 2',
+  },
+  {
+    order: 3,
+    keyreq: 'This is key req 3',
+    standard: 'This is standard 3',
+    frequency: 'This is frequency 3',
+    practice:'This is practice 3',
+    consistance: false,
+    comment: '',
+  },
+  {
+    order: 4,
+    keyreq: 'This is key req 4',
+    standard: 'This is standard 4',
+    frequency: 'This is frequency 4',
+    practice:'This is practice 4',
+    consistance: true,
+    comment: '',
+  },
+]
+}

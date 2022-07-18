@@ -1,20 +1,22 @@
-import React, { useState, useEffect } from 'react';
-import { StyleSheet, ScrollView, Pressable, useWindowDimensions  } from 'react-native';
+import React, { useState } from 'react';
+import { StyleSheet, ScrollView, Pressable } from 'react-native';
 import { Fontisto, MaterialIcons } from '@expo/vector-icons';
 
 import { Text, View } from '../../components/Themed';
 import { useNavigation } from '@react-navigation/native';
+import LawDetail from '../../shared/LawDetail';
 
-export default function TaskResultScreen() {
+
+export default function TaskConsistanceDetailScreen() {
     const navigation =  useNavigation()
-    
+  
     return (
         <View style={styles.Container}>
-            <ScrollView contentContainerStyle={{ flexGrow:1}}>
-                <Text>Task Result</Text>
+            <ScrollView contentContainerStyle={{ flexGrow:1 }}>
+                <LawDetail path="/screens/TaskDetailScreen.tsx"/>
             </ScrollView>
-            <Pressable onPress={()=> navigation.navigate('Task')} style={styles.button}>
-                <Text style={[styles.TextHeader, {color:'#fff'}]}>ส่งอนุมติ</Text>
+            <Pressable onPress={()=> navigation.navigate('TaskRelevantAssessment')} style={styles.button}>
+                <Text style={[styles.TextHeader, {color:'#fff'}]}>เริ่มทำการประเมิน</Text>
             </Pressable>
         </View>
     );
@@ -24,17 +26,13 @@ const styles = StyleSheet.create({
   Container: {
     flex: 1,
     flexGrow:1,
-    paddingHorizontal: 10,
+    paddingHorizontal: 5,
     alignItems: 'flex-start',
     justifyContent: 'center',
   },
   TextHeader: {
     fontSize: 18,
-    fontFamily: 'Mitr_500Medium'
-  },
-  TextContent: {
-    fontSize: 15,
-    fontFamily: 'Mitr_400Regular'
+    fontFamily: 'Mitr_500Medium',
   },
   button: {
     backgroundColor:'#13AF82',
@@ -44,5 +42,7 @@ const styles = StyleSheet.create({
     alignItems:'center',
     justifyContent:'center',
     marginVertical:5,
+    marginBottom:20,
+    
   },
 });
