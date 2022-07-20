@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { StyleSheet, Switch, Platform, TouchableOpacity, TextInput, Keyboard, TouchableWithoutFeedback, InputAccessoryView, Button } from 'react-native';
+import { StyleSheet, Switch, Platform, TouchableOpacity, TextInput, Keyboard, InputAccessoryView, Button } from 'react-native';
 import { Fontisto, FontAwesome } from '@expo/vector-icons';
 import Avatar from '../../assets/images/avatar.svg';
 import Colors from '../../constants/Colors';
@@ -87,7 +87,7 @@ export default function SettingScreen({ navigation }: RootTabScreenProps<'Settin
         </View>
 
         {/* log out */}
-        <TouchableOpacity>
+        <TouchableOpacity onPress={()=> navigation.navigate('SignIn')}>
           <View style={styles.ItemWrapper}>
             <View style={[styles.ItemTitleWrapper, { paddingTop: Platform.OS === 'ios' ? 5:10 }]}>
               <FontAwesome name="sign-out" size={24} color="black" style={styles.ItemIcon} />

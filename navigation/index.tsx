@@ -26,6 +26,8 @@ import TaskRelavantResultScreen from '../screens/task/TaskRelavantResultScreen';
 import TaskConsistanceDetailScreen from '../screens/task/TaskConsistanceDetailScreen';
 import { TaskConsistanceAssessmentScreen } from '../screens/task/TaskConsistanceAssessmentScreen';
 import TaskConsistanceResultScreen from '../screens/task/TaskConsistanceResultScreen';
+import SignInScreen from '../screens/sign-in/SignIn';
+import ResetPasswordScreen from '../screens/sign-in/ResetPassword';
 
 import { RootStackParamList, RootTabParamList, RootTabScreenProps } from '../types';
 import LinkingConfiguration from './LinkingConfiguration';
@@ -179,6 +181,14 @@ function RootNavigator() {
           headerStyle: {backgroundColor: HeaderColor}
         }} />
       <Stack.Screen name="NotFound" component={NotFoundScreen} options={{ title: 'Oops!' }} />
+      <Stack.Screen name="SignIn" component={SignInScreen} 
+        options={{ 
+          title: 'เข้าสู่ระบบ',
+        }} />
+      <Stack.Screen name="ResetPassword" component={ResetPasswordScreen} 
+        options={{ 
+          title: 'ตั้งรหัสผ่านใหม่',
+        }} />
       {/* <Stack.Group screenOptions={{ presentation: 'modal' }}>
         <Stack.Screen name="Modal" component={ModalScreen} />
       </Stack.Group> */}

@@ -54,6 +54,8 @@ const linking: LinkingOptions<RootStackParamList> = {
       ReportTaskProgress: 'reporttaskprogress',
       ReportTaskDetail: 'reporttaskdetail',
       Modal: 'modal',
+      SignIn: 'signin',
+      ResetPassword: 'resetpassword',
       NotFound: '*',
     },
   },
