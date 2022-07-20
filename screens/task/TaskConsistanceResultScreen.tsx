@@ -20,7 +20,18 @@ export default function TaskConsistanceResultScreen() {
             <Text style={styles.TextContent}>{content.consistance===true? 'สอดคล้อง':'ไม่สอดคล้อง'}</Text>
           </View>
           {
-            content.comment===''? <></> : <Text style={{marginTop:5}}>{'\t'}หมายเหตุ : {content.comment}</Text>
+            content.consistance===true? <></> : <View>
+            {content.assign.employee.map((item,index)=>
+              <View key={index}>
+                <Text style={[styles.TextContent,{marginTop:5,marginLeft:10}]}>{'\u2022' + ' ' + item}</Text>
+              </View>
+            )}
+            <Text style={[styles.TextContent,{marginTop:5,marginLeft:10}]}>{'\u2022 ' + 'วันกำหนดเสร็จ : ' + content.assign.duedate}</Text>
+            <Text style={[styles.TextContent,{marginTop:5,marginLeft:10}]}>{'\u2022 ' + 'งบประมาณ : ' + content.assign.cost}</Text>
+            </View>
+          }
+          {
+            content.comment===''? <></> : <Text style={[styles.TextContent,{marginTop:5}]}>{'\t'}หมายเหตุ : {content.comment}</Text>
           }
         </View>
         
@@ -39,7 +50,7 @@ export default function TaskConsistanceResultScreen() {
           </View>
 
           <View style={styles.ContentContainer}>
-            <View style={[styles.RowView, {justifyContent:'space-between'}]}>
+            <View style={[styles.RowView, {justifyContent:'space-between', alignItems:'center'}]}>
               <Text style={[styles.TextHeader]}>ประเมินโดย</Text>
               <Text style={[styles.TextContent]}>{UserInfo.Fname} {UserInfo.Lname}</Text>
             </View>

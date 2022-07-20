@@ -113,6 +113,11 @@ export const TaskConsistanceAssessment = {
     frequency: 'This is frequency 1',
     practice:'This is practice 1',
     consistance: false,
+    assign:{
+        employee: ['สมหญิง สวยงาม'],
+        duedate: '5 พ.ค. 2565',
+        cost:'100'
+      },
     comment: 'This is comment 1',
   },
   {
@@ -122,6 +127,11 @@ export const TaskConsistanceAssessment = {
     frequency: 'This is frequency 2',
     practice:'This is practice 2',
     consistance: true,
+    assign: {
+      employee: [],
+      duedate: '',
+      cost:''
+    },
     comment: 'This is comment 2',
   },
   {
@@ -131,6 +141,11 @@ export const TaskConsistanceAssessment = {
     frequency: 'This is frequency 3',
     practice:'This is practice 3',
     consistance: false,
+    assign:{
+      employee: ['สมหญิง สวยงาม', 'นายสมชาย งามสวย'],
+      duedate: '5 พ.ค. 2565',
+      cost:'100'
+    },
     comment: '',
   },
   {
@@ -140,6 +155,11 @@ export const TaskConsistanceAssessment = {
     frequency: 'This is frequency 4',
     practice:'This is practice 4',
     consistance: true,
+    assign: {
+      employee: [],
+      duedate: '',
+      cost:''
+    },
     comment: '',
   },
 ]
