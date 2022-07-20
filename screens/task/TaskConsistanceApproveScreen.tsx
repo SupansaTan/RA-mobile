@@ -7,7 +7,7 @@ import { CheckBox } from 'react-native-elements';
 
 import { MaterialIcons, Text, View } from '../../components/Themed';
 import { useNavigation } from '@react-navigation/native';
-import { TaskRAAssessmentList, TaskRelativeAssessment } from '../../constants/Task';
+import { TaskCAAssessmentList, TaskConsistanceAssessment } from '../../constants/Task';
 import darkColors from 'react-native-elements/dist/config/colorsDark';
 
 import LawDetail from '../../shared/LawDetail';
@@ -17,7 +17,7 @@ const AppearanceColor = Appearance.getColorScheme()==='dark'? '#fff':'#000'
 
 // ============================= Detail =================================
 
-export function TaskRADetail() {
+export function TaskCADetail() {
     const navigation =  useNavigation()
   
     return (
@@ -25,7 +25,7 @@ export function TaskRADetail() {
             <ScrollView contentContainerStyle={{ flexGrow:1 }}>
                 <LawDetail path="/screens/TaskDetailScreen.tsx"/>
             </ScrollView>
-            <Pressable onPress={()=> navigation.navigate('TaskRAAssessment')} style={styles.button}>
+            <Pressable onPress={()=> navigation.navigate('TaskCAAssessment')} style={styles.button}>
                 <Text style={[styles.TextHeader, {color:'#fff'}]}>เริ่มทำการประเมิน</Text>
             </Pressable>
         </View>
@@ -37,14 +37,14 @@ export function TaskRADetail() {
 
 // ============================= Assessment =================================
 
-export function TaskRAAssessment() {
+export function TaskCAAssessment() {
     const navigation =  useNavigation();
     const layout = useWindowDimensions();
-    const [datalist, setDatalist] = useState(TaskRelativeAssessment.keyact)
+    const [datalist, setDatalist] = useState(TaskConsistanceAssessment.keyact)
     const [keyorder, setKeyorder] = useState(1)
     const [data, setData] = useState(datalist[(keyorder-1)]);
 
-    const [approvallist, setApprovallist] = useState(TaskRAAssessmentList.approval)
+    const [approvallist, setApprovallist] = useState(TaskCAAssessmentList.approval)
     const [approvaldata, setApprovaldata] = useState(approvallist[(keyorder-1)])
     const [approved, setApproved] = useState(approvaldata.approved? true:false);
     const [disapproved, setDisapprovedd] = useState(approvaldata.approved? false:true)
@@ -130,7 +130,15 @@ export function TaskRAAssessment() {
           />
           <View style={styles.GreenCard}>
             <View style={{backgroundColor:'white',padding:5,borderRadius:5, marginLeft:10,width:'90%'}}>
-              <Text style={[styles.GreenCardText,{fontSize:18}]}>  ผลการประเมิน : {data.related==true? 'เกี่ยวข้อง':'ไม่เกี่ยวข้อง'}</Text>  
+                <Text style={[styles.GreenCardText,{fontSize:15}]}>  ผลการประเมิน : {data.consistance==true? 'สอดคล้อง':'ไม่สอดคล้อง'}</Text> 
+                { data.assign.employee.map((item)=> 
+                    <View key={index}>
+                        <Text style={[styles.GreenCardText,{fontSize:15}]}>  {'\u2022 ' + item}</Text>
+                    </View>
+                 ) }
+               
+                { data.consistance==false? <Text style={[styles.GreenCardText,{fontSize:15}]}>  งบประมาณ : {data.assign.cost}</Text> : <></>  }
+              
             </View>
             
             <View style={{flexDirection:'row',backgroundColor:'transparent', marginTop:10}}>
@@ -172,7 +180,7 @@ export function TaskRAAssessment() {
 
         </ScrollView> 
 
-        <Pressable onPress={()=> navigation.navigate('TaskRAResult')} style={styles.button}>
+        <Pressable onPress={()=> navigation.navigate('TaskCAResult')} style={styles.button}>
           <Text style={[styles.TextHeader, {color:'#fff'}]}>สรุปแบบประเมิน</Text>
         </Pressable>
       </View>
@@ -235,10 +243,10 @@ const FirstRoute = (data:string) => {
 
 // ============================= Result =================================
 
-export function TaskRAResult() {
+export function TaskCAResult() {
     const navigation =  useNavigation()
-    const [keylist, setKeylist] = useState(TaskRelativeAssessment.keyact)
-    const [approvallist, setApprovallist] = useState(TaskRAAssessmentList.approval)
+    const [keylist, setKeylist] = useState(TaskConsistanceAssessment.keyact)
+    const [approvallist, setApprovallist] = useState(TaskCAAssessmentList.approval)
 
     const ContentElement = keylist.map((content,index) => {
       return(
@@ -260,10 +268,10 @@ export function TaskRAResult() {
     return (
         <View style={styles.Container}>
           <View style={[styles.GreenCard,{alignItems:'center'}]}>
-            <Text style={[styles.TextHeader, {color:'#000'}]}>{TaskRelativeAssessment.title}</Text>
+            <Text style={[styles.TextHeader, {color:'#000'}]}>{TaskConsistanceAssessment.title}</Text>
             <View style={styles.RowView}>
               <Feather name="map-pin" size={22} color="#13AF82" style={{marginRight:5}}/>
-              <Text style={[styles.TextContent, {color:'#13AF82'}]}>{TaskRelativeAssessment.location}</Text>
+              <Text style={[styles.TextContent, {color:'#13AF82'}]}>{TaskConsistanceAssessment.location}</Text>
             </View>
           </View>
 
@@ -363,7 +371,7 @@ const styles = StyleSheet.create({
         fontFamily: 'Mitr_400Regular',
       },
       TabViewPage: {
-        height:'50%',
+        // height:500,
         backgroundColor: 'transparent',
         flexDirection:'row',
         justifyContent:'flex-start',

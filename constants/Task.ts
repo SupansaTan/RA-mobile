@@ -152,7 +152,7 @@ export const TaskConsistanceAssessment = {
     practice:'This is practice 3',
     consistance: false,
     assign:{
-      employee: ['สมหญิง สวยงาม', 'นายสมชาย งามสวย'],
+      employee: ['สมหญิง สวยงาม', 'สมชาย งามสวย'],
       duedate: '5 พ.ค. 2565',
       cost:'100'
     },
@@ -213,22 +213,23 @@ export const TaskCAAssessmentList = {
   approval: [
     {
       order: 1,
-      approved: false,
+      approved: true,
       comment: 'This is comment CA 1'
     },
     {
       order: 2,
-      approved: false,
+      approved: true,
       comment: 'This is comment CA 2'
     },
     {
       order: 3,
-      approved: true,
-      comment: 'This is comment CA 3'
+      approved: false,
+      comment: ''
     },
     {
       order: 4,
-      approved: true
+      approved: false,
+      comment: 'This is comment CA 4'
     },
   ]
 }
