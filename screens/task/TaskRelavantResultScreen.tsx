@@ -16,8 +16,8 @@ export default function TaskRelavantResultScreen() {
         <View key={index}>
           <View style={{borderWidth:1, borderColor:'#EEEEEE', margin:10}}/>
           <View style={[styles.RowView, {justifyContent:'space-between'}]}>
-            <Text style={[styles.TextContent, {color:getTextcolor(content.Related), width:'70%'}]}>ข้อ {content.order} {content.keyreq}</Text>
-            <Text style={styles.TextContent}>{content.Related===true? 'เกี่ยวข้อง':'ไม่เกี่ยวข้อง'}</Text>
+            <Text style={[styles.TextContent, {color:getTextcolor(content.related), width:'70%'}]}>ข้อ {content.order} {content.keyreq}</Text>
+            <Text style={styles.TextContent}>{content.related===true? 'เกี่ยวข้อง':'ไม่เกี่ยวข้อง'}</Text>
           </View>
           {
             content.comment===''? <></> : <Text style={{marginTop:5}}>{'\t'}หมายเหตุ : {content.comment}</Text>

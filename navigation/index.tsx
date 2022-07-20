@@ -24,7 +24,7 @@ import TaskRelavantDetailScreen from '../screens/task/TaskRelavantDetailScreen';
 import TaskRelavantAssessmentScreen from '../screens/task/TaskRelavantAssessmentScreen';
 import TaskRelavantResultScreen from '../screens/task/TaskRelavantResultScreen';
 import TaskConsistanceDetailScreen from '../screens/task/TaskConsistanceDetailScreen';
-import TaskConsistanceAssessmentScreen from '../screens/task/TaskConsistanceAssessmentScreen';
+import { TaskConsistanceAssessmentScreen } from '../screens/task/TaskConsistanceAssessmentScreen';
 import TaskConsistanceResultScreen from '../screens/task/TaskConsistanceResultScreen';
 
 import { RootStackParamList, RootTabParamList, RootTabScreenProps } from '../types';
@@ -146,7 +146,7 @@ function RootNavigator() {
           headerTitleStyle: HeaderTitleStyle,
           headerStyle: {backgroundColor: HeaderColor}
         }} />
-        <Stack.Screen name="TaskRelevantResult" component={TaskConsistanceResultScreen} 
+        <Stack.Screen name="TaskRelevantResult" component={TaskRelavantResultScreen} 
         options={{ 
           animation: 'slide_from_right',
           title: 'สรุปแบบประเมิน',
