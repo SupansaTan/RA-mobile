@@ -25,10 +25,20 @@ export const TaskData = [
     ]
   },
   {
-    type: 'approve',
+    type: 'relevantapprove',
     task: [
       {
         title: 'พ.ร.บ.การใช้เครื่องจักร',
+        datetime: '31 มี.ค. 2565 15.00 น.',
+        timestatus: 1,
+      }
+    ]
+  },
+  {
+    type: 'consistanceapprove',
+    task: [
+      {
+        title: 'พ.ร.บ.เงินเดือน',
         datetime: '31 มี.ค. 2565 15.00 น.',
         timestatus: 1,
       }
@@ -162,5 +172,63 @@ export const TaskConsistanceAssessment = {
     },
     comment: '',
   },
-]
+  ]
+}
+
+
+
+
+export const TaskRAAssessmentList = {
+  location: 'โรงงานร้อยเพชร',
+  title: 'พ.ร.บ.พลังงานนิวเคลียร์',
+  type: 'relavant',
+  approval: [
+    {
+      order: 1,
+      approved: false,
+      comment: 'This is comment RA 1'
+    },
+    {
+      order: 2,
+      approved: false,
+      comment: 'This is comment RA 2'
+    },
+    {
+      order: 3,
+      approved: true,
+      comment: 'This is comment RA 3'
+    },
+    {
+      order: 4,
+      approved: true,
+      comment: ''
+    },
+  ]
+}
+
+export const TaskCAAssessmentList = {
+  location: 'โรงงานร้อยเพชร',
+  title: 'พ.ร.บ.ข้อมูลส่วนบุคคล',
+  type: 'consistance',
+  approval: [
+    {
+      order: 1,
+      approved: false,
+      comment: 'This is comment CA 1'
+    },
+    {
+      order: 2,
+      approved: false,
+      comment: 'This is comment CA 2'
+    },
+    {
+      order: 3,
+      approved: true,
+      comment: 'This is comment CA 3'
+    },
+    {
+      order: 4,
+      approved: true
+    },
+  ]
 }

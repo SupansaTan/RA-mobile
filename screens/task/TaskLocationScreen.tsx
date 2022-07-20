@@ -20,7 +20,7 @@ export default function TaskLocationScreen() {
   const ContentElement = (contentItem: TaskContentModel, i: number, type: string) => {
     return(
       <View key={'content' + i}>
-        <TouchableOpacity onPress={()=> navigation.navigate(type=='relevant'? 'TaskRelevantDetail':'TaskConsistanceDetail') } >
+        <TouchableOpacity onPress={()=> navigation.navigate(type=='relevant'? 'TaskRelevantDetail' :type=='consistance'? 'TaskConsistanceDetail' :type=='relevantapprove'? 'TaskRADetail': 'TaskCADetail') } >
           <View style={ getCardColorClass(contentItem.timestatus) }>
             <Text style={styles.TextHeader}>{ contentItem.title }</Text>
 
@@ -52,7 +52,7 @@ export default function TaskLocationScreen() {
       <View key={index}>
         {/* date */}
         <Text style={styles.TypeText}>
-          { item.type=='relevant' ? 'ประเมินความเกี่ยวข้อง':item.type=='consistance'? 'ประเมินความสอดคล้อง':'รออนุมัติ' }
+          { item.type=='relevant' ? 'ประเมินความเกี่ยวข้อง':item.type=='consistance'? 'ประเมินความสอดคล้อง':item.type=='relevantapprove'? 'รออนุมัติความเกี่ยวข้อง':'รออนุมัติความสอดคล้อง' }
         </Text>
 
         {/* content */}

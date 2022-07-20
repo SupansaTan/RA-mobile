@@ -75,7 +75,7 @@ const Employeees = [
   { id: 'นาย K', name: 'นาย K' },
 ];
 
-export function TaskConsistanceAssessmentScreen() {
+export default function TaskConsistanceAssessmentScreen() {
     const navigation =  useNavigation();
     const layout = useWindowDimensions();
     const [datalist, setDatalist] = useState(TaskConsistanceAssessment.keyact)

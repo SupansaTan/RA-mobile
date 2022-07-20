@@ -24,8 +24,10 @@ import TaskRelavantDetailScreen from '../screens/task/TaskRelavantDetailScreen';
 import TaskRelavantAssessmentScreen from '../screens/task/TaskRelavantAssessmentScreen';
 import TaskRelavantResultScreen from '../screens/task/TaskRelavantResultScreen';
 import TaskConsistanceDetailScreen from '../screens/task/TaskConsistanceDetailScreen';
-import { TaskConsistanceAssessmentScreen } from '../screens/task/TaskConsistanceAssessmentScreen';
+import TaskConsistanceAssessmentScreen from '../screens/task/TaskConsistanceAssessmentScreen';
 import TaskConsistanceResultScreen from '../screens/task/TaskConsistanceResultScreen';
+import { TaskRADetail, TaskRAAssessment, TaskRAResult } from '../screens/task/TaskRelavantApproveScreen';
+import { TaskCADetail, TaskCAAssessment, TaskCAResult } from '../screens/task/TaskConsistanceApproveScreen';
 import SignInScreen from '../screens/sign-in/SignIn';
 import ResetPasswordScreen from '../screens/sign-in/ResetPassword';
 
@@ -180,6 +182,63 @@ function RootNavigator() {
           headerTitleStyle: HeaderTitleStyle,
           headerStyle: {backgroundColor: HeaderColor}
         }} />
+
+
+      <Stack.Screen name="TaskRADetail" component={TaskRADetail}
+        options={{ 
+          animation: 'slide_from_right',
+          title: 'รายละเอียดกฎหมาย',
+          headerShadowVisible: false,
+          headerTitleStyle: HeaderTitleStyle,
+          headerStyle: {backgroundColor: HeaderColor}
+        }} />
+
+      <Stack.Screen name="TaskRAAssessment" component={TaskRAAssessment} 
+        options={{ 
+          animation: 'slide_from_right',
+          title: '',
+          headerShadowVisible: false,
+          headerTitleStyle: HeaderTitleStyle,
+          headerStyle: {backgroundColor: HeaderColor}
+        }} />
+
+      <Stack.Screen name="TaskRAResult" component={TaskRAResult} 
+        options={{ 
+          animation: 'slide_from_right',
+          title: 'สรุปแบบประเมิน',
+          headerShadowVisible: false,
+          headerTitleStyle: HeaderTitleStyle,
+          headerStyle: {backgroundColor: HeaderColor}
+        }} />
+
+      <Stack.Screen name="TaskCADetail" component={TaskCADetail}
+        options={{ 
+          animation: 'slide_from_right',
+          title: 'รายละเอียดกฎหมาย',
+          headerShadowVisible: false,
+          headerTitleStyle: HeaderTitleStyle,
+          headerStyle: {backgroundColor: HeaderColor}
+        }} />
+
+      <Stack.Screen name="TaskCAAssessment" component={TaskCAAssessment} 
+        options={{ 
+          animation: 'slide_from_right',
+          title: '',
+          headerShadowVisible: false,
+          headerTitleStyle: HeaderTitleStyle,
+          headerStyle: {backgroundColor: HeaderColor}
+        }} />
+
+      <Stack.Screen name="TaskCAResult" component={TaskCAResult} 
+        options={{ 
+          animation: 'slide_from_right',
+          title: 'สรุปแบบประเมิน',
+          headerShadowVisible: false,
+          headerTitleStyle: HeaderTitleStyle,
+          headerStyle: {backgroundColor: HeaderColor}
+        }} />
+
+
       <Stack.Screen name="NotFound" component={NotFoundScreen} options={{ title: 'Oops!' }} />
       <Stack.Screen name="SignIn" component={SignInScreen} 
         options={{ 

@@ -26,6 +26,12 @@ export type RootStackParamList = {
   TaskConsistanceDetail: undefined;
   TaskConsistanceAssessment: undefined;
   TaskConsistanceResult: undefined;
+  TaskRADetail: undefined;
+  TaskRAAssessment: undefined;
+  TaskRAResult: undefined;
+  TaskCADetail: undefined;
+  TaskCAAssessment: undefined;
+  TaskCAResult: undefined;
   LawSearch: undefined;
   Report: undefined;
   ReportLocation: undefined;
