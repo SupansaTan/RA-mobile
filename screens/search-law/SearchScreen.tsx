@@ -1,5 +1,5 @@
 import React, { useState, useMemo } from 'react';
-import { StyleSheet, TouchableOpacity, ScrollView, TextInput, Modal, Pressable } from 'react-native';
+import { StyleSheet, TouchableOpacity, ScrollView, TextInput, Modal, Pressable, Platform } from 'react-native';
 import { Feather, AntDesign} from '@expo/vector-icons';
 import DateTimePicker from '@react-native-community/datetimepicker';
 import { Picker, onOpen } from 'react-native-actions-sheet-picker';
@@ -70,8 +70,10 @@ export default function SearchScreen({ navigation }: RootTabScreenProps<'Search'
 
   const EnforceOnChange = (event:any, selectedDate:any) => {
     const currentDate = selectedDate;
-    setEnforceshow(false);
     setEnforceDate(currentDate);
+    if (Platform.OS === 'android') {
+      setEnforceshow(false);
+    }
   };
 
   const CancelOnChange = (event:any, selectedDate:any) => {
@@ -203,48 +205,75 @@ export default function SearchScreen({ navigation }: RootTabScreenProps<'Search'
 
                       <Text style={styles.HeaderText}>วันที่ประกาศ</Text>
                       <View>
-                        <Pressable onPress={()=>{setAnnounceshow(true)}} style={styles.DateSelect}>
-                          <Text>{announceDate.toDateString()}</Text>
-                        </Pressable>
-                        {announceshow && (
+                        { !announceshow? 
+                          (
+                            <Pressable onPress={()=>{setAnnounceshow(true)}} style={styles.DateSelect}>
+                              <Text>{announceDate.toDateString()}</Text>
+                            </Pressable>
+                          ) : 
+                          (
+                            <Pressable onPress={()=>{setAnnounceshow(false)}} style={styles.Closebutton}>
+                              <Text>Close</Text>
+                            </Pressable>
+                          )}
+                          { announceshow && (
                           <DateTimePicker
                             testID="dateTimePicker"
                             value={announceDate}
                             mode={'date'}
-                            is24Hour={true}
+                            display={Platform.OS === 'ios' ? 'inline' : 'default'}
                             onChange={AnnounceOnChange}
-                          />
-                        )}
+                            style={{ backgroundColor: 'white' }}
+                          /> )
+                        }
                       </View>
 
                       <Text style={styles.HeaderText}>วันที่มีผลบังคับใช้</Text>
                       <View>
-                        <Pressable onPress={()=>{setEnforceshow(true)}} style={styles.DateSelect}>
-                          <Text>{enforceDate.toDateString()}</Text>
-                        </Pressable>
-                        {enforceshow && (
-                          <DateTimePicker
-                            testID="dateTimePicker"
-                            value={enforceDate}
-                            mode={'date'}
-                            is24Hour={true}
-                            onChange={EnforceOnChange}
-                          />
+                        { !enforceshow? 
+                        (
+                          <Pressable onPress={()=>{setEnforceshow(true)}} style={styles.DateSelect}>
+                            <Text>{enforceDate.toDateString()}</Text>
+                          </Pressable>
+                        ) : 
+                        (
+                          <Pressable onPress={()=>{setEnforceshow(false)}} style={styles.Closebutton}>
+                            <Text>Close</Text>
+                          </Pressable>
+                        )}
+                        { enforceshow && (
+                        <DateTimePicker
+                          testID="dateTimePicker"
+                          value={enforceDate}
+                          mode={'date'}
+                          display={Platform.OS === 'ios' ? 'inline' : 'default'}
+                          onChange={EnforceOnChange}
+                          style={{ backgroundColor: 'white' }}
+                        />
                         )}
                       </View>
 
                       <Text style={styles.HeaderText}>วันที่ยกเลิก</Text>
                       <View>
-                        <Pressable onPress={()=>{setCancelshow(true)}} style={styles.DateSelect}>
-                          <Text>{cancelDate.toDateString()}</Text>
-                        </Pressable>
-                        {cancelshow && (
+                        { !cancelshow? 
+                          (
+                            <Pressable onPress={()=>{setCancelshow(true)}} style={styles.DateSelect}>
+                              <Text>{cancelDate.toDateString()}</Text>
+                            </Pressable>
+                          ) : 
+                          (
+                            <Pressable onPress={()=>{setCancelshow(false)}} style={styles.Closebutton}>
+                              <Text>Close</Text>
+                            </Pressable>
+                          )}
+                          { cancelshow && (
                           <DateTimePicker
                             testID="dateTimePicker"
                             value={cancelDate}
                             mode={'date'}
-                            is24Hour={true}
+                            display={Platform.OS === 'ios' ? 'inline' : 'default'}
                             onChange={CancelOnChange}
+                            style={{ backgroundColor: 'white' }}
                           />
                         )}
                       </View>
@@ -344,8 +373,13 @@ const styles = StyleSheet.create({
     backgroundColor: '#fff',
   },
   DateSelect:{
-    width:'100%',
     backgroundColor:'lightgray',
+    borderRadius: 10,
+    padding: 10,
+  },
+  Closebutton :{
+    backgroundColor:'transparent',
+    alignItems: 'flex-end',
     borderRadius: 10,
     padding: 10,
   },
