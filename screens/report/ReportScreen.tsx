@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import { StyleSheet, TouchableOpacity, ScrollView, TextInput, Pressable } from 'react-native';
+import React, { useState, useEffect } from 'react';
+import { StyleSheet, TouchableOpacity, ScrollView, Pressable, LogBox, Appearance } from 'react-native';
 import { Fontisto, MaterialIcons } from '@expo/vector-icons';
 
 import Colors from '../../constants/Colors';
@@ -12,6 +12,7 @@ import { useNavigation } from '@react-navigation/native';
 
 import { ColorStyle } from '../../style/ColorStyle';
 import ProgressCircle from 'react-native-progress-circle'
+import Timeline from 'react-native-timeline-flatlist';
 
 export function ReportScreen() {
     const [locationList, setLocation] = useState(LocationList)
@@ -29,7 +30,7 @@ export function ReportScreen() {
   
               {/* title & content */}
               <View style={styles.ContentWrapper}>
-                <Text style={styles.TextHeader}>{ LocationContentModel.location }</Text>
+                <Text style={[styles.TextHeader, {color: Appearance.getColorScheme()=='dark'? '#fff':'#000' }]}>{ LocationContentModel.location }</Text>
                 <Text style={[styles.TextContent, ColorStyle.Grey]}>{ LocationContentModel.business }</Text>
               </View>
   
@@ -54,16 +55,21 @@ export function ReportScreen() {
 
 export function ReportLocationScreen() {
   const [content, setContent] = useState(ReportDetail)
+  const navigation =  useNavigation()
+
+  useEffect(() => {
+    LogBox.ignoreLogs(['VirtualizedLists should never be nested']);
+  }, [])
 
   const ProgressElement = (content.StatusTask).map((item, index) => {
     return(
-      <View key={index} style={{backgroundColor:'#fff'}}>
-        <Text style={styles.TextHeader}>{item.status} ({item.total}) </Text>
-        <Pressable style={styles.MoreTask}>
-          <Text>งานทั้งหมด</Text>
-          <MaterialIcons name="keyboard-arrow-right" size={30} />
-        </Pressable>
-      </View>
+      {time: index+1, 
+        title: <Text style={styles.TextHeader}>{item.status} ({item.total}) </Text> ,
+        description:  <Pressable style={styles.MoreTask} onPress={() => navigation.navigate('ReportTaskProgress')}>
+                        <Text style={styles.TextContent}>งานทั้งหมด</Text>
+                        <MaterialIcons name="keyboard-arrow-right" size={30} />
+                      </Pressable>
+      }
     )
   })
 
@@ -76,7 +82,7 @@ export function ReportLocationScreen() {
             {/* icon */}
             <View style={styles.IconWrapper}>
               <Fontisto name="map-marker-alt" size={30} color={ ColorStyle.Grey.color } style={{ marginHorizontal: 10 }} />
-              <Text style={styles.TextHeader}>{ content.location }</Text>
+              <Text style={[styles.TextHeader, {color: Appearance.getColorScheme()=='dark'? '#fff':'#000' }]}>{ content.location }</Text>
             </View>
 
             {/* dashboard */}
@@ -99,7 +105,8 @@ export function ReportLocationScreen() {
                 </View>
               </View>
               
-              <View style={styles.DashboardContent}>
+              {/* เกี่ยวข้อง | ไม่เกี่ยวข้อง | สอดคล้อง | ไม่สอดคล้อง */}
+              {/* <View style={styles.DashboardContent}>
                 <View style={[styles.DashboardText, {alignItems:'center'}]}>
                   <Text style={styles.TextContent}>เกี่ยวข้อง</Text>
                   <Text>{content.reletedLaw}</Text>
@@ -125,20 +132,30 @@ export function ReportLocationScreen() {
                   <Text style={styles.TextContent}>ไม่สอดคล้อง</Text>
                   <Text>{content.NonconsistLaw}</Text>
                 </View>
-              </View>
+              </View> */}
               
               
               
             </View>
 
             {/* progress */}
-            <Text style={styles.TextHeader}>สถานะงานทั้งหมด</Text>
-            <View style={styles.TaskStatusWrapper}>
-              {ProgressElement}
+            <View>
+              <Text style={[styles.TextHeader, {color: Appearance.getColorScheme()=='dark'? '#fff':'#000' }]}>สถานะงานทั้งหมด</Text>
+              <View style={styles.TaskStatusWrapper}>
+                <Timeline
+                  showTime={false}
+                  lineColor={"#13AF82"}
+                  lineWidth={5}
+                  innerCircle={'dot'}
+                  circleColor={"#13AF82"}
+                  circleSize={20}
+                  data={ProgressElement}
+                />
+              </View>
             </View>
-          </View>
-          
+            
 
+          </View>
         </View>
       </ScrollView>
     </View>
@@ -177,10 +194,12 @@ const styles = StyleSheet.create({
     fontSize: 18,
     fontFamily: 'Mitr_500Medium',
     marginTop: 5,
+    color: '#000',
   },
   TextContent: {
     fontSize: 15,
-    fontFamily: 'Mitr_400Regular'
+    fontFamily: 'Mitr_400Regular',
+    color: '#000',
   },
   MoreWrapper: {
     marginLeft: 'auto',

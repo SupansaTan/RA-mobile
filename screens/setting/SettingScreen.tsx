@@ -1,10 +1,12 @@
 import React, { useState } from 'react';
-import { StyleSheet, Switch, Platform, TouchableOpacity, TextInput } from 'react-native';
+import { StyleSheet, Switch, Platform, TouchableOpacity, TextInput, Keyboard, InputAccessoryView, Button } from 'react-native';
 import { Fontisto, FontAwesome } from '@expo/vector-icons';
 import Avatar from '../../assets/images/avatar.svg';
 import Colors from '../../constants/Colors';
 import { Text, View, MaterialIcons } from '../../components/Themed';
 import { RootTabScreenProps } from '../../types';
+import { DarkTheme } from '@react-navigation/native';
+import { ClipPath } from 'react-native-svg';
 
 export default function SettingScreen({ navigation }: RootTabScreenProps<'Setting'>) {
   const [username, setUsername] = useState<string>('ฟ้า ทลายโจร')
@@ -23,7 +25,7 @@ export default function SettingScreen({ navigation }: RootTabScreenProps<'Settin
             onPress={() => navigation.navigate('Profile')}>
             ดูโปรไฟล์
           </Text>
-          <MaterialIcons style={styles.RightArrow} name="keyboard-arrow-right" size={24} />
+          <MaterialIcons style={styles.RightArrow} name="keyboard-arrow-right" size={24} color='black' />
         </View>
       </View>
 
@@ -45,18 +47,27 @@ export default function SettingScreen({ navigation }: RootTabScreenProps<'Settin
             value={enabledNotify}
           />
         </View>
+        
         {enabledNotify? 
-        <View style={styles.ContentContainer} >
-          <Text style={styles.ItemText}>วันแจ้งเตือนล่วงหน้า</Text>
-          <View style={styles.InputWrapper}>
-            <TextInput
-            style={styles.InputText}
-            onChangeText={onChangeNumber}
-            value={number}
-            keyboardType="numeric"
-            />
-          </View>  
-        </View> : <></>
+        <View style={styles.AdvanceDateWrapper} >
+          <Text style={[styles.ItemText, {color: '#000'}]}>วันแจ้งเตือนล่วงหน้า</Text>
+            <View style={styles.InputWrapper}>
+              <TextInput
+              style={styles.InputText}
+              onChangeText={onChangeNumber}
+              value={number}
+              keyboardType="numeric"
+              inputAccessoryViewID='Close'
+              />
+              <InputAccessoryView nativeID='Close'>
+                <View style={styles.KeyboardBT}>
+                  <Button onPress={()=> Keyboard.dismiss()} title="Close"></Button>
+                </View>
+              </InputAccessoryView>
+            </View>
+          </View>
+            
+        : <></>
         }
         
 
@@ -64,7 +75,7 @@ export default function SettingScreen({ navigation }: RootTabScreenProps<'Settin
         <View style={styles.ItemWrapper}>
           <View style={styles.ItemTitleWrapper}>
             <Fontisto name="night-clear" size={24} color="black" style={styles.ItemIcon} />
-            <Text style={styles.ItemText}>โหมดกลางคืน</Text>
+            <Text style={styles.ItemText}>โหมดกลางคืน </Text>
           </View>
           <Switch
             trackColor={{ false: "#eeeeee", true: "#28bc8e" }}
@@ -76,7 +87,7 @@ export default function SettingScreen({ navigation }: RootTabScreenProps<'Settin
         </View>
 
         {/* log out */}
-        <TouchableOpacity>
+        <TouchableOpacity onPress={()=> navigation.navigate('SignIn')}>
           <View style={styles.ItemWrapper}>
             <View style={[styles.ItemTitleWrapper, { paddingTop: Platform.OS === 'ios' ? 5:10 }]}>
               <FontAwesome name="sign-out" size={24} color="black" style={styles.ItemIcon} />
@@ -98,12 +109,12 @@ const styles = StyleSheet.create({
     alignItems: 'flex-start',
     justifyContent: 'flex-start',
   },
-  ContentContainer: {
+  AdvanceDateWrapper: {
     flexDirection: 'row',
     padding: 10,
     marginVertical: 5,
     backgroundColor: '#fff',
-    borderRadius: 10
+    borderRadius: 10,
   },
   UserInfoWrapper: {
     width: '100%',
@@ -128,7 +139,8 @@ const styles = StyleSheet.create({
   },
   SeeProfileText: {
     fontSize: 16,
-    fontFamily: 'Mitr_400Regular'
+    fontFamily: 'Mitr_400Regular',
+    color: '#000'
   },
   RightArrow: {
     alignItems: 'center',
@@ -146,11 +158,11 @@ const styles = StyleSheet.create({
   },
   ItemWrapper: {
     width: '100%',
-    paddingRight: 10,
+    paddingRight: 20,
     paddingTop: Platform.OS === 'ios' ? 12:0,
     flexDirection: 'row',
     alignItems: 'center',
-    justifyContent: 'space-between'
+    justifyContent: 'space-between',
   },
   ItemTitleWrapper: {
     flexDirection: 'row',
@@ -158,15 +170,17 @@ const styles = StyleSheet.create({
   },
   ItemText: {
     fontSize: 16,
-    fontFamily: 'Mitr_400Regular'
+    fontFamily: 'Mitr_400Regular',
   },
   ItemIcon: {
-    marginRight: 10
+    marginRight: 10,
+    color: DarkTheme.dark === true ? 'black':'white'
   },
   InputWrapper: {
     marginLeft: 150,
     marginRight: 10,
     width: 50,
+    borderRadius: 10,
   },
   InputText: {
     textAlign: 'center',
@@ -174,5 +188,11 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     fontSize: 16,
     fontFamily: 'Mitr_400Regular',
+  },
+  KeyboardBT: {
+    flexDirection: 'row',
+    justifyContent: 'flex-end',
+    alignItems: 'center',
+    paddingHorizontal: 8
   },
 });

@@ -5,6 +5,7 @@ export interface TaskContentModel {
   datetime: string
   timestatus: TaskDatetimeStatus
   assign?: string
+  location?: string
 }
 
 export interface TaskItemModel {

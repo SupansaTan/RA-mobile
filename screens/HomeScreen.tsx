@@ -1,16 +1,23 @@
 import React, { useState } from 'react';
-import { StyleSheet, TouchableOpacity, ScrollView } from 'react-native';
-import { Ionicons} from '@expo/vector-icons';
+import { StyleSheet, TouchableOpacity, ScrollView, Appearance } from 'react-native';
+import { Ionicons, MaterialCommunityIcons } from '@expo/vector-icons';
 
 import { Text, View, MaterialIcons } from '../components/Themed';
 import { RootTabScreenProps } from '../types';
 import { UserInfo } from '../constants/UserInfo';
-import { MenuList } from '../constants/Menu';
+import { MenuList } from '../constants/Home';
+import { IncomingTask } from '../constants/Task';
+import { TaskContentModel } from '../model/Task';
 
 import TrackingIcon from '../assets/images/tracking.svg';
 
+import { CardStyle } from '../style/CardStyle';
+import { TaskDatetimeStatus } from '../enum/TaskDatetimeStatus.enum';
+import { ColorStyle } from '../style/ColorStyle';
+
 export default function HomeScreen({ navigation }: RootTabScreenProps<'Home'>) {
   const [userinfo, setUserinfo] = useState(UserInfo)
+  const [taskList, setTaskList] = useState(IncomingTask)
 
   const getMenuIcon = (name: string) => {
     switch(name) {
@@ -36,11 +43,38 @@ export default function HomeScreen({ navigation }: RootTabScreenProps<'Home'>) {
     )
   })
 
+  const TaskElement = (contentItem: TaskContentModel, i: number) => {
+    return(
+      <View key={'content' + i}>
+        <TouchableOpacity >
+          <View style={ getCardColorClass(contentItem.timestatus) }>
+            <Text style={styles.TextHeader}>{ contentItem.title }</Text>
+            <Text style={[styles.TextContent, {color: '#6C6C6C'}]}>{ contentItem.location }</Text>
+
+            <View style={styles.DatetimeWrapper}>
+              <MaterialCommunityIcons name="calendar-clock" size={20}
+                color={ getTextColor(contentItem.timestatus) } 
+                style={{ marginRight: 5 }} />
+              <Text style={[styles.TextContent, 
+                { color: getTextColor(contentItem.timestatus) }]}>
+                { contentItem.datetime }
+              </Text>
+            </View>
+          </View>
+        </TouchableOpacity>
+      </View>
+    )
+  }
+
+  const TaskElementList = taskList.map((content: TaskContentModel, index: number) => {
+        return TaskElement(content, index)
+      })
+
   return (
     <View style={styles.Container}>
       <ScrollView contentContainerStyle={{ flexGrow:1 }}>
         <View style={styles.ContentContainer}>
-          <Text style={[styles.TextHeader, {marginVertical:10}]}> สวัสดี {userinfo.Fname}</Text>
+          <Text style={[styles.TextHeader, {color: '#6C6C6C', marginTop: 10,}]}> สวัสดี {userinfo.Fname}</Text>
 
           <TouchableOpacity activeOpacity={0.5} onPress={() => navigation.navigate('Task')}>
             <View style={styles.MenuWrapper}>
@@ -52,14 +86,41 @@ export default function HomeScreen({ navigation }: RootTabScreenProps<'Home'>) {
           <View style={styles.MenuContainer} >
             { MenuListElement }
           </View>
-         
-
         </View>
+          
+        <View>
+          <Text style={[styles.TextHeader,{color:AppearanceColor}]}>ใกล้ถึงกำหนด</Text>
+          {TaskElementList}
+        </View>
+
       </ScrollView>
     </View>
   );
 }
 
+const getCardColorClass = (status: TaskDatetimeStatus) => {
+  switch(status) {
+    case TaskDatetimeStatus.Overdue:
+      return CardStyle.Danger;
+    case TaskDatetimeStatus.Today:
+      return CardStyle.Warning;
+    case TaskDatetimeStatus.Remain:
+      return CardStyle.Grey;
+  }
+}
+
+const getTextColor = (status: TaskDatetimeStatus) => {
+  switch(status) {
+    case TaskDatetimeStatus.Overdue:
+      return ColorStyle.Danger.color;
+    case TaskDatetimeStatus.Today:
+      return ColorStyle.Warning.color;
+    case TaskDatetimeStatus.Remain:
+      return ColorStyle.Grey.color;
+  }
+}
+
+const AppearanceColor = Appearance.getColorScheme()==='dark'? '#fff':'#000'
 
 const styles = StyleSheet.create({
   Container: {
@@ -85,7 +146,12 @@ const styles = StyleSheet.create({
   TextHeader: {
     fontSize: 18,
     fontFamily: 'Mitr_500Medium',
-    color: '#6C6C6C',
+    color: '#000',
+  },
+  TextContent: {
+    fontSize: 16,
+    fontFamily: 'Mitr_500Medium',
+    color: '#000',
   },
   MenuContainer: {
     flexDirection: 'row',
@@ -109,7 +175,13 @@ const styles = StyleSheet.create({
   MenuText: {
     textAlign: 'center',
     fontSize: 18,
-    fontFamily: 'Mitr_500Medium'
-  }
+    fontFamily: 'Mitr_500Medium',
+    color: '#000',
+  },
+  DatetimeWrapper: {
+    marginTop: 2,
+    flexDirection: 'row',
+    backgroundColor: 'transparent'
+  },
 
 });

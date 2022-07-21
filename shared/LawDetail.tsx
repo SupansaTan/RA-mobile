@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { StyleSheet, ScrollView, FlatList, TouchableOpacity } from 'react-native';
+import { StyleSheet, ScrollView, FlatList, TouchableOpacity, Appearance } from 'react-native';
 import { AntDesign  } from '@expo/vector-icons';
 
 import { Text, View } from '../components/Themed';
@@ -13,38 +13,38 @@ export default function LawDetail({ path }: { path: string }) {
   const Systemelement = systemList.map((item, index) => {
     return(
       <View key={index} style={styles.SystemWrapper}>
-        <Text>{'\u2022' + ' '}{item}</Text>
+        <Text style={styles.TextContentBox1}>{'\u2022' + ' '}{item}</Text>
       </View>
     )
   })
 
   return (
     <View style={styles.Container}>
-      <Text style={styles.TextHeader}>{lawinfo.ActType} </Text>
+      <Text style={[styles.TextHeader, {color: Appearance.getColorScheme()==='dark'? '#fff':'#000'}]}>{lawinfo.ActType} </Text>
 
       <ScrollView contentContainerStyle={{ flexGrow:1 }}>
         <View style={styles.ContentContainer}> 
           <Text style={styles.TextHeader}>ชื่อกฎหมาย: </Text>
-          <Text style={{marginVertical:10}}> {lawinfo.Title} </Text>
+          <Text style={styles.TextContentBox1}> {lawinfo.Title} </Text>
 
           <View style={styles.DateWrapper}>
             <View style={styles.DateItem}>
               <Text style={styles.TextHeader}>วันที่ประกาศ </Text>
-              <Text> {lawinfo.AnnounceDate} </Text>
+              <Text style={styles.TextContentBox1}> {lawinfo.AnnounceDate} </Text>
             </View>
 
             <View style={{backgroundColor:'#D1D1D1', width:1}}/>
 
             <View style={styles.DateItem}>
               <Text style={styles.TextHeader}>วันที่มีผลบังคับใช้ </Text>
-              <Text> {lawinfo.EnforceDate} </Text>
+              <Text style={styles.TextContentBox1}> {lawinfo.EnforceDate} </Text>
             </View>
 
             <View style={{backgroundColor:'#D1D1D1', width:1}}/>
 
             <View style={styles.DateItem}>
               <Text style={styles.TextHeader}>วันที่ยกเลิก </Text>
-              <Text> {lawinfo.CancelDate} </Text>
+              <Text style={styles.TextContentBox1}> {lawinfo.CancelDate} </Text>
             </View>
           </View>
           
@@ -52,16 +52,16 @@ export default function LawDetail({ path }: { path: string }) {
 
         <View style={styles.ContentContainer}>
           <Text style={styles.TextHeader}>หมวดประเภทกฎหมาย </Text>
-          <Text style={styles.TextContent}> {lawinfo.Category} </Text>
+          <Text style={styles.TextContentBox2}> {lawinfo.Category} </Text>
 
           <Text style={styles.TextHeader}>ประเภทกฎหมาย </Text>
-          <Text style={styles.TextContent}> {lawinfo.LegislationUnit} </Text>
+          <Text style={styles.TextContentBox2}> {lawinfo.LegislationUnit} </Text>
 
           <Text style={styles.TextHeader}>ประเภทพระราชบัญญัติ </Text>
-          <Text style={styles.TextContent}> {lawinfo.ActType} </Text>
+          <Text style={styles.TextContentBox2}> {lawinfo.ActType} </Text>
 
           <Text style={styles.TextHeader}>ประเภทกฎกระทรวง,ระเบียบ,ประกาศ </Text>
-          <Text style={styles.TextContent}> {lawinfo.LegislationType} </Text>
+          <Text style={styles.TextContentBox2}> {lawinfo.LegislationType} </Text>
         </View>
 
         <View style={styles.ContentContainer}>
@@ -85,7 +85,7 @@ const styles = StyleSheet.create({
   Container: {
     flex: 1,
     flexGrow:1,
-    paddingHorizontal: 10,
+    paddingLeft: 5,
     marginVertical: 10,
     alignItems: 'flex-start',
     justifyContent: 'center',
@@ -100,11 +100,18 @@ const styles = StyleSheet.create({
   TextHeader: {
     fontSize: 16,
     fontFamily: 'Mitr_500Medium',
+    color: '#000',
   },
-  TextContent: {
+  TextContentBox1: {
+    marginTop:5,
+    marginBottom: 10,
+    color: '#000',
+  },
+  TextContentBox2: {
     marginLeft:20, 
     marginTop:5,
     marginBottom: 10,
+    color: '#000',
   },
   DateWrapper: {
     backgroundColor: '#fff',

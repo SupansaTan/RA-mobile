@@ -58,6 +58,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'flex-start',
     justifyContent: 'center',
+    paddingTop:10,
   },
   ContentContainer: {
     flexDirection: 'row',
@@ -77,11 +78,11 @@ const styles = StyleSheet.create({
   },
   TextHeader: {
     fontSize: 18,
-    fontFamily: 'Mitr_500Medium'
+    fontFamily: 'Mitr_500Medium',
   },
   TextContent: {
     fontSize: 15,
-    fontFamily: 'Mitr_400Regular'
+    fontFamily: 'Mitr_400Regular',
   },
   MoreWrapper: {
     marginLeft: 'auto',

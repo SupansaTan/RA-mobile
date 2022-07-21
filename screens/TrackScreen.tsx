@@ -140,7 +140,7 @@ export function TrackLocationScreen() {
 
       <View style={[ViewStyle.RowContainer, { marginVertical: 10 }]}>
         <ScrollView contentContainerStyle={{ flexGrow:1 }}>
-        { status==='inprogress' ? TaskElementList(taskList.successful):TaskElementList(taskList.inprogress)}
+        { status==='inprogress' ? TaskElementList(taskList.inprogress):TaskElementList(taskList.successful)}
         </ScrollView>
       </View>
     </View>
@@ -195,11 +195,13 @@ const styles = StyleSheet.create({
   },
   TextHeader: {
     fontSize: 20,
-    fontFamily: 'Mitr_500Medium'
+    fontFamily: 'Mitr_500Medium',
+    color: '#000',
   },
   TextContent: {
     fontSize: 15,
-    fontFamily: 'Mitr_500Medium'
+    fontFamily: 'Mitr_500Medium',
+    color: '#000',
   },
   TaskWrapper:{
     flexDirection: 'row',

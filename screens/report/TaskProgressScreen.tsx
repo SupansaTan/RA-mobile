@@ -1,26 +1,26 @@
 import React, { useState } from 'react';
 import { StyleSheet, TouchableOpacity, ScrollView, TextInput } from 'react-native';
 import { MaterialCommunityIcons, Feather, AntDesign } from '@expo/vector-icons';
+import { useNavigation } from '@react-navigation/native';
 
 import { Text, View } from '../../components/Themed';
 import { TaskContentModel } from '../../model/Task';
-import { TaskData } from '../../constants/Task'
+import { TaskList } from '../../constants/Report';
 
+import { ViewStyle } from '../../style/ViewStyle';
 import { CardStyle } from '../../style/CardStyle';
 import { TaskDatetimeStatus } from '../../enum/TaskDatetimeStatus.enum';
 import { ColorStyle } from '../../style/ColorStyle';
-import { useNavigation } from '@react-navigation/native';
 
-export default function TaskLocationScreen() {
-  const [taskList, setTaskList] = useState(TaskData)
+export function ReportTaskProgressScreen() {
+  const [taskList, setTaskList] = useState(TaskList)
   const [keyword, onChangeKeyword] = useState<string>('')
   const navigation =  useNavigation()
-  
 
   const ContentElement = (contentItem: TaskContentModel, i: number, type: string) => {
     return(
       <View key={'content' + i}>
-        <TouchableOpacity onPress={()=> navigation.navigate(type=='relevant'? 'TaskRelevantDetail' :type=='consistance'? 'TaskConsistanceDetail' :type=='relevantapprove'? 'TaskRADetail': 'TaskCADetail') } >
+        <TouchableOpacity onPress={() => navigation.navigate('ReportTaskDetail')}>
           <View style={ getCardColorClass(contentItem.timestatus) }>
             <Text style={styles.TextHeader}>{ contentItem.title }</Text>
 
@@ -52,7 +52,7 @@ export default function TaskLocationScreen() {
       <View key={index}>
         {/* date */}
         <Text style={styles.TypeText}>
-          { item.type=='relevant' ? 'ประเมินความเกี่ยวข้อง':item.type=='consistance'? 'ประเมินความสอดคล้อง':item.type=='relevantapprove'? 'รออนุมัติความเกี่ยวข้อง':'รออนุมัติความสอดคล้อง' }
+          { item.type=='relevant' ? 'ประเมินความเกี่ยวข้อง':item.type=='consistance'? 'ประเมินความสอดคล้อง':'รออนุมัติ' }
         </Text>
 
         {/* content */}
@@ -65,7 +65,6 @@ export default function TaskLocationScreen() {
     <View style={styles.Container}>
       <ScrollView contentContainerStyle={{ flexGrow:1 }}>
 
-        <View style={styles.SearchWrapper}>
           {/* search */}
           <View style={styles.InputWrapper } >
             <Feather name='search' style={{marginHorizontal:5}} size={20} color={'#6c6c6c'}  />
@@ -76,15 +75,6 @@ export default function TaskLocationScreen() {
               placeholder='พ.ร.บ/กฎหมาย'
             />
           </View>
-
-          {/* filter */}
-          <TouchableOpacity>
-            <View style={styles.Filter}>
-              <AntDesign name="filter" size={25} color={'#13AF82'} />
-              <Text style={[styles.AssignText, {color:'#13AF82'}]}>ตัวกรอง</Text>
-            </View>
-          </TouchableOpacity>
-        </View>
 
         {/* task */}
         { TaskElement }
@@ -124,7 +114,6 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'flex-start',
     justifyContent: 'center',
-    paddingTop:10,
   },
   TypeText: {
     fontSize: 16,
@@ -179,21 +168,14 @@ const styles = StyleSheet.create({
   },
   TextContent: {
     fontSize: 13,
-    fontFamily: 'Mitr_400Regular',
-    color: '#000',
-  },
-  SearchWrapper: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    marginHorizontal: 5,
-    height: 50,
+    fontFamily: 'Mitr_400Regular'
   },
   InputWrapper:{
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'flex-start',
     height: 40,
-    width: '75%',
+    width:'100%',
     backgroundColor: '#eeeeee',
     borderRadius: 20,
     marginHorizontal: 5,
@@ -202,7 +184,6 @@ const styles = StyleSheet.create({
     fontSize: 18,
     fontFamily: 'Mitr_400Regular',
     height: 40,
-    width:250,
   },
   Filter:{
     flexDirection: 'row',

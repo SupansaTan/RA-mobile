@@ -20,11 +20,27 @@ export type RootStackParamList = {
   Tracking: undefined;
   TrackingLocation: undefined;
   TaskLocation: undefined;
+  TaskRelevantDetail: undefined;
+  TaskRelevantAssessment: undefined;
+  TaskRelevantResult: undefined;
+  TaskConsistanceDetail: undefined;
+  TaskConsistanceAssessment: undefined;
+  TaskConsistanceResult: undefined;
+  TaskRADetail: undefined;
+  TaskRAAssessment: undefined;
+  TaskRAResult: undefined;
+  TaskCADetail: undefined;
+  TaskCAAssessment: undefined;
+  TaskCAResult: undefined;
   LawSearch: undefined;
   Report: undefined;
   ReportLocation: undefined;
+  ReportTaskProgress: undefined;
+  ReportTaskDetail: undefined;
   Modal: undefined;
   NotFound: undefined;
+  SignIn: undefined;
+  ResetPassword: undefined;
 };
 
 export type RootStackScreenProps<Screen extends keyof RootStackParamList> = NativeStackScreenProps<

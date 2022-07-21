@@ -48,3 +48,30 @@ export const LawList = [
         LegislationType: 'ประกาศ'
     },
 ]
+
+export const lawtypeList = [
+    {name: 'Law (กฎหมาย)'},
+    {name: 'Ordinance (ข้อบัญญัติ)'},
+]
+  
+export const ministryList = [
+    {name: 'Defense'},
+    {name: 'Finance'},
+    {name: 'Foreign Affairs'},
+    {name: 'Tourism and Sports'},
+    {name: 'Social Development and Human Security'},
+    {name: 'Higher Education, Science, Research and Innovation'},
+    {name: 'Agriculture and Cooperatives'},
+    {name: 'Transport '},
+    {name: 'Energy '},
+    {name: 'Commerce '},
+]
+
+export const actList = [
+    {name: 'พระราชบัญญัติข่าวกรองแห่งชาติ'},
+    {name: 'พระราชบัญญัติข้อมูลข่าวสาร'},
+    {name: 'พระราชบัญญัติคลังสินค้า'},
+    {name: 'พระราชบัญญัติเงินเดือน'},
+    {name: 'พระราชบัญญัติจดทะเบียนเครื่องจักร'},
+    {name: 'พระราชบัญญัติวัตถุอันตราย'},
+]

@@ -121,11 +121,13 @@ const styles = StyleSheet.create({
   },
   TextHeader: {
     fontSize: 18,
-    fontFamily: 'Mitr_500Medium'
+    fontFamily: 'Mitr_500Medium',
+    color: '#000',
   },
   TextContent: {
     fontSize: 15,
-    fontFamily: 'Mitr_400Regular'
+    fontFamily: 'Mitr_400Regular',
+    color: '#000',
   },
   NotityBadge: {
     width: 10,

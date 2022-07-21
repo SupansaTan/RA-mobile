@@ -1,22 +1,18 @@
-import React, { useState } from 'react';
-import { StyleSheet, TouchableOpacity, ScrollView, TextInput, Modal, Pressable } from 'react-native';
-import { MaterialCommunityIcons, Feather, AntDesign} from '@expo/vector-icons';
-import { Picker } from "@react-native-picker/picker";
+import React, { useState, useMemo } from 'react';
+import { StyleSheet, TouchableOpacity, ScrollView, TextInput, Modal, Pressable, Platform } from 'react-native';
+import { Feather, AntDesign} from '@expo/vector-icons';
 import DateTimePicker from '@react-native-community/datetimepicker';
+import { Picker, onOpen } from 'react-native-actions-sheet-picker';
 
-import { Text, View, MaterialIcons } from '../../components/Themed';
+import { Text, View } from '../../components/Themed';
 import { RootTabScreenProps } from '../../types';
-import { LawList } from '../../constants/Law';
+import { LawList, lawtypeList, ministryList, actList } from '../../constants/Law';
 import { LawContentModel } from '../../model/Law';
 
 export default function SearchScreen({ navigation }: RootTabScreenProps<'Search'>) {
   const [keyword, onChangeKeyword] = useState<string>('')
   const [lawdata, setLawdata] = useState(LawList)
   const [modalVisible, setModalVisible] = useState(false)
-  const [law, setLaw] = useState('Unknown')
-  const [actType, setActType] = useState('Unknown')
-  const [legislationType, setLegislationType] = useState('Unknown')
-  const [legislationUnit, setLegislationUnit] = useState('Unknown')
 
   const [announceDate, setAnnounceDate] = useState(new Date())
   const [announceshow, setAnnounceshow] = useState(false);
@@ -24,6 +20,47 @@ export default function SearchScreen({ navigation }: RootTabScreenProps<'Search'
   const [enforceshow, setEnforceshow] = useState(false);
   const [cancelDate, setCancelDate] = useState(new Date())
   const [cancelshow, setCancelshow] = useState(false);
+
+  const clearPicker = { name: 'Select'}
+
+  const [lawtype, setLawtype] = useState(lawtypeList);
+  const [lawtypeselected, setLawtypeSelected] = useState(clearPicker);
+
+  const [ministry, setMinistry] = useState(ministryList);
+  const [ministryselected, setMinistrySelected] = useState(clearPicker);
+  const [ministryquery, setMinistryQuery] = useState('');
+
+  const [act, setAct] = useState(actList);
+  const [actselected, setActSelected] = useState(clearPicker);
+  const [actquery, setActQuery] = useState('');
+
+
+  const filteredMinistry = useMemo(() => {
+    if (ministry && ministry.length > 0) {
+      return ministry.filter((item) =>
+        item.name
+          .toLocaleLowerCase('en')
+          .includes(ministryquery.toLocaleLowerCase('en'))
+      );
+    }
+  }, [ministry, ministryquery]);
+
+  const onSearchMinistry = (text:string) => {
+    setMinistryQuery(text);
+  }
+
+  const filteredAct = useMemo(() => {
+    if (act && act.length > 0) {
+      return act.filter((item) =>
+        item.name
+          .includes(actquery.toLocaleLowerCase('th'))
+      );
+    }
+  }, [act, actquery]);
+
+  const onSearchAct = (text:string) => {
+    setActQuery(text);
+  }
 
   const AnnounceOnChange = (event:any, selectedDate:any) => {
     const currentDate = selectedDate;
@@ -33,8 +70,10 @@ export default function SearchScreen({ navigation }: RootTabScreenProps<'Search'
 
   const EnforceOnChange = (event:any, selectedDate:any) => {
     const currentDate = selectedDate;
-    setEnforceshow(false);
     setEnforceDate(currentDate);
+    if (Platform.OS === 'android') {
+      setEnforceshow(false);
+    }
   };
 
   const CancelOnChange = (event:any, selectedDate:any) => {
@@ -57,10 +96,9 @@ export default function SearchScreen({ navigation }: RootTabScreenProps<'Search'
   })
 
   const FilterClear = () => {
-    setLaw('Unknown')
-    setActType('Unknown')
-    setLegislationType('Unknown')
-    setLegislationUnit('Unknown')
+    setLawtypeSelected(clearPicker);
+    setMinistrySelected(clearPicker);
+    setActSelected(clearPicker);
     setAnnounceDate(new Date())
     setEnforceDate(new Date())
     setCancelDate(new Date())
@@ -113,98 +151,129 @@ export default function SearchScreen({ navigation }: RootTabScreenProps<'Search'
                   <View style={[styles.FilterWrapper, {marginTop:10, marginBottom:20}]}>
                     <ScrollView contentContainerStyle={{ flexGrow:1 }}>
 
-                      <Text style={styles.HeaderText}>ค้นหาจาก</Text>
-                      <Picker
-                          selectedValue={law}
-                          onValueChange={(value, index) => setLaw(value)}
-                          mode="dropdown"
-                          style={styles.picker}
-                      >
-                          <Picker.Item label="รายการกฎหมายทั้งหมด" value="Unknown" />
-                          <Picker.Item label="A" value="A" />
-                          <Picker.Item label="B" value="B" />
-                      </Picker>
-
                       <Text style={styles.HeaderText}>ประเภทกฎหมาย/ข้อกำหนด</Text>
-                      <Picker
-                          selectedValue={legislationType}
-                          onValueChange={(value, index) => setLegislationType(value)}
-                          mode="dropdown"
-                          style={styles.picker}
+                      <TouchableOpacity
+                        style={styles.picker}
+                        onPress={() => {
+                          onOpen('actType');
+                        }}
                       >
-                          <Picker.Item label="เลือกประเภทกฎหมาย/ข้อกำหนด" value="Unknown" />
-                          <Picker.Item label="A" value="A" />
-                          <Picker.Item label="B" value="B" />
-                      </Picker>
+                        <Text>{lawtypeselected.name}</Text>
+                      </TouchableOpacity>
+                      <Picker
+                        id="actType"
+                        data={lawtype}
+                        label="Select"
+                        setSelected={setLawtypeSelected}
+                      />
 
                       <Text style={styles.HeaderText}>กระทรวง</Text>
-                      <Picker
-                          selectedValue={legislationUnit}
-                          onValueChange={(value, index) => setLegislationUnit(value)}
-                          mode="dropdown"
-                          style={styles.picker}
+                      <TouchableOpacity
+                        style={styles.picker}
+                        onPress={() => {
+                          onOpen('ministry');
+                        }}
                       >
-                          <Picker.Item label="เลือกกระทรวง" value="Unknown" />
-                          <Picker.Item label="A" value="A" />
-                          <Picker.Item label="B" value="B" />
-                      </Picker>
+                        <Text>{ministryselected.name}</Text>
+                      </TouchableOpacity>
+                      <Picker
+                        id="ministry"
+                        data={filteredMinistry}
+                        label="Select"
+                        setSelected={setMinistrySelected}
+                        searchable={true}
+                        onSearch={onSearchMinistry}
+                      />
 
                       <Text style={styles.HeaderText}>พระราชบัญญัติ</Text>
-                      <Picker
-                          selectedValue={actType}
-                          onValueChange={(value, index) => setActType(value)}
-                          mode="dropdown"
-                          style={styles.picker}
+                      <TouchableOpacity
+                        style={styles.picker}
+                        onPress={() => {
+                          onOpen('act');
+                        }}
                       >
-                          <Picker.Item label="เลือกพระราชบัญญัติ" value="Unknown" />
-                          <Picker.Item label="A" value="A" />
-                          <Picker.Item label="B" value="B" />
-                      </Picker>
+                        <Text>{actselected.name}</Text>
+                      </TouchableOpacity>
+                      <Picker
+                        id="act"
+                        data={filteredAct}
+                        label="Select"
+                        setSelected={setActSelected}
+                        searchable={true}
+                        onSearch={onSearchAct}
+                      />
 
                       <Text style={styles.HeaderText}>วันที่ประกาศ</Text>
                       <View>
-                        <Pressable onPress={()=>{setAnnounceshow(true)}} style={styles.DateSelect}>
-                          <Text>{announceDate.toDateString()}</Text>
-                        </Pressable>
-                        {announceshow && (
+                        { !announceshow? 
+                          (
+                            <Pressable onPress={()=>{setAnnounceshow(true)}} style={styles.DateSelect}>
+                              <Text>{announceDate.toDateString()}</Text>
+                            </Pressable>
+                          ) : 
+                          (
+                            <Pressable onPress={()=>{setAnnounceshow(false)}} style={styles.Closebutton}>
+                              <Text>Close</Text>
+                            </Pressable>
+                          )}
+                          { announceshow && (
                           <DateTimePicker
                             testID="dateTimePicker"
                             value={announceDate}
                             mode={'date'}
-                            is24Hour={true}
+                            display={Platform.OS === 'ios' ? 'inline' : 'default'}
                             onChange={AnnounceOnChange}
-                          />
-                        )}
+                            style={{ backgroundColor: 'white' }}
+                          /> )
+                        }
                       </View>
 
                       <Text style={styles.HeaderText}>วันที่มีผลบังคับใช้</Text>
                       <View>
-                        <Pressable onPress={()=>{setEnforceshow(true)}} style={styles.DateSelect}>
-                          <Text>{enforceDate.toDateString()}</Text>
-                        </Pressable>
-                        {enforceshow && (
-                          <DateTimePicker
-                            testID="dateTimePicker"
-                            value={enforceDate}
-                            mode={'date'}
-                            is24Hour={true}
-                            onChange={EnforceOnChange}
-                          />
+                        { !enforceshow? 
+                        (
+                          <Pressable onPress={()=>{setEnforceshow(true)}} style={styles.DateSelect}>
+                            <Text>{enforceDate.toDateString()}</Text>
+                          </Pressable>
+                        ) : 
+                        (
+                          <Pressable onPress={()=>{setEnforceshow(false)}} style={styles.Closebutton}>
+                            <Text>Close</Text>
+                          </Pressable>
+                        )}
+                        { enforceshow && (
+                        <DateTimePicker
+                          testID="dateTimePicker"
+                          value={enforceDate}
+                          mode={'date'}
+                          display={Platform.OS === 'ios' ? 'inline' : 'default'}
+                          onChange={EnforceOnChange}
+                          style={{ backgroundColor: 'white' }}
+                        />
                         )}
                       </View>
 
                       <Text style={styles.HeaderText}>วันที่ยกเลิก</Text>
                       <View>
-                        <Pressable onPress={()=>{setCancelshow(true)}} style={styles.DateSelect}>
-                          <Text>{cancelDate.toDateString()}</Text>
-                        </Pressable>
-                        {cancelshow && (
+                        { !cancelshow? 
+                          (
+                            <Pressable onPress={()=>{setCancelshow(true)}} style={styles.DateSelect}>
+                              <Text>{cancelDate.toDateString()}</Text>
+                            </Pressable>
+                          ) : 
+                          (
+                            <Pressable onPress={()=>{setCancelshow(false)}} style={styles.Closebutton}>
+                              <Text>Close</Text>
+                            </Pressable>
+                          )}
+                          { cancelshow && (
                           <DateTimePicker
                             testID="dateTimePicker"
                             value={cancelDate}
                             mode={'date'}
-                            is24Hour={true}
+                            display={Platform.OS === 'ios' ? 'inline' : 'default'}
                             onChange={CancelOnChange}
+                            style={{ backgroundColor: 'white' }}
                           />
                         )}
                       </View>
@@ -296,12 +365,6 @@ const styles = StyleSheet.create({
     padding: 20,
     borderRadius: 15,
   },
-  picker: {
-    marginBottom: 10,
-    width: '100%',
-    backgroundColor:'lightgray',
-    
-  },
   FilterWrapper: {
     flexDirection:'row', 
     alignItems:'center', 
@@ -310,11 +373,20 @@ const styles = StyleSheet.create({
     backgroundColor: '#fff',
   },
   DateSelect:{
-    width:'100%',
     backgroundColor:'lightgray',
-    borderRadius: 2,
+    borderRadius: 10,
     padding: 10,
-    marginBottom:10,
+  },
+  Closebutton :{
+    backgroundColor:'transparent',
+    alignItems: 'flex-end',
+    borderRadius: 10,
+    padding: 10,
+  },
+  picker: {
+    backgroundColor: 'lightgray',
+    padding: 10,
+    borderRadius: 6,
   },
 
-});
+})
