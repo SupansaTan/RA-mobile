@@ -7,5 +7,5 @@ export interface LawContentModel {
   AnnounceDate?: string
   EnforceDate?: string
   CancelDate?: string 
-  fileURL?: string
+  fileURL: string
 }

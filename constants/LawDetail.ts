@@ -8,7 +8,7 @@ export const LawInfo = {
     AnnounceDate: '6 ก.พ. 2558',
     EnforceDate: '7 เม.ย. 2558',
     CancelDate: '-' ,
-    fileURL: 'law.pdf',
+    fileURL: 'http://www.ratchakitcha.soc.go.th/DATA/PDF/2564/A/081/T_0010.PDF',
 }
 
 export const SystemType = [

@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { StyleSheet, ScrollView, FlatList, TouchableOpacity, Appearance } from 'react-native';
+import { StyleSheet, ScrollView, FlatList, TouchableOpacity, Appearance, Linking } from 'react-native';
 import { AntDesign  } from '@expo/vector-icons';
 
 import { Text, View } from '../components/Themed';
@@ -70,7 +70,7 @@ export default function LawDetail({ path }: { path: string }) {
           {Systemelement}
 
           <Text style={styles.TextHeader}>ไฟล์แนบ </Text>
-          <TouchableOpacity>
+          <TouchableOpacity onPress={() => Linking.openURL(lawinfo.fileURL)}>
             <AntDesign name='pdffile1' size={50} style={{margin:10}} color={'#FF4F4F'}/>
           </TouchableOpacity>
           
