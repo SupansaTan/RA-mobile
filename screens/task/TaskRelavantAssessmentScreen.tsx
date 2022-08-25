@@ -141,7 +141,7 @@ export default function TaskRelavantAssessmentScreen() {
             style={{width:390, backgroundColor: 'transparent'}}
             renderTabBar={props => <TabBar {...props} 
               indicatorStyle={{backgroundColor: '#13AF82'}}
-              style={{backgroundColor: 'transparent', borderRadius:10}}
+              style={{backgroundColor: 'transparent'}}
               activeColor={'#13AF82'}
               inactiveColor={'#B9B9B9'}
               labelStyle={styles.TextContent}
@@ -171,20 +171,32 @@ export default function TaskRelavantAssessmentScreen() {
             </View>
           </View>
 
-          <KeyboardAvoidingView
-            behavior={Platform.OS === "ios" ? "padding" : "height"}
-            keyboardVerticalOffset={120}
-            style={{flex:1}}
-          >
-              <View style={styles.CommentWrapper}>
-                <Text style={styles.TextHeader}>หมายเหตุ</Text>
-                <TextInput 
-                style={[styles.InputText, {color:AppearanceColor, borderColor:AppearanceColor, width:370}]}
-                multiline={true}
-                defaultValue={data.comment}
-                />
-              </View>
-          </KeyboardAvoidingView>
+          { Platform.OS == 'ios'?
+            <KeyboardAvoidingView
+              behavior={Platform.OS === "ios" ? "padding" : "height"}
+              keyboardVerticalOffset={120}
+              style={{flex:1}}
+            >
+                <View style={styles.CommentWrapper}>
+                  <Text style={styles.TextHeader}>หมายเหตุ</Text>
+                  <TextInput 
+                  style={[styles.InputText, {color:AppearanceColor, borderColor:AppearanceColor, width:370}]}
+                  multiline={true}
+                  defaultValue={data.comment}
+                  />
+                </View>
+            </KeyboardAvoidingView>
+            : 
+            <View style={styles.CommentWrapper}>
+              <Text style={styles.TextHeader}>หมายเหตุ</Text>
+              <TextInput 
+              style={[styles.InputText, {color:AppearanceColor, borderColor:AppearanceColor, width:370}]}
+              multiline={true}
+              defaultValue={data.comment}
+              />
+            </View>
+          }
+          
 
         </ScrollView> 
 
@@ -199,11 +211,10 @@ const styles = StyleSheet.create({
   Container: {
     flex: 1,
     flexGrow:1,
-    paddingHorizontal: 10,
+    paddingHorizontal: 0,
     alignItems: 'center',
     justifyContent: 'center',
     width:'100%',
-    paddingTop:10,
   },
   TextHeader: {
     fontSize: 18,
@@ -215,12 +226,13 @@ const styles = StyleSheet.create({
   },
   button: {
     backgroundColor:'#13AF82',
-    width:'100%',
+    width:'90%',
     height:'7%',
-    borderRadius:20,
+    borderRadius:10,
     alignItems:'center',
     justifyContent:'center',
-    marginVertical:10,
+    marginBottom:20,
+    marginHorizontal:50,
   },
   ContentWrapper: {
     height:'50%',

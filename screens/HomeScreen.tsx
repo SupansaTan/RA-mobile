@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { StyleSheet, TouchableOpacity, ScrollView, Appearance } from 'react-native';
+import { StyleSheet, TouchableOpacity, ScrollView, Appearance, Platform } from 'react-native';
 import { Ionicons, MaterialCommunityIcons } from '@expo/vector-icons';
 
 import { Text, View, MaterialIcons } from '../components/Themed';
@@ -126,7 +126,7 @@ const styles = StyleSheet.create({
   Container: {
     flex: 1,
     flexGrow:1,
-    paddingTop: 90,
+    paddingTop: Platform.OS == 'ios'? 80:60,
     paddingHorizontal: 10,
     flexDirection: 'row',
     alignItems: 'flex-start',

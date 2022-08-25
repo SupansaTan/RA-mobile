@@ -69,7 +69,7 @@ export function ReportTaskProgressScreen() {
           <View style={styles.InputWrapper } >
             <Feather name='search' style={{marginHorizontal:5}} size={20} color={'#6c6c6c'}  />
             <TextInput
-              style={styles.InputText}
+              style={[styles.InputText, {width:'100%'}]}
               onChangeText={onChangeKeyword}
               value={keyword}
               placeholder='พ.ร.บ/กฎหมาย'

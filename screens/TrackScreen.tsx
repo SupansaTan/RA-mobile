@@ -20,7 +20,7 @@ export function TrackScreen() {
     return(
       <View key={index} >
         <TouchableOpacity activeOpacity={1} onPress={() => navigation.navigate('TrackingLocation')}>
-          <View style={styles.LocationWarpper}>
+          <View style={styles.LocationWrapper}>
             {/* icon */}
             <View style={styles.IconWrapper}>
               <Fontisto name="map-marker-alt" size={20} color={ ColorStyle.Grey.color } style={{ marginHorizontal: 10 }} />
@@ -111,7 +111,7 @@ export function TrackLocationScreen() {
 
   return(
     <View style={styles.Container}>
-      <View style={styles.LocationWarpper}>
+      <View style={styles.LocationWrapper}>
           {/* icon */}
           <View style={styles.IconWrapper}>
             <Fontisto name="map-marker-alt" size={20} color={ ColorStyle.Grey.color } style={{ marginHorizontal: 10 }} />
@@ -175,8 +175,9 @@ const styles = StyleSheet.create({
     flexGrow:1,
     alignItems: 'flex-start',
     justifyContent: 'center',
+    paddingTop:5,
   },
-  LocationWarpper: {
+  LocationWrapper: {
     flexDirection: 'row',
     paddingVertical: 5,
   },

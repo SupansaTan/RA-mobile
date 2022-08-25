@@ -74,55 +74,54 @@ export default function ProfileScreen() {
 const styles = StyleSheet.create({
   Container: {
     flex: 1,
-    flexGrow: 1,
-    paddingHorizontal: 10,
-    alignItems: "flex-start",
-    justifyContent: "flex-start",
-    paddingTop: 10,
+    flexGrow:1,
+    alignItems: 'flex-start',
+    justifyContent: 'flex-start',
+    paddingTop:5,
   },
-  RoleWrapper: {
-    backgroundColor: "#fff",
+  RoleWrapper:{
+    backgroundColor: '#fff',
     width: 370,
     padding: 10,
     marginVertical: 5,
     borderRadius: 10,
-    alignItems: "flex-start",
+    alignItems: 'flex-start',
   },
-  LocationWrapper: {
-    flexDirection: "row",
-    alignItems: "center",
-    backgroundColor: "transparent",
+  LocationWrapper:{
+    flexDirection: 'row',
+    alignItems: 'center',
+    backgroundColor: 'transparent',
     marginVertical: 5,
   },
-  UserWrapper: {
-    flexDirection: "row",
+  UserWrapper:{
+    flexDirection: 'row',
     padding: 10,
     marginVertical: 5,
     borderRadius: 10,
-    alignItems: "center",
+    alignItems: 'center',
   },
-  UserTextWrapper: {
-    flexDirection: "column",
+  UserTextWrapper:{
+    flexDirection: 'column',
   },
   EmailWrapper: {
     borderRadius: 50,
-    backgroundColor: "#EEEEEE",
+    backgroundColor: '#EEEEEE',
   },
   EmailText: {
     fontSize: 18,
-    fontFamily: "Mitr_500Medium",
+    fontFamily: 'Mitr_500Medium',
     paddingVertical: 2,
     paddingHorizontal: 10,
-    color: "#000",
+    color: '#000'
   },
-  TextHeader: {
+  TextHeader:{
     fontSize: 22,
-    fontFamily: "Mitr_500Medium",
+    fontFamily: 'Mitr_500Medium',
   },
-  TextDatail: {
+  TextDatail:{
     fontSize: 18,
-    color: "#13AF82",
-    fontFamily: "Mitr_500Medium",
+    color: '#13AF82',
+    fontFamily: 'Mitr_500Medium',
     marginHorizontal: 5,
-  },
-});
+  }
+})
