@@ -108,7 +108,7 @@ export function ReportTaskDetailScreen() {
 
             <View style={{flexDirection:'row', backgroundColor:'transparent', alignItems:'center', marginLeft:10}}>
               <Text style={styles.TextContent}>ไม่ผ่าน : </Text>
-              <Text style={styles.TextDetail}>{Math.floor(content.reject / (content.accept+content.reject) * 100)}%</Text>
+              <Text style={styles.TextDetail}>{100 - (Math.floor(content.accept / (content.accept+content.reject) * 100))}%</Text>
             </View>
           </View>
         </View>
@@ -180,12 +180,12 @@ const styles = StyleSheet.create({
   Container: {
     flex: 1,
     flexGrow:1,
-    paddingHorizontal: 10,
     flexDirection: 'row',
     alignItems: 'flex-start',
     justifyContent: 'center',
     marginBottom:50,
     marginTop:10,
+    padding:20
   },
   ContentWrapper:{
     flexDirection:'row',
@@ -206,7 +206,7 @@ const styles = StyleSheet.create({
     alignItems: 'flex-start',
     justifyContent: 'center',
     padding: 10,
-    width:'80%'
+    width:'100%'
   },
   TextHeader: {
     fontSize: 20,

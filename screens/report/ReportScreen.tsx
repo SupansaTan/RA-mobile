@@ -104,38 +104,7 @@ export function ReportLocationScreen() {
                   <Text style={styles.TextContent}>ประเมินสำเร็จ {content.completeTask}</Text>
                 </View>
               </View>
-              
-              {/* เกี่ยวข้อง | ไม่เกี่ยวข้อง | สอดคล้อง | ไม่สอดคล้อง */}
-              {/* <View style={styles.DashboardContent}>
-                <View style={[styles.DashboardText, {alignItems:'center'}]}>
-                  <Text style={styles.TextContent}>เกี่ยวข้อง</Text>
-                  <Text>{content.reletedLaw}</Text>
-                </View>
-
-                <View style={{backgroundColor:'#D1D1D1', width:1}}/>
-
-                <View style={[styles.DashboardText, {alignItems:'center'}]}>
-                  <Text style={styles.TextContent}>ไม่เกี่ยวข้อง</Text>
-                  <Text>{content.NonreletedLaw}</Text>
-                </View>
-
-                <View style={{backgroundColor:'#D1D1D1', width:1}}/>
-                
-                <View style={[styles.DashboardText, {alignItems:'center'}]}>
-                  <Text style={styles.TextContent}>สอดคล้อง</Text>
-                  <Text>{content.consistLaw}</Text>
-                </View>
-
-                <View style={{backgroundColor:'#D1D1D1', width:1}}/>
-
-                <View style={[styles.DashboardText, {alignItems:'center'}]}>
-                  <Text style={styles.TextContent}>ไม่สอดคล้อง</Text>
-                  <Text>{content.NonconsistLaw}</Text>
-                </View>
-              </View> */}
-              
-              
-              
+            
             </View>
 
             {/* progress */}
@@ -171,6 +140,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'flex-start',
     justifyContent: 'center',
+    paddingTop:5,
   },
   ContentContainer: {
     flexDirection: 'row',

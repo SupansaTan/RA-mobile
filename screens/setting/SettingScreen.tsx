@@ -49,24 +49,26 @@ export default function SettingScreen({ navigation }: RootTabScreenProps<'Settin
         </View>
         
         {enabledNotify? 
-        <View style={styles.AdvanceDateWrapper} >
-          <Text style={[styles.ItemText, {color: '#000'}]}>วันแจ้งเตือนล่วงหน้า</Text>
-            <View style={styles.InputWrapper}>
-              <TextInput
-              style={styles.InputText}
-              onChangeText={onChangeNumber}
-              value={number}
-              keyboardType="numeric"
-              inputAccessoryViewID='Close'
-              />
-              <InputAccessoryView nativeID='Close'>
-                <View style={styles.KeyboardBT}>
-                  <Button onPress={()=> Keyboard.dismiss()} title="Close"></Button>
+          <View style={styles.AdvanceDateWrapper} >
+            <Text style={[styles.ItemText, {color: '#000'}]}>วันแจ้งเตือนล่วงหน้า</Text>
+              <View style={styles.InputWrapper}>
+                <TextInput
+                style={styles.InputText}
+                onChangeText={onChangeNumber}
+                value={number}
+                keyboardType="numeric"
+                inputAccessoryViewID='Close'
+                />
+                { Platform.OS == 'ios' ?
+                  <InputAccessoryView nativeID='Close'>
+                    <View style={styles.KeyboardBT}>
+                      <Button onPress={()=> Keyboard.dismiss()} title="Close"></Button>
+                    </View>
+                  </InputAccessoryView>
+                  : <></>
+                }
                 </View>
-              </InputAccessoryView>
-            </View>
           </View>
-            
         : <></>
         }
         
@@ -115,6 +117,7 @@ const styles = StyleSheet.create({
     marginVertical: 5,
     backgroundColor: '#fff',
     borderRadius: 10,
+    width: '95%',
   },
   UserInfoWrapper: {
     width: '100%',
@@ -177,8 +180,7 @@ const styles = StyleSheet.create({
     color: DarkTheme.dark === true ? 'black':'white'
   },
   InputWrapper: {
-    marginLeft: 150,
-    marginRight: 10,
+    marginLeft: Platform.OS == 'ios'? '48%':'45%' ,
     width: 50,
     borderRadius: 10,
   },

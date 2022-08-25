@@ -55,18 +55,18 @@ export default function ProfileScreen() {
         <Avatar width={70} height={70} marginRight={20} />
         <View style={styles.UserTextWrapper}>
           <Text style={styles.TextHeader}>
-            {userProfile?.firstName} {userProfile?.lastName}
+            { userProfile ? `${userProfile?.firstName } ${userProfile?.lastName}` : '' }
           </Text>
           <View style={styles.EmailWrapper}>
             <Text style={[styles.EmailText, { color: "#000" }]}>
-              {userProfile?.email}
+              { userProfile ? userProfile?.email : '' }
             </Text>
           </View>
         </View>
       </View>
 
       <Text style={styles.TextHeader}>ตำแหน่ง</Text>
-      {RoleElement}
+      { userProfile ? RoleElement : <></>}
     </View>
   );
 }
@@ -75,10 +75,9 @@ const styles = StyleSheet.create({
   Container: {
     flex: 1,
     flexGrow: 1,
-    paddingHorizontal: 10,
     alignItems: "flex-start",
     justifyContent: "flex-start",
-    paddingTop: 10,
+    paddingTop: 5,
   },
   RoleWrapper: {
     backgroundColor: "#fff",
