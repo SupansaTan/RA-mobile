@@ -9,3 +9,10 @@ export class RoleInfoModel {
   roleName: string;
   location: string;
 }
+
+export class UpdateEmployeeInfoModel {
+  employeeId: string;
+  darkTheme: boolean;
+  notificationStatus: boolean;
+  advanceNotify: number;
+}

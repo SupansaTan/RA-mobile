@@ -8,6 +8,7 @@ import { RootTabScreenProps } from '../../types';
 import { DarkTheme } from '@react-navigation/native';
 import { environment } from '../../environment';
 import { User } from '../../constants/UserInfo';
+import { UpdateEmployeeInfoModel } from '../../model/Employee.model';
 
 export default function SettingScreen({ navigation }: RootTabScreenProps<'Setting'>) {
   const [username, setUsername] = useState<string>('ฟ้า ทลายโจร')
@@ -15,6 +16,7 @@ export default function SettingScreen({ navigation }: RootTabScreenProps<'Settin
   const [darkmode, setDarkmode] = useState<boolean>(false)
   const [number, onChangeNumber] = useState<string>('7')
   const [isLoading, setIsLoading] = useState<boolean>(true);
+  const [isChangeSetting, setIsChangeSetting] = useState<boolean>(false);
 
   useEffect(() => {
     const getUserInfo = () => {
@@ -42,6 +44,36 @@ export default function SettingScreen({ navigation }: RootTabScreenProps<'Settin
 
     getUserInfo();
   }, []);
+
+  useEffect(() => {
+    const updateUserInfo = () => {
+      let request = new UpdateEmployeeInfoModel();
+      request.employeeId = User.emdId;
+      request.darkTheme = darkmode;
+      request.notificationStatus = enabledNotify;
+      request.advanceNotify = Number(number);
+
+      fetch(`${environment.apiRaUrl}/api/Employee/UpdateEmployeeInfo`, {
+        method: "PUT",
+        headers: {
+          'Accept': 'application/json',
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(request)
+      })
+      .then((response) => response.json())
+      .then((res) => {
+        setIsChangeSetting(false);
+      })
+      .catch((error) => {
+        console.error(error);
+      });
+    };
+
+    if (isChangeSetting) {
+      updateUserInfo();
+    }
+  }, [isChangeSetting]);
 
   return (
     <View style={styles.Container}>
@@ -72,7 +104,7 @@ export default function SettingScreen({ navigation }: RootTabScreenProps<'Settin
             trackColor={{ false: "#eeeeee", true: "#28bc8e" }}
             thumbColor="#fff"
             ios_backgroundColor="#eeeeee"
-            onValueChange={() => setEnabledNotify(!enabledNotify)}
+            onValueChange={() => {setEnabledNotify(!enabledNotify); setIsChangeSetting(true)}}
             value={enabledNotify}
           />
         </View>
@@ -83,7 +115,7 @@ export default function SettingScreen({ navigation }: RootTabScreenProps<'Settin
               <View style={styles.InputWrapper}>
                 <TextInput
                 style={styles.InputText}
-                onChangeText={onChangeNumber}
+                onChangeText={(value) => { onChangeNumber(value); setIsChangeSetting(true)}}
                 value={number}
                 keyboardType="numeric"
                 inputAccessoryViewID='Close'
@@ -111,7 +143,7 @@ export default function SettingScreen({ navigation }: RootTabScreenProps<'Settin
             trackColor={{ false: "#eeeeee", true: "#28bc8e" }}
             thumbColor="#fff"
             ios_backgroundColor="#eeeeee"
-            onValueChange={() => setDarkmode(!darkmode)}
+            onValueChange={() => {setDarkmode(!darkmode); setIsChangeSetting(true)}}
             value={darkmode}
           />
         </View>
