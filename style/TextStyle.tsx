@@ -1,4 +1,5 @@
 import { StyleSheet } from 'react-native';
+import Colors from '../constants/Colors';
 
 export const TextStyle = StyleSheet.create({
   Heading: {
@@ -13,5 +14,11 @@ export const TextStyle = StyleSheet.create({
   Content: {
     fontSize: 15,
     fontFamily: 'Mitr_400Regular'
+  },
+  Loading: {
+    fontSize: 15,
+    marginTop: 10,
+    color: Colors.light.textSecondary,
+    fontFamily: 'Poppins_500Medium'
   }
 });

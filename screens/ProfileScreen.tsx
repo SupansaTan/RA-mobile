@@ -1,20 +1,23 @@
 import React, { useEffect, useState } from "react";
-import { StyleSheet, Appearance } from "react-native";
-import { Feather, MaterialCommunityIcons } from "@expo/vector-icons";
+import { StyleSheet, ActivityIndicator } from "react-native";
+import { Feather } from "@expo/vector-icons";
 import Avatar from "../assets/images/avatar.svg";
-import Colors from "../constants/Colors";
-import { Text, View, MaterialIcons } from "../components/Themed";
-import { User, UserInfo } from "../constants/UserInfo";
+import { Text, View } from "../components/Themed";
+import { User } from "../constants/UserInfo";
 import { environment } from "../environment";
-import { ResponseModel } from "../model/Response.model";
 import { EmployeeProfileModel } from "../model/Employee.model";
 import { ViewStyle } from "../style/ViewStyle";
+import Colors from "../constants/Colors";
+import { TextStyle } from "../style/TextStyle";
 
 export default function ProfileScreen() {
   const [userProfile, setUserProfile] = useState<EmployeeProfileModel>();
+  const [isLoading, setIsLoading] = useState<boolean>(true);
 
   useEffect(() => {
     const getUserInfo = () => {
+      setIsLoading(true);
+
       fetch(`${environment.apiRaUrl}/api/Employee/GetEmployeeProfile?empId=${User.emdId}`, {
         method: "GET",
         headers: {
@@ -25,6 +28,7 @@ export default function ProfileScreen() {
       .then((response) => response.json())
       .then((res) => {
         setUserProfile(res.data);
+        setIsLoading(false);
       })
       .catch((error) => {
         console.error(error);
@@ -50,28 +54,41 @@ export default function ProfileScreen() {
     );
   });
 
-  return (
-    <View style={styles.Container}>
-      <View style={styles.UserWrapper}>
-        <Avatar width={70} height={70} marginRight={20} />
-        <View style={styles.UserTextWrapper}>
-          <Text style={styles.TextHeader}>
-            { userProfile ? `${userProfile?.firstName } ${userProfile?.lastName}` : '' }
-          </Text>
-          <View style={styles.EmailWrapper}>
-            <Text style={[styles.EmailText, { color: "#000" }]}>
-              { userProfile ? userProfile?.email : '' }
+  const ProfileContainer = () => {
+    return (
+      <View style={styles.Container}>
+        <View style={styles.UserWrapper}>
+          <Avatar width={70} height={70} marginRight={20} />
+          <View style={styles.UserTextWrapper}>
+            <Text style={styles.TextHeader}>
+              { userProfile ? `${userProfile?.firstName} ${userProfile?.lastName}` : '' }
             </Text>
+            <View style={styles.EmailWrapper}>
+              <Text style={[styles.EmailText, { color: "#000" }]}>
+                { userProfile ? userProfile?.email : '' }
+              </Text>
+            </View>
           </View>
         </View>
-      </View>
 
-      <Text style={[styles.TextHeader, { paddingLeft: 10 }]}>ตำแหน่ง</Text>
-      <View style={ViewStyle.RowContainer}>
-        { userProfile ? RoleElement : <></>}
+        <Text style={[styles.TextHeader, { paddingLeft: 10 }]}>ตำแหน่ง</Text>
+        <View style={ViewStyle.RowContainer}>
+          { userProfile ? RoleElement : <></>}
+        </View>
       </View>
+    );
+  }
+
+  return ( isLoading ? <LoadingElement/> : <ProfileContainer/>)
+}
+
+const LoadingElement = () => {
+  return (
+    <View style={ViewStyle.LoadingWrapper}>
+      <ActivityIndicator color={Colors.light.tint} size="large" />
+      <Text style={TextStyle.Loading}>Loading</Text>
     </View>
-  );
+  )
 }
 
 const styles = StyleSheet.create({

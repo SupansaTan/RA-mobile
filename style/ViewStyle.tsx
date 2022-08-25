@@ -22,4 +22,11 @@ export const ViewStyle = StyleSheet.create({
     justifyContent: 'center',
     backgroundColor: 'transparent'
   },
+  LoadingWrapper: {
+    flex: 1,
+    flexGrow:1,
+    flexDirection: 'column',
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
 });
