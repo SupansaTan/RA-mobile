@@ -228,7 +228,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'flex-start',
     justifyContent: 'center',
-    paddingTop:10,
+    paddingTop: 10,
   },
   TypeText: {
     fontSize: 16,
@@ -242,39 +242,10 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     fontFamily: 'Mitr_500Medium'
   },
-  ContentContainer: {
-    flexDirection: 'row',
-    padding: 10,
-    marginHorizontal: 4,
-    marginVertical: 5,
-    backgroundColor: '#fff',
-    borderRadius: 10,
-    shadowColor: '#000000',
-    shadowOffset: { width: 0, height: 0 },
-    shadowOpacity: 0.1,
-    shadowRadius: 5,
-  },
-  ContentWrapper: {
-    marginLeft: 10,
-    backgroundColor: 'transparent'
-  },
   DatetimeWrapper: {
     marginTop: 2,
     flexDirection: 'row',
     backgroundColor: 'transparent'
-  },
-  AssignWrapper: {
-    marginLeft: 'auto',
-    marginRight: 2,
-    backgroundColor: 'transparent'
-  },
-  AssginCard: {
-    borderRadius: 15,
-    paddingVertical: 2,
-    paddingHorizontal: 8,
-    flexDirection: 'row',
-    alignItems: 'center',
-    backgroundColor: '#ffffff66'
   },
   TextHeader: {
     fontSize: 18,
@@ -290,6 +261,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     marginHorizontal: 5,
+    marginRight: 10,
     height: 50,
   },
   InputWrapper:{
@@ -297,10 +269,9 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'flex-start',
     height: 40,
-    width: '95%',
+    width: '100%',
     backgroundColor: '#eeeeee',
     borderRadius: 20,
-    marginHorizontal: 5,
   },
   InputText: {
     fontSize: 18,

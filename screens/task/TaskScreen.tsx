@@ -126,6 +126,9 @@ const styles = StyleSheet.create({
   MoreWrapper: {
     marginLeft: 'auto',
     marginRight: 2,
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
     backgroundColor: 'transparent'
   },
 });
