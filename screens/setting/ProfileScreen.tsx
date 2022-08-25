@@ -1,14 +1,14 @@
 import React, { useEffect, useState } from "react";
 import { StyleSheet, ActivityIndicator } from "react-native";
 import { Feather } from "@expo/vector-icons";
-import Avatar from "../assets/images/avatar.svg";
-import { Text, View } from "../components/Themed";
-import { User } from "../constants/UserInfo";
-import { environment } from "../environment";
-import { EmployeeProfileModel } from "../model/Employee.model";
-import { ViewStyle } from "../style/ViewStyle";
-import Colors from "../constants/Colors";
-import { TextStyle } from "../style/TextStyle";
+import Avatar from "../../assets/images/avatar.svg";
+import { Text, View } from "../../components/Themed";
+import { User } from "../../constants/UserInfo";
+import { environment } from "../../environment";
+import { EmployeeProfileModel } from "../../model/Employee.model";
+import { ViewStyle } from "../../style/ViewStyle";
+import Colors from "../../constants/Colors";
+import { TextStyle } from "../../style/TextStyle";
 
 export default function ProfileScreen() {
   const [userProfile, setUserProfile] = useState<EmployeeProfileModel>();
@@ -79,7 +79,7 @@ export default function ProfileScreen() {
     );
   }
 
-  return ( isLoading ? <LoadingElement/> : <ProfileContainer/>)
+  return isLoading ? <LoadingElement/> : <ProfileContainer/>
 }
 
 const LoadingElement = () => {

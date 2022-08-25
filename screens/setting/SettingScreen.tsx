@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { StyleSheet, Switch, Platform, TouchableOpacity, TextInput, Keyboard, InputAccessoryView, Button } from 'react-native';
 import { Fontisto, FontAwesome } from '@expo/vector-icons';
 import Avatar from '../../assets/images/avatar.svg';
@@ -6,13 +6,42 @@ import Colors from '../../constants/Colors';
 import { Text, View, MaterialIcons } from '../../components/Themed';
 import { RootTabScreenProps } from '../../types';
 import { DarkTheme } from '@react-navigation/native';
-import { ClipPath } from 'react-native-svg';
+import { environment } from '../../environment';
+import { User } from '../../constants/UserInfo';
 
 export default function SettingScreen({ navigation }: RootTabScreenProps<'Setting'>) {
   const [username, setUsername] = useState<string>('ฟ้า ทลายโจร')
   const [enabledNotify, setEnabledNotify] = useState<boolean>(true)
   const [darkmode, setDarkmode] = useState<boolean>(false)
   const [number, onChangeNumber] = useState<string>('7')
+  const [isLoading, setIsLoading] = useState<boolean>(true);
+
+  useEffect(() => {
+    const getUserInfo = () => {
+      setIsLoading(true);
+
+      fetch(`${environment.apiRaUrl}/api/Employee/GetEmployee?empId=${User.emdId}`, {
+        method: "GET",
+        headers: {
+          'Accept': 'application/json',
+          'Content-Type': 'application/json'
+        },
+      })
+      .then((response) => response.json())
+      .then((res) => {
+        setUsername(`${res.data.firstName} ${res.data.lastName}`);
+        setDarkmode(res.data.darkTheme);
+        setEnabledNotify(res.data.notificationStatus);
+        onChangeNumber(`${res.data.advanceNotify}`);
+        setIsLoading(false);
+      })
+      .catch((error) => {
+        console.error(error);
+      });
+    };
+
+    getUserInfo();
+  }, []);
 
   return (
     <View style={styles.Container}>
@@ -72,7 +101,6 @@ export default function SettingScreen({ navigation }: RootTabScreenProps<'Settin
         : <></>
         }
         
-
         {/* darkmode */}
         <View style={styles.ItemWrapper}>
           <View style={styles.ItemTitleWrapper}>
@@ -107,7 +135,6 @@ const styles = StyleSheet.create({
     flex: 1,
     flexGrow:1,
     paddingTop: 90,
-    paddingHorizontal: 10,
     alignItems: 'flex-start',
     justifyContent: 'flex-start',
   },
@@ -117,7 +144,7 @@ const styles = StyleSheet.create({
     marginVertical: 5,
     backgroundColor: '#fff',
     borderRadius: 10,
-    width: '95%',
+    width: '100%',
   },
   UserInfoWrapper: {
     width: '100%',
@@ -134,7 +161,7 @@ const styles = StyleSheet.create({
   SeeProfileWrapper: {
     margin: 5,
     paddingVertical: 2,
-    paddingLeft: 10,
+    paddingLeft: 15,
     paddingRight: 5,
     borderRadius: 15,
     backgroundColor: '#eeeeee',
@@ -153,7 +180,7 @@ const styles = StyleSheet.create({
     width: '100%',
     alignItems: 'flex-start',
     marginTop: 15,
-    marginHorizontal: 5
+    marginHorizontal: 10,
   },
   SettingTitle: {
     color: '#6c6c6c',

@@ -12,7 +12,7 @@ import HomeScreen from '../screens/HomeScreen';
 import SettingScreen from '../screens/setting/SettingScreen';
 import TaskScreen from '../screens/task/TaskScreen';
 import NotificationScreen from '../screens/notification/NotificationScreen';
-import ProfileScreen from '../screens/ProfileScreen';
+import ProfileScreen from '../screens/setting/ProfileScreen';
 import SearchScreen from '../screens/search-law/SearchScreen';
 import { TrackScreen, TrackLocationScreen}  from '../screens/TrackScreen';
 import { ReportScreen, ReportLocationScreen } from '../screens/report/ReportScreen';
