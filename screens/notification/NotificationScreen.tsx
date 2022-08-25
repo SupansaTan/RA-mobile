@@ -1,18 +1,50 @@
-import React, { useState } from 'react';
-import { StyleSheet, TouchableOpacity, ScrollView } from 'react-native';
+import React, { useEffect, useState } from 'react';
+import { StyleSheet, TouchableOpacity, ScrollView, ActivityIndicator } from 'react-native';
 import { SimpleLineIcons, MaterialCommunityIcons } from '@expo/vector-icons';
 
 import Colors from '../../constants/Colors';
 import { Text, View } from '../../components/Themed';
-import { NotifyContentModel } from '../../model/Notification';
+import { NotifyContentModel, NotificationListDataModel } from '../../model/Notification.model';
 import { NotifyList, getIconBgColor, getIconColor } from '../../constants/Notification';
+import { environment } from '../../environment';
+import { User } from '../../constants/UserInfo';
+import { ViewStyle } from '../../style/ViewStyle';
+import { TextStyle } from '../../style/TextStyle';
+
+import { format } from 'date-fns'
 
 export default function NotificationScreen({ path }: { path: string }) {
-  const [notifyList, setNotifyList] = useState(NotifyList)
+  const [notifyList, setNotifyList] = useState<Array<NotificationListDataModel>>([]);
+  const [isLoading, setIsLoading] = useState<boolean>(true);
 
-  const ContentElement = (contentItem: NotifyContentModel, i: number) => {
+  useEffect(() => {
+  
+    const getNotificationList = () => {
+      setIsLoading(true);
+
+      fetch(`${environment.apiRaUrl}/api/Notification/GetNotificationByEmpId?empId=${User.emdId}`, {
+        method: "GET",
+        headers: {
+          'Accept': 'application/json',
+          'Content-Type': 'application/json'
+        },
+      })
+      .then((response) => response.json())
+      .then((res) => {
+        setNotifyList(res.data);
+        setIsLoading(false);
+      })
+      .catch((error) => {
+        console.error(error);
+      });
+    };
+
+    getNotificationList();
+  }, []);
+
+  const ContentElement = (contentItem: NotifyContentModel, index: number) => {
     return(
-      <View key={'content' + i}>
+      <View key={'content' + index}>
         <TouchableOpacity>
           <View style={styles.ContentContainer}>
             {/* icon */}
@@ -51,27 +83,41 @@ export default function NotificationScreen({ path }: { path: string }) {
     )
   }
 
-  const NotifyElement = notifyList.map((item, index) => {
+  const NotifyElement = notifyList.map((content: NotificationListDataModel, index: number) => {
     return(
       <View key={index}>
         {/* date */}
         <Text style={styles.DateText}>
-          { item.date }
+          { content.date }
+          {/* { format(new Date(content.date), 'dd/MM/yyyy HH:mm') } */}
         </Text>
 
         {/* content */}
-        { ContentElementList(item.data) }
+        {/* { ContentElementList(content.data) } */}
       </View>
     )
   })
 
-  return (
-    <View style={styles.Container}>
+  const NotificationContainer = () => {
+    return(
+      <View style={styles.Container}>
       <ScrollView contentContainerStyle={{ flexGrow:1 }}>
         { NotifyElement }
       </ScrollView>
     </View>
-  );
+    )
+  }
+
+  return isLoading? <LoadingElement/> : NotificationContainer
+}
+
+const LoadingElement = () => {
+  return (
+    <View style={ViewStyle.LoadingWrapper}>
+      <ActivityIndicator color={Colors.light.tint} size="large" />
+      <Text style={TextStyle.Loading}>Loading</Text>
+    </View>
+  )
 }
 
 const styles = StyleSheet.create({
