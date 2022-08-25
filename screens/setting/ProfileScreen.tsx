@@ -40,7 +40,7 @@ export default function ProfileScreen() {
 
   const RoleElement = userProfile?.roleList.map((item, index) => {
     return (
-      <View key={index} style={ViewStyle.ColumnContainer}>
+      <View key={index} style={[{marginLeft:20, marginVertical:5, width:350}]}>
         <View style={styles.RoleWrapper}>
           <Text style={[styles.TextHeader, { color: "#000" }]}>
             {item.roleName}
@@ -71,8 +71,8 @@ export default function ProfileScreen() {
           </View>
         </View>
 
-        <Text style={[styles.TextHeader, { paddingLeft: 10 }]}>ตำแหน่ง</Text>
-        <View style={ViewStyle.RowContainer}>
+        <Text style={[styles.TextHeader, { paddingLeft: 10, marginLeft:20 }]}>ตำแหน่ง</Text>
+        <View style={ViewStyle.ColumnContainer}>
           { userProfile ? RoleElement : <></>}
         </View>
       </View>
@@ -103,7 +103,6 @@ const styles = StyleSheet.create({
     backgroundColor: '#fff',
     width: '100%',
     padding: 10,
-    marginVertical: 5,
     borderRadius: 10,
     alignItems: 'flex-start',
   },
@@ -119,6 +118,7 @@ const styles = StyleSheet.create({
     marginVertical: 5,
     borderRadius: 10,
     alignItems: 'center',
+    marginLeft:10
   },
   UserTextWrapper:{
     flexDirection: 'column',

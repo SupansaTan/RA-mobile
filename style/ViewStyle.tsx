@@ -14,7 +14,7 @@ export const ViewStyle = StyleSheet.create({
     flexGrow:1,
     flexDirection: 'column',
     alignItems: 'flex-start',
-    justifyContent: 'center',
+    justifyContent: 'flex-start',
   },
   IconWrapper: {
     display: 'flex',
