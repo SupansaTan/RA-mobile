@@ -1,13 +1,17 @@
-import React, { useState } from 'react';
-import { StyleSheet, TouchableOpacity, ScrollView, Appearance, Platform } from 'react-native';
+import React, { useState, useEffect } from 'react';
+import { StyleSheet, TouchableOpacity, ScrollView, Appearance, Platform, ActivityIndicator } from 'react-native';
 import { Ionicons, MaterialCommunityIcons } from '@expo/vector-icons';
 
 import { Text, View, MaterialIcons } from '../components/Themed';
 import { RootTabScreenProps } from '../types';
-import { UserInfo } from '../constants/UserInfo';
 import { MenuList } from '../constants/Home';
 import { IncomingTask } from '../constants/Task';
 import { TaskContentModel } from '../model/Task';
+import { ViewStyle } from '../style/ViewStyle';
+import { environment } from '../environment';
+import { User } from '../constants/UserInfo';
+import Colors from '../constants/Colors';
+import { TextStyle } from '../style/TextStyle';
 
 import TrackingIcon from '../assets/images/tracking.svg';
 
@@ -16,9 +20,35 @@ import { TaskDatetimeStatus } from '../enum/TaskDatetimeStatus.enum';
 import { ColorStyle } from '../style/ColorStyle';
 
 export default function HomeScreen({ navigation }: RootTabScreenProps<'Home'>) {
-  const [userinfo, setUserinfo] = useState(UserInfo)
+  const [username, setUsername] = useState<string>('')
   const [taskList, setTaskList] = useState(IncomingTask)
+  const [isLoading, setIsLoading] = useState<boolean>(true);
 
+  useEffect(() => {
+    const getUserInfo = () => {
+      setIsLoading(true);
+
+      fetch(`${environment.apiRaUrl}/api/Employee/GetEmployeeProfile?empId=${User.emdId}`, {
+        method: "GET",
+        headers: {
+          'Accept': 'application/json',
+          'Content-Type': 'application/json'
+        },
+      })
+      .then((response) => response.json())
+      .then((res) => {
+        setUsername(res.data.firstName);
+        setIsLoading(false);
+      })
+      .catch((error) => {
+        console.error(error);
+      });
+    };
+
+    getUserInfo();
+  }, []);
+
+  
   const getMenuIcon = (name: string) => {
     switch(name) {
       case 'Task':
@@ -74,7 +104,7 @@ export default function HomeScreen({ navigation }: RootTabScreenProps<'Home'>) {
     <View style={styles.Container}>
       <ScrollView contentContainerStyle={{ flexGrow:1 }}>
         <View style={styles.ContentContainer}>
-          <Text style={[styles.TextHeader, {color: '#6C6C6C', marginTop: 10,}]}> สวัสดี {userinfo.Fname}</Text>
+          <Text style={[styles.TextHeader, {color: '#6C6C6C', marginTop: 10,}]}> สวัสดี {username}</Text>
 
           <TouchableOpacity activeOpacity={0.5} onPress={() => navigation.navigate('Task')}>
             <View style={styles.MenuWrapper}>
@@ -118,6 +148,15 @@ const getTextColor = (status: TaskDatetimeStatus) => {
     case TaskDatetimeStatus.Remain:
       return ColorStyle.Grey.color;
   }
+}
+
+const LoadingElement = () => {
+  return (
+    <View style={ViewStyle.LoadingWrapper}>
+      <ActivityIndicator color={Colors.light.tint} size="large" />
+      <Text style={TextStyle.Loading}>Loading</Text>
+    </View>
+  )
 }
 
 const AppearanceColor = Appearance.getColorScheme()==='dark'? '#fff':'#000'
