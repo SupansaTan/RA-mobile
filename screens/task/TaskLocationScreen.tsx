@@ -1,6 +1,7 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { StyleSheet, TouchableOpacity, ScrollView, TextInput, Modal ,Pressable} from 'react-native';
 import { MaterialCommunityIcons, Feather, AntDesign } from '@expo/vector-icons';
+import { format } from 'date-fns'
 
 import { Text, View } from '../../components/Themed';
 import { TaskContentModel } from '../../model/Task';
@@ -10,9 +11,13 @@ import { CardStyle } from '../../style/CardStyle';
 import { TaskDatetimeStatus } from '../../enum/TaskDatetimeStatus.enum';
 import { ColorStyle } from '../../style/ColorStyle';
 import { useNavigation } from '@react-navigation/native';
+import { environment } from '../../environment';
+import { TaskDetailModel, TaskListSortByProcessModel } from '../../model/Task.model';
+import { TaskProcess } from '../../enum/TaskProcess.enum';
+import { ViewStyle } from '../../style/ViewStyle';
 
 export default function TaskLocationScreen() {
-  const [taskList, setTaskList] = useState(TaskData)
+  const [taskList, setTaskList] = useState<Array<TaskListSortByProcessModel>>([])
   const [keyword, onChangeKeyword] = useState<string>('')
   const navigation =  useNavigation()
   const [modalVisible, setModalVisible] = useState(false)
@@ -20,21 +25,47 @@ export default function TaskLocationScreen() {
   const [relevantApproveselected, setRelevantApproveselected] = useState(true)
   const [consistanceselected, setConsistanceselected] = useState(true)
   const [consistanceApproveselected, setConsistanApproveceselected] = useState(true)
+  const [isLoading, setIsLoading] = useState<boolean>(true);
 
-  const ContentElement = (contentItem: TaskContentModel, i: number, type: string) => {
+  useEffect(() => {
+    const getTaskList = () => {
+      setIsLoading(true);
+
+      fetch(`${environment.apiRaUrl}/api/Task/GetTaskListByLocationId?locationId=${'a2f78363-bb14-4419-a7f9-305295204eb3'}`, {
+        method: "GET",
+        headers: {
+          'Accept': 'application/json',
+          'Content-Type': 'application/json'
+        },
+      })
+      .then((response) => response.json())
+      .then((res) => {
+        setTaskList(res.data);
+        setIsLoading(false);
+      })
+      .catch((error) => {
+        console.error(error);
+      });
+    };
+
+    getTaskList();
+  }, []);
+
+  const ContentElement = (contentItem: TaskDetailModel, i: number) => {
     return(
-      <View key={'content' + i}>
-        <TouchableOpacity onPress={()=> navigation.navigate(type=='relevant'? 'TaskRelevantDetail' :type=='consistance'? 'TaskConsistanceDetail' :type=='relevantapprove'? 'TaskRADetail': 'TaskCADetail') } >
-          <View style={ getCardColorClass(contentItem.timestatus) }>
-            <Text style={styles.TextHeader}>{ contentItem.title }</Text>
+      <View key={`task-${contentItem.process}-${i}`}>
+        {/* onPress={()=> navigation.navigate(type=='relevant'? 'TaskRelevantDetail' :type=='consistance'? 'TaskConsistanceDetail' :type=='relevantapprove'? 'TaskRADetail': 'TaskCADetail') } */}
+        <TouchableOpacity>
+          <View style={ getCardColorClass(contentItem.datetimeStatus) }>
+            <Text style={styles.TextHeader} numberOfLines={2}>{ contentItem.taskTitle }</Text>
 
             <View style={styles.DatetimeWrapper}>
               <MaterialCommunityIcons name="calendar-clock" size={20}
-                color={ getTextColor(contentItem.timestatus) } 
+                color={ getTextColor(contentItem.datetimeStatus) } 
                 style={{ marginRight: 5 }} />
               <Text style={[styles.TextContent, 
-                { color: getTextColor(contentItem.timestatus) }]}>
-                { contentItem.datetime }
+                { color: getTextColor(contentItem.datetimeStatus) }]}>
+                { format(new Date(contentItem.dueDate), 'dd/MM/yyyy') }
               </Text>
             </View>
           </View>
@@ -43,35 +74,25 @@ export default function TaskLocationScreen() {
     )
   }
 
-  const TaskElementList = (contentData: Array<TaskContentModel>, taskType: string) => {
+  const TaskElementList = taskList.map((content: TaskListSortByProcessModel, index: number) => {
     return (
-      contentData.map((content: TaskContentModel, index: number) => {
-        return ContentElement(content, index, taskType)
-      })
-    )
-  }
-
-  const TaskElement = taskList.map((item, index) => {
-    return(
-      <View key={index}>
-        {/* date */}
-        <Text style={styles.TypeText}>
-          { item.type=='relevant' ? 'ประเมินความเกี่ยวข้อง':item.type=='consistance'? 'ประเมินความสอดคล้อง':item.type=='relevantapprove'? 'รออนุมัติความเกี่ยวข้อง':'รออนุมัติความสอดคล้อง' }
-        </Text>
-        
-        {/* content */}
-        { TaskElementList(item.task, item.type) }
+      <View>
+        <Text>{ getProcessLabel(content.taskProcess) }</Text>
+        {
+          content.taskList.map((task, index) => {
+            return ContentElement(task, index);
+          })
+        }
       </View>
     )
   })
 
   return (
     <View style={styles.Container}>
-      <ScrollView contentContainerStyle={{ flexGrow:1 }}>
-
+      <View style={ViewStyle.ColumnContainer}>
         <View style={styles.SearchWrapper}>
           {/* search */}
-          <View style={styles.InputWrapper } >
+          <View style={styles.InputWrapper}>
             <Feather name='search' style={{marginHorizontal:5}} size={20} color={'#6c6c6c'}  />
             <TextInput
               style={styles.InputText}
@@ -115,47 +136,16 @@ export default function TaskLocationScreen() {
                         <Text style={styles.TextContent}>รออนุมัติความสอดคล้อง</Text>
                       </TouchableOpacity>
                   </View>
-
                 </View>
             </Modal>
           </TouchableOpacity>
         </View>
 
-        {/* task */}
-        {/* { TaskElement } */}
-
-        <View>
-          {relevantselected?
-            <View>
-              <Text>ประเมินความเกี่ยวข้อง</Text>
-              { TaskElementList(taskList[0].task, taskList[0].type)}
-            </View>  
-            : <></>
-          }
-          {consistanceselected?
-            <View>
-              <Text>ประเมินความสอดคล้อง</Text>
-              { TaskElementList(taskList[1].task, taskList[1].type)}
-            </View>  
-            : <></>
-          }
-          {relevantApproveselected?
-            <View>
-              <Text>รออนุมัติความเกี่ยวข้อง</Text>
-              { TaskElementList(taskList[2].task, taskList[2].type)}
-            </View>  
-            : <></>
-          }
-          {consistanceApproveselected?
-            <View>
-              <Text>รออนุมัติความสอดคล้อง</Text>
-              { TaskElementList(taskList[3].task, taskList[3].type)}
-            </View>  
-            : <></>
-          }
+        {/* task list */}
+        <ScrollView contentContainerStyle={{ flexGrow:1 }}>
+          { TaskElementList }
+        </ScrollView>
       </View>
-
-      </ScrollView>
     </View>
   );
 }
@@ -179,6 +169,21 @@ const getTextColor = (status: TaskDatetimeStatus) => {
       return ColorStyle.Warning.color;
     case TaskDatetimeStatus.Remain:
       return ColorStyle.Grey.color;
+  }
+}
+
+const getProcessLabel = (process: TaskProcess) => {
+  switch(process) {
+    case TaskProcess.Relevant:
+      return 'ประเมินความเกี่ยวข้อง';
+    case TaskProcess.ApproveRelevant:
+      return 'รออนุมัติความเกี่ยวข้อง';
+    case TaskProcess.Consistance:
+      return 'ประเมินความสอดคล้อง';
+    case TaskProcess.ApproveConsistance:
+      return 'รออนุมัติความสอดคล้อง';
+    case TaskProcess.Response:
+      return 'รอดำเนินการให้สอดคล้อง';
   }
 }
 
