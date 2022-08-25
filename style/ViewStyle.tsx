@@ -12,7 +12,6 @@ export const ViewStyle = StyleSheet.create({
   ColumnContainer: {
     flex: 1,
     flexGrow:1,
-    paddingHorizontal: 10,
     flexDirection: 'column',
     alignItems: 'flex-start',
     justifyContent: 'center',

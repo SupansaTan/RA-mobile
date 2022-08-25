@@ -8,6 +8,7 @@ import { User, UserInfo } from "../constants/UserInfo";
 import { environment } from "../environment";
 import { ResponseModel } from "../model/Response.model";
 import { EmployeeProfileModel } from "../model/Employee.model";
+import { ViewStyle } from "../style/ViewStyle";
 
 export default function ProfileScreen() {
   const [userProfile, setUserProfile] = useState<EmployeeProfileModel>();
@@ -35,7 +36,7 @@ export default function ProfileScreen() {
 
   const RoleElement = userProfile?.roleList.map((item, index) => {
     return (
-      <View key={index}>
+      <View key={index} style={ViewStyle.ColumnContainer}>
         <View style={styles.RoleWrapper}>
           <Text style={[styles.TextHeader, { color: "#000" }]}>
             {item.roleName}
@@ -65,8 +66,10 @@ export default function ProfileScreen() {
         </View>
       </View>
 
-      <Text style={styles.TextHeader}>ตำแหน่ง</Text>
-      { userProfile ? RoleElement : <></>}
+      <Text style={[styles.TextHeader, { paddingLeft: 10 }]}>ตำแหน่ง</Text>
+      <View style={ViewStyle.RowContainer}>
+        { userProfile ? RoleElement : <></>}
+      </View>
     </View>
   );
 }
@@ -77,11 +80,11 @@ const styles = StyleSheet.create({
     flexGrow:1,
     alignItems: 'flex-start',
     justifyContent: 'flex-start',
-    paddingTop:5,
+    paddingTop: 5,
   },
   RoleWrapper:{
     backgroundColor: '#fff',
-    width: 370,
+    width: '100%',
     padding: 10,
     marginVertical: 5,
     borderRadius: 10,
