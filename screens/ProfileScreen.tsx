@@ -47,10 +47,9 @@ const styles = StyleSheet.create({
     Container: {
         flex: 1,
         flexGrow:1,
-        paddingHorizontal: 10,
         alignItems: 'flex-start',
         justifyContent: 'flex-start',
-        paddingTop:10,
+        paddingTop:5,
     },
     RoleWrapper:{
         backgroundColor: '#fff',

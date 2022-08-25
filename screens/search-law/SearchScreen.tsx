@@ -70,10 +70,8 @@ export default function SearchScreen({ navigation }: RootTabScreenProps<'Search'
 
   const EnforceOnChange = (event:any, selectedDate:any) => {
     const currentDate = selectedDate;
+    setEnforceshow(false);
     setEnforceDate(currentDate);
-    if (Platform.OS === 'android') {
-      setEnforceshow(false);
-    }
   };
 
   const CancelOnChange = (event:any, selectedDate:any) => {

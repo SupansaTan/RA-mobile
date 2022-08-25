@@ -54,11 +54,9 @@ const styles = StyleSheet.create({
   Container: {
     flex: 1,
     flexGrow:1,
-    paddingHorizontal: 10,
     flexDirection: 'row',
     alignItems: 'flex-start',
     justifyContent: 'center',
-    paddingTop:10,
   },
   ContentContainer: {
     flexDirection: 'row',
