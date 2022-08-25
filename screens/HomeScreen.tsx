@@ -107,7 +107,7 @@ export default function HomeScreen({ navigation }: RootTabScreenProps<'Home'>) {
                 style={{ marginRight: 5 }} />
               <Text style={[styles.TextContent, 
                 { color: getTextColor(contentItem.datetimeStatus) }]}>
-                { format(new Date(contentItem.dueDate), 'dd/MM/yyyy') }
+                { format(new Date(contentItem.dueDate), 'dd/MM/yyyy HH:mm') }
               </Text>
             </View>
           </View>
@@ -220,7 +220,7 @@ const styles = StyleSheet.create({
     margin: 5,
     paddingBottom: 10,
     paddingTop: 10,
-    borderRadius: 25,
+    borderRadius: 10,
     shadowColor: '#000000',
     shadowOffset: { width: 0, height: 0 },
     shadowOpacity: 0.1,

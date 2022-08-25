@@ -69,7 +69,7 @@ export default function TaskLocationScreen() {
                 style={{ marginRight: 5 }} />
               <Text style={[styles.TextContent, 
                 { color: getTextColor(contentItem.datetimeStatus) }]}>
-                { format(new Date(contentItem.dueDate), 'dd/MM/yyyy') }
+                { format(new Date(contentItem.dueDate), 'dd/MM/yyyy HH:mm') }
               </Text>
             </View>
           </View>
