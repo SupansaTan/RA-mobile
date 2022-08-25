@@ -77,7 +77,7 @@ export default function TaskLocationScreen() {
   const TaskElementList = taskList.map((content: TaskListSortByProcessModel, index: number) => {
     return (
       <View>
-        <Text>{ getProcessLabel(content.taskProcess) }</Text>
+        <Text style={[styles.TextHeader, {fontSize:28}]}>{ getProcessLabel(content.taskProcess) }</Text>
         {
           content.taskList.map((task, index) => {
             return ContentElement(task, index);
@@ -103,13 +103,13 @@ export default function TaskLocationScreen() {
           </View>
 
           {/* filter */}
-          <TouchableOpacity  onPress={() =>setModalVisible(true)}>
+          {/* <TouchableOpacity  onPress={() =>setModalVisible(true)}>
             <View style={styles.Filter}>
               <AntDesign name="filter" size={25} color={'#13AF82'} />
               <Text style={[styles.AssignText, {color:'#13AF82'}]}>ตัวกรอง</Text>
-            </View>
+            </View> */}
             {/* Filter Modal */}
-            <Modal
+            {/* <Modal
               animationType="slide"
               transparent={true}
               visible={modalVisible}
@@ -137,8 +137,8 @@ export default function TaskLocationScreen() {
                       </TouchableOpacity>
                   </View>
                 </View>
-            </Modal>
-          </TouchableOpacity>
+            </Modal> */}
+          {/* </TouchableOpacity> */}
         </View>
 
         {/* task list */}
@@ -264,7 +264,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'flex-start',
     height: 40,
-    width: '75%',
+    width: '95%',
     backgroundColor: '#eeeeee',
     borderRadius: 20,
     marginHorizontal: 5,
@@ -273,7 +273,7 @@ const styles = StyleSheet.create({
     fontSize: 18,
     fontFamily: 'Mitr_400Regular',
     height: 40,
-    width:250,
+    width:'100%',
   },
   Filter:{
     flexDirection: 'row',
