@@ -6,7 +6,7 @@ export class TaskDetailModel {
   taskTitle: string;
   locationName: string;
   dueDate: Date;
-  process?: TaskProcess;
+  process: TaskProcess;
   datetimeStatus: TaskDatetimeStatus;
 }
 
