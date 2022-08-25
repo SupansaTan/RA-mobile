@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { StyleSheet, TouchableOpacity, ScrollView, TextInput } from 'react-native';
+import { StyleSheet, TouchableOpacity, ScrollView, TextInput, Modal ,Pressable} from 'react-native';
 import { MaterialCommunityIcons, Feather, AntDesign } from '@expo/vector-icons';
 
 import { Text, View } from '../../components/Themed';
@@ -15,7 +15,11 @@ export default function TaskLocationScreen() {
   const [taskList, setTaskList] = useState(TaskData)
   const [keyword, onChangeKeyword] = useState<string>('')
   const navigation =  useNavigation()
-  
+  const [modalVisible, setModalVisible] = useState(false)
+  const [relevantselected, setRelevantselected] = useState(true)
+  const [relevantApproveselected, setRelevantApproveselected] = useState(true)
+  const [consistanceselected, setConsistanceselected] = useState(true)
+  const [consistanceApproveselected, setConsistanApproveceselected] = useState(true)
 
   const ContentElement = (contentItem: TaskContentModel, i: number, type: string) => {
     return(
@@ -54,7 +58,7 @@ export default function TaskLocationScreen() {
         <Text style={styles.TypeText}>
           { item.type=='relevant' ? 'ประเมินความเกี่ยวข้อง':item.type=='consistance'? 'ประเมินความสอดคล้อง':item.type=='relevantapprove'? 'รออนุมัติความเกี่ยวข้อง':'รออนุมัติความสอดคล้อง' }
         </Text>
-
+        
         {/* content */}
         { TaskElementList(item.task, item.type) }
       </View>
@@ -78,16 +82,78 @@ export default function TaskLocationScreen() {
           </View>
 
           {/* filter */}
-          <TouchableOpacity>
+          <TouchableOpacity  onPress={() =>setModalVisible(true)}>
             <View style={styles.Filter}>
               <AntDesign name="filter" size={25} color={'#13AF82'} />
               <Text style={[styles.AssignText, {color:'#13AF82'}]}>ตัวกรอง</Text>
             </View>
+            {/* Filter Modal */}
+            <Modal
+              animationType="slide"
+              transparent={true}
+              visible={modalVisible}
+              onRequestClose={() => {setModalVisible(!modalVisible)}} >
+                <View style={styles.ModalContainer}>
+                  <View style={styles.FilterWrapper}>
+                    <Pressable onPress={() => setModalVisible(!modalVisible)} >
+                      <AntDesign name='left' size={20} color={'black'}/>
+                    </Pressable>
+                    <Text style={styles.TextHeader}>ตัวกรอง</Text>
+                  </View>
+
+                  <View style={{marginVertical:30, backgroundColor:'transparent'}}>
+                      <TouchableOpacity onPress={() => setRelevantselected(!relevantselected)} style={[relevantselected? styles.FilterCardSelected : styles.FilterCardUnselected ]}>
+                        <Text style={styles.TextContent}>ประเมินความเกี่ยวข้อง</Text>
+                      </TouchableOpacity>
+                      <TouchableOpacity onPress={() => setConsistanceselected(!consistanceselected)}  style={[consistanceselected? styles.FilterCardSelected : styles.FilterCardUnselected ]}>
+                        <Text style={styles.TextContent}>ประเมินความสอดคล้อง</Text>
+                      </TouchableOpacity>
+                      <TouchableOpacity onPress={() => setRelevantApproveselected(!relevantApproveselected)} style={[relevantApproveselected? styles.FilterCardSelected : styles.FilterCardUnselected ]}>
+                        <Text style={styles.TextContent}>รออนุมัติความเกี่ยวข้อง</Text>
+                      </TouchableOpacity>
+                      <TouchableOpacity onPress={() => setConsistanApproveceselected(!consistanceApproveselected)} style={[consistanceApproveselected? styles.FilterCardSelected : styles.FilterCardUnselected ]}>
+                        <Text style={styles.TextContent}>รออนุมัติความสอดคล้อง</Text>
+                      </TouchableOpacity>
+                  </View>
+
+                </View>
+            </Modal>
           </TouchableOpacity>
         </View>
 
         {/* task */}
-        { TaskElement }
+        {/* { TaskElement } */}
+
+        <View>
+          {relevantselected?
+            <View>
+              <Text>ประเมินความเกี่ยวข้อง</Text>
+              { TaskElementList(taskList[0].task, taskList[0].type)}
+            </View>  
+            : <></>
+          }
+          {consistanceselected?
+            <View>
+              <Text>ประเมินความสอดคล้อง</Text>
+              { TaskElementList(taskList[1].task, taskList[1].type)}
+            </View>  
+            : <></>
+          }
+          {relevantApproveselected?
+            <View>
+              <Text>รออนุมัติความเกี่ยวข้อง</Text>
+              { TaskElementList(taskList[2].task, taskList[2].type)}
+            </View>  
+            : <></>
+          }
+          {consistanceApproveselected?
+            <View>
+              <Text>รออนุมัติความสอดคล้อง</Text>
+              { TaskElementList(taskList[3].task, taskList[3].type)}
+            </View>  
+            : <></>
+          }
+      </View>
 
       </ScrollView>
     </View>
@@ -208,5 +274,39 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center',
+  },
+  ModalContainer: {
+    flex: 1,
+    justifyContent: "flex-start",
+    alignItems: 'flex-start',
+    marginTop: 90,
+    backgroundColor: '#fff',
+    padding: 20,
+    borderRadius: 15,
+  },
+  FilterWrapper: {
+    flexDirection:'row', 
+    alignItems:'center', 
+    justifyContent:'space-between', 
+    width:'100%',
+    backgroundColor: '#fff',
+  },
+  FilterCardSelected: {
+    backgroundColor: '#d2f7ed',
+    borderColor: 'green',
+    borderRadius:20,
+    borderWidth:1,
+    padding:5,
+    paddingHorizontal:20,
+    marginVertical:10,
+  },
+  FilterCardUnselected: {
+    backgroundColor: 'transparent',
+    borderColor: 'gray',
+    borderRadius:20,
+    borderWidth:1,
+    padding:5,
+    paddingHorizontal:20,
+    marginVertical:10,
   },
 });
