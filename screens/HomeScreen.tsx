@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { StyleSheet, TouchableOpacity, ScrollView, Appearance, Platform, ActivityIndicator } from 'react-native';
 import { Ionicons, MaterialCommunityIcons } from '@expo/vector-icons';
+import { format } from 'date-fns'
 
 import { Text, View, MaterialIcons } from '../components/Themed';
 import { RootTabScreenProps } from '../types';
@@ -18,16 +19,15 @@ import TrackingIcon from '../assets/images/tracking.svg';
 import { CardStyle } from '../style/CardStyle';
 import { TaskDatetimeStatus } from '../enum/TaskDatetimeStatus.enum';
 import { ColorStyle } from '../style/ColorStyle';
+import { TaskDetailModel } from '../model/Task.model';
 
 export default function HomeScreen({ navigation }: RootTabScreenProps<'Home'>) {
-  const [username, setUsername] = useState<string>('')
-  const [taskList, setTaskList] = useState(IncomingTask)
+  const [username, setUsername] = useState<string>('');
+  const [taskList, setTaskList] = useState<Array<TaskDetailModel>>([]);
   const [isLoading, setIsLoading] = useState<boolean>(true);
 
   useEffect(() => {
     const getUserInfo = () => {
-      setIsLoading(true);
-
       fetch(`${environment.apiRaUrl}/api/Employee/GetEmployeeProfile?empId=${User.emdId}`, {
         method: "GET",
         headers: {
@@ -38,6 +38,25 @@ export default function HomeScreen({ navigation }: RootTabScreenProps<'Home'>) {
       .then((response) => response.json())
       .then((res) => {
         setUsername(res.data.firstName);
+      })
+      .catch((error) => {
+        console.error(error);
+      });
+    };
+
+    const getTaskList = () => {
+      setIsLoading(true);
+
+      fetch(`${environment.apiRaUrl}/api/Task/GetTaskListByEmpId?empId=${User.emdId}`, {
+        method: "GET",
+        headers: {
+          'Accept': 'application/json',
+          'Content-Type': 'application/json'
+        },
+      })
+      .then((response) => response.json())
+      .then((res) => {
+        setTaskList(res.data);
         setIsLoading(false);
       })
       .catch((error) => {
@@ -46,6 +65,7 @@ export default function HomeScreen({ navigation }: RootTabScreenProps<'Home'>) {
     };
 
     getUserInfo();
+    getTaskList();
   }, []);
 
   
@@ -73,21 +93,21 @@ export default function HomeScreen({ navigation }: RootTabScreenProps<'Home'>) {
     )
   })
 
-  const TaskElement = (contentItem: TaskContentModel, i: number) => {
+  const TaskElement = (contentItem: TaskDetailModel, i: number) => {
     return(
       <View key={'content' + i}>
         <TouchableOpacity >
-          <View style={ getCardColorClass(contentItem.timestatus) }>
-            <Text style={styles.TextHeader}>{ contentItem.title }</Text>
-            <Text style={[styles.TextContent, {color: '#6C6C6C'}]}>{ contentItem.location }</Text>
+          <View style={ getCardColorClass(contentItem.datetimeStatus) }>
+            <Text style={styles.TextHeader} numberOfLines={2}>{ contentItem.taskTitle }</Text>
+            <Text style={[styles.TextContent, {color: '#6C6C6C'}]}>{ contentItem.locationName }</Text>
 
             <View style={styles.DatetimeWrapper}>
               <MaterialCommunityIcons name="calendar-clock" size={20}
-                color={ getTextColor(contentItem.timestatus) } 
+                color={ getTextColor(contentItem.datetimeStatus) } 
                 style={{ marginRight: 5 }} />
               <Text style={[styles.TextContent, 
-                { color: getTextColor(contentItem.timestatus) }]}>
-                { contentItem.datetime }
+                { color: getTextColor(contentItem.datetimeStatus) }]}>
+                { format(new Date(contentItem.dueDate), 'dd/MM/yyyy') }
               </Text>
             </View>
           </View>
@@ -96,13 +116,13 @@ export default function HomeScreen({ navigation }: RootTabScreenProps<'Home'>) {
     )
   }
 
-  const TaskElementList = taskList.map((content: TaskContentModel, index: number) => {
-        return TaskElement(content, index)
-      })
+  const TaskElementList = taskList.map((content: TaskDetailModel, index: number) => {
+    return TaskElement(content, index)
+  })
 
   return (
     <View style={styles.Container}>
-      <ScrollView contentContainerStyle={{ flexGrow:1 }}>
+      <View style={ViewStyle.ColumnContainer}>
         <View style={styles.ContentContainer}>
           <Text style={[styles.TextHeader, {color: '#6C6C6C', marginTop: 10,}]}> สวัสดี {username}</Text>
 
@@ -117,13 +137,14 @@ export default function HomeScreen({ navigation }: RootTabScreenProps<'Home'>) {
             { MenuListElement }
           </View>
         </View>
-          
-        <View>
-          <Text style={[styles.TextHeader,{color:AppearanceColor}]}>ใกล้ถึงกำหนด</Text>
-          {TaskElementList}
-        </View>
 
-      </ScrollView>
+        <Text style={[styles.TextHeader,{color:AppearanceColor, marginBottom: isLoading? 20:0}]}>ใกล้ถึงกำหนด</Text>
+        <View style={[ViewStyle.RowContainer, { paddingHorizontal: 0 }]}>
+          <ScrollView contentContainerStyle={{ flexGrow: 1 }}>
+            { isLoading ? <LoadingElement/> : TaskElementList }
+          </ScrollView>
+        </View>
+      </View>
     </View>
   );
 }
