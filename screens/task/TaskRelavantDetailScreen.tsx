@@ -18,7 +18,7 @@ export default function TaskRelavantDetailScreen({ navigation, route }: RootStac
           <LawDetail taskId={taskId}/>
         </ScrollView>
       </View>
-      <Pressable onPress={()=> navigation.navigate('TaskRelevantAssessment')} style={styles.button}>
+      <Pressable onPress={()=> navigation.navigate('TaskRelevantAssessment', { taskId: taskId })} style={styles.button}>
         <Text style={[styles.TextHeader, {color:'#fff'}]}>เริ่มทำการประเมิน</Text>
       </Pressable>
     </View>

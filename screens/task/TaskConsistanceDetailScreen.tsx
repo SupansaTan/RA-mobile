@@ -16,7 +16,7 @@ export default function TaskConsistanceDetailScreen({ navigation, route }: RootS
       <ScrollView contentContainerStyle={{ flexGrow:1 }}>
         <LawDetail taskId={taskId}/>
       </ScrollView>
-      <Pressable onPress={()=> navigation.navigate('TaskConsistanceAssessment')} style={styles.button}>
+      <Pressable onPress={()=> navigation.navigate('TaskConsistanceAssessment', { taskId: taskId })} style={styles.button}>
         <Text style={[styles.TextHeader, {color:'#fff'}]}>เริ่มทำการประเมิน</Text>
       </Pressable>
     </View>

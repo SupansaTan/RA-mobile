@@ -26,7 +26,7 @@ export function TaskRADetail({ navigation, route }: RootStackScreenProps<'TaskRA
             <ScrollView contentContainerStyle={{ flexGrow:1 }}>
                 <LawDetail taskId={taskId}/>
             </ScrollView>
-            <Pressable onPress={()=> navigation.navigate('TaskRAAssessment')} style={styles.button}>
+            <Pressable onPress={()=> navigation.navigate('TaskRAAssessment', { taskId: taskId })} style={styles.button}>
                 <Text style={[styles.TextHeader, {color:'#fff'}]}>เริ่มทำการประเมิน</Text>
             </Pressable>
         </View>

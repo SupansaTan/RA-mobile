@@ -9,6 +9,9 @@ import { MaterialIcons, Text, View } from '../../components/Themed';
 import { useNavigation } from '@react-navigation/native';
 import { TaskRelativeAssessment } from '../../constants/Task';
 import darkColors from 'react-native-elements/dist/config/colorsDark';
+import { RootStackScreenProps } from '../../types';
+import { environment } from '../../environment';
+import { KeyActModel } from '../../model/KeyAct.model';
 
 const AppearanceColor = Appearance.getColorScheme()==='dark'? '#fff':'#000'
 
@@ -60,14 +63,16 @@ const FourthRoute = (data:string) => {
   )
 }
 
-export default function TaskRelavantAssessmentScreen() {
-    const navigation =  useNavigation();
+export default function TaskRelavantAssessmentScreen({ navigation, route }: RootStackScreenProps<'TaskRelevantAssessment'>) {
     const layout = useWindowDimensions();
-    const [datalist, setDatalist] = useState(TaskRelativeAssessment.keyact)
+    const [datalist, setDatalist] = useState<Array<KeyActModel>>([])
     const [keyorder, setKeyorder] = useState(1)
     const [data, setData] = useState(datalist[(keyorder-1)]);
-    const [related, setRelated] = useState(data.related? true:false);
-    const [nonrelated, setNonrelated] = useState(data.related? false:true)
+    const [related, setRelated] = useState(false);
+    const [nonrelated, setNonrelated] = useState(false);
+    const [isLoading, setIsLoading] = useState(true);
+    const [notation, setNotation] = useState('');
+    const { taskId } = route.params;
 
     const [index, setIndex] = React.useState(0);
     const [routes] = React.useState([
@@ -78,10 +83,58 @@ export default function TaskRelavantAssessmentScreen() {
     ]);
 
     useEffect(() => {
-      setData(datalist[(keyorder-1)])
-      setRelated(data.related? true:false)
-      setNonrelated(data.related? false:true)
-    }, [data,keyorder,related,nonrelated])
+      const getKeyActList = () => {
+        setIsLoading(true);
+  
+        fetch(`${environment.apiRaUrl}/api/KeyAction/GetAllKeyAction?taskId=${taskId}`, {
+          method: "GET",
+          headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json'
+          },
+        })
+        .then((response) => response.json())
+        .then((res) => {
+          setDatalist(res.data);
+          setIsLoading(false);
+        })
+        .catch((error) => {
+          console.error(error);
+        });
+      };
+  
+      getKeyActList();
+    }, []);
+
+    useEffect(() => {
+      let currentKeyact = datalist[keyorder - 1];
+      setData(currentKeyact);
+      setRelated(currentKeyact.isRelated ?? false);
+      setNonrelated((!currentKeyact.isRelated) ?? false);
+      setNotation(currentKeyact.notation ?? '');
+    }, [keyorder])
+
+    useEffect(() => {
+      let keyActList = datalist;
+      keyActList.forEach((x) => {
+        if (x.order === keyorder) {
+          x.isRelated = related;
+        }
+      })
+      setDatalist(keyActList);
+      setData(keyActList[keyorder - 1]);
+    }, [related])
+
+    useEffect(() => {
+      let keyActList = datalist;
+      keyActList.forEach((x) => {
+        if (x.order === keyorder) {
+          x.notation = notation;
+        }
+      })
+      setDatalist(keyActList);
+      setData(keyActList[keyorder - 1]);
+    }, [notation])
     
     return (
       <View style={styles.Container}>
@@ -130,10 +183,10 @@ export default function TaskRelavantAssessmentScreen() {
             navigationState={{ index, routes }}
             renderScene={
               SceneMap({
-                first: () => FirstRoute(data.keyreq),
-                second: () => SecondRoute(data.standard),
-                third: () => ThirdRoute(data.frequency),
-                fourth: () => FourthRoute(data.practice),
+                first: () => FirstRoute(data?.keyReq ?? ''),
+                second: () => SecondRoute(data?.standard),
+                third: () => ThirdRoute(data?.frequency),
+                fourth: () => FourthRoute(data?.practice),
               })
             }
             onIndexChange={setIndex}
@@ -182,7 +235,7 @@ export default function TaskRelavantAssessmentScreen() {
                   <TextInput 
                   style={[styles.InputText, {color:AppearanceColor, borderColor:AppearanceColor, width:370}]}
                   multiline={true}
-                  defaultValue={data.comment}
+                  defaultValue={data?.notation}
                   />
                 </View>
             </KeyboardAvoidingView>
@@ -192,7 +245,8 @@ export default function TaskRelavantAssessmentScreen() {
               <TextInput 
               style={[styles.InputText, {color:AppearanceColor, borderColor:AppearanceColor, width:370}]}
               multiline={true}
-              defaultValue={data.comment}
+              onChangeText={(val) => setNotation(val)}
+              defaultValue={notation}
               />
             </View>
           }
