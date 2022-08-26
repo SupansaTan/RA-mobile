@@ -109,9 +109,9 @@ export default function TaskRelavantAssessmentScreen({ navigation, route }: Root
     useEffect(() => {
       let currentKeyact = datalist[keyorder - 1];
       setData(currentKeyact);
-      setRelated(currentKeyact.isRelated ?? false);
-      setNonrelated((!currentKeyact.isRelated) ?? false);
-      setNotation(currentKeyact.notation ?? '');
+      setRelated(currentKeyact?.isRelated ?? false);
+      setNonrelated((!currentKeyact?.isRelated) ?? false);
+      setNotation(currentKeyact?.notation ?? '');
     }, [keyorder])
 
     useEffect(() => {
