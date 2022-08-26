@@ -110,7 +110,7 @@ export default function LawDetail({ taskId }: { taskId: string }) {
               {Systemelement}
 
               <Text style={styles.TextHeader}>ไฟล์แนบ </Text>
-              <TouchableOpacity onPress={() => Linking.openURL(lawinfo?.fileURL ?? '')}>
+              <TouchableOpacity onPress={() => Linking.openURL(lawinfo?.pdfUrl ?? '')}>
                 <AntDesign name='pdffile1' size={50} style={{margin:10}} color={'#FF4F4F'}/>
               </TouchableOpacity>
             </View>

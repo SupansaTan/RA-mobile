@@ -22,11 +22,6 @@ import { RootStackScreenProps } from '../../types';
 export default function TaskLocationScreen({ navigation, route }: RootStackScreenProps<'TaskLocation'>) {
   const [taskList, setTaskList] = useState<Array<TaskListSortByProcessModel>>([])
   const [keyword, onChangeKeyword] = useState<string>('')
-  const [modalVisible, setModalVisible] = useState(false)
-  const [relevantselected, setRelevantselected] = useState(true)
-  const [relevantApproveselected, setRelevantApproveselected] = useState(true)
-  const [consistanceselected, setConsistanceselected] = useState(true)
-  const [consistanceApproveselected, setConsistanApproveceselected] = useState(true)
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const { locationId } = route.params;
 
@@ -108,44 +103,6 @@ export default function TaskLocationScreen({ navigation, route }: RootStackScree
               placeholder='พ.ร.บ/กฎหมาย'
             />
           </View>
-
-          {/* filter */}
-          {/* <TouchableOpacity  onPress={() =>setModalVisible(true)}>
-            <View style={styles.Filter}>
-              <AntDesign name="filter" size={25} color={'#13AF82'} />
-              <Text style={[styles.AssignText, {color:'#13AF82'}]}>ตัวกรอง</Text>
-            </View> */}
-            {/* Filter Modal */}
-            {/* <Modal
-              animationType="slide"
-              transparent={true}
-              visible={modalVisible}
-              onRequestClose={() => {setModalVisible(!modalVisible)}} >
-                <View style={styles.ModalContainer}>
-                  <View style={styles.FilterWrapper}>
-                    <Pressable onPress={() => setModalVisible(!modalVisible)} >
-                      <AntDesign name='left' size={20} color={'black'}/>
-                    </Pressable>
-                    <Text style={styles.TextHeader}>ตัวกรอง</Text>
-                  </View>
-
-                  <View style={{marginVertical:30, backgroundColor:'transparent'}}>
-                      <TouchableOpacity onPress={() => setRelevantselected(!relevantselected)} style={[relevantselected? styles.FilterCardSelected : styles.FilterCardUnselected ]}>
-                        <Text style={styles.TextContent}>ประเมินความเกี่ยวข้อง</Text>
-                      </TouchableOpacity>
-                      <TouchableOpacity onPress={() => setConsistanceselected(!consistanceselected)}  style={[consistanceselected? styles.FilterCardSelected : styles.FilterCardUnselected ]}>
-                        <Text style={styles.TextContent}>ประเมินความสอดคล้อง</Text>
-                      </TouchableOpacity>
-                      <TouchableOpacity onPress={() => setRelevantApproveselected(!relevantApproveselected)} style={[relevantApproveselected? styles.FilterCardSelected : styles.FilterCardUnselected ]}>
-                        <Text style={styles.TextContent}>รออนุมัติความเกี่ยวข้อง</Text>
-                      </TouchableOpacity>
-                      <TouchableOpacity onPress={() => setConsistanApproveceselected(!consistanceApproveselected)} style={[consistanceApproveselected? styles.FilterCardSelected : styles.FilterCardUnselected ]}>
-                        <Text style={styles.TextContent}>รออนุมัติความสอดคล้อง</Text>
-                      </TouchableOpacity>
-                  </View>
-                </View>
-            </Modal> */}
-          {/* </TouchableOpacity> */}
         </View>
 
         {/* task list */}

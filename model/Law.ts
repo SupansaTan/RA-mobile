@@ -7,5 +7,5 @@ export interface LawContentModel {
   announceDate: Date;
   enforceDate: Date;
   cancelDate: Date;
-  fileURL: string
+  pdfUrl: string;
 }
