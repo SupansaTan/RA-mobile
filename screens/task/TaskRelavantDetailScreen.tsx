@@ -6,15 +6,18 @@ import { Text, View } from '../../components/Themed';
 import { useNavigation } from '@react-navigation/native';
 import LawDetail from '../../shared/LawDetail';
 import { RootStackScreenProps } from '../../types';
+import { ViewStyle } from '../../style/ViewStyle';
 
 
 export default function TaskRelavantDetailScreen({ navigation, route }: RootStackScreenProps<'TaskRelevantDetail'>) {
   const { taskId } = route.params;
   return (
     <View style={styles.Container}>
-      <ScrollView contentContainerStyle={{ flexGrow:1 }}>
-        <LawDetail taskId={taskId}/>
-      </ScrollView>
+      <View style={[ViewStyle.RowContainer, { paddingHorizontal: 0}]}>
+        <ScrollView contentContainerStyle={{ flexGrow:1 }}>
+          <LawDetail taskId={taskId}/>
+        </ScrollView>
+      </View>
       <Pressable onPress={()=> navigation.navigate('TaskRelevantAssessment')} style={styles.button}>
         <Text style={[styles.TextHeader, {color:'#fff'}]}>เริ่มทำการประเมิน</Text>
       </Pressable>

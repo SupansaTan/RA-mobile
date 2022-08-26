@@ -137,6 +137,7 @@ const styles = StyleSheet.create({
     flex: 1,
     flexGrow:1,
     marginVertical: 10,
+    flexDirection: 'column',
     alignItems: 'flex-start',
     justifyContent: 'center',
   },
