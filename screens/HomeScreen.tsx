@@ -20,6 +20,7 @@ import { CardStyle } from '../style/CardStyle';
 import { TaskDatetimeStatus } from '../enum/TaskDatetimeStatus.enum';
 import { ColorStyle } from '../style/ColorStyle';
 import { TaskDetailModel } from '../model/Task.model';
+import { TaskProcess } from '../enum/TaskProcess.enum';
 
 export default function HomeScreen({ navigation }: RootTabScreenProps<'Home'>) {
   const [username, setUsername] = useState<string>('');
@@ -96,14 +97,14 @@ export default function HomeScreen({ navigation }: RootTabScreenProps<'Home'>) {
   const TaskElement = (contentItem: TaskDetailModel, i: number) => {
     return(
       <View key={'content' + i}>
-        <TouchableOpacity >
+        <TouchableOpacity onPress={() => navigation.navigate(getScreenRoute(contentItem.process), { taskId: contentItem.taskId })}>
           <View style={ getCardColorClass(contentItem.datetimeStatus) }>
             <Text style={styles.TextHeader} numberOfLines={2}>{ contentItem.taskTitle }</Text>
             <Text style={[styles.TextContent, {color: '#6C6C6C'}]}>{ contentItem.locationName }</Text>
 
             <View style={styles.DatetimeWrapper}>
               <MaterialCommunityIcons name="calendar-clock" size={20}
-                color={ getTextColor(contentItem.datetimeStatus) } 
+                color={ getTextColor(contentItem.datetimeStatus) }
                 style={{ marginRight: 5 }} />
               <Text style={[styles.TextContent, 
                 { color: getTextColor(contentItem.datetimeStatus) }]}>
@@ -169,6 +170,22 @@ const getTextColor = (status: TaskDatetimeStatus) => {
     case TaskDatetimeStatus.Remain:
       return ColorStyle.Grey.color;
   }
+}
+
+const getScreenRoute = (process: TaskProcess): string => {
+  switch(process) {
+    case TaskProcess.Relevant:
+      return 'TaskRelevantDetail';
+    case TaskProcess.ApproveRelevant:
+      return 'TaskRADetail';
+    case TaskProcess.Consistance:
+      return 'TaskConsistanceDetail';
+    case TaskProcess.ApproveConsistance:
+      return 'TaskCADetail';
+    case TaskProcess.Response:
+      return '';
+  }
+  return '';
 }
 
 const LoadingElement = () => {
