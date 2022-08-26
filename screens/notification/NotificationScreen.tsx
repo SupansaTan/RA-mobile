@@ -62,12 +62,12 @@ export default function NotificationScreen({ path }: { path: string }) {
             {/* title & content */}
             <View style={styles.ContentWrapper}>
               <Text style={styles.TextHeader}>{ contentItem.title }</Text>
-              <Text style={styles.TextContent}>{ contentItem.content }</Text>
+              <Text style={styles.TextContent} numberOfLines={1}>{ contentItem.content }</Text>
             </View>
 
             {/* time */}
             <View style={styles.TimeWrapper}>
-              <Text style={styles.TimeText}>{ contentItem.time }</Text>
+              <Text style={styles.TimeText}>{ format(new Date(contentItem.time), 'HH:mm') }</Text>
             </View>
           </View>
         </TouchableOpacity>
@@ -78,7 +78,7 @@ export default function NotificationScreen({ path }: { path: string }) {
   const ContentElementList = (contentData: Array<NotifyContentModel>) => {
     return (
       contentData.map((content: NotifyContentModel, index: number) => {
-        return ContentElement(content, index)
+        return ContentElement(content, index);
       })
     )
   }
@@ -88,12 +88,11 @@ export default function NotificationScreen({ path }: { path: string }) {
       <View key={index}>
         {/* date */}
         <Text style={styles.DateText}>
-          { content.date }
-          {/* { format(new Date(content.date), 'dd/MM/yyyy HH:mm') } */}
+          { format(new Date(content.date), 'dd/MM/yyyy') }
         </Text>
 
         {/* content */}
-        {/* { ContentElementList(content.data) } */}
+        { ContentElementList(content.data) }
       </View>
     )
   })
@@ -108,7 +107,7 @@ export default function NotificationScreen({ path }: { path: string }) {
     )
   }
 
-  return isLoading? <LoadingElement/> : NotificationContainer
+  return isLoading? <LoadingElement/> : <NotificationContainer/>
 }
 
 const LoadingElement = () => {

@@ -81,6 +81,7 @@ export const getIconBgColor = (notiType: string) => {
     case 'approve':
       return NotifyIcon.approve.bgColor
   }
+  return NotifyIcon.relevant.bgColor
 }
 
 export const getIconColor = (notiType: string) => {
@@ -92,4 +93,5 @@ export const getIconColor = (notiType: string) => {
     case 'approve':
       return NotifyIcon.approve.iconColor
   }
+  return NotifyIcon.relevant.iconColor;
 }
