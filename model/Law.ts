@@ -3,7 +3,7 @@ export interface LawContentModel {
   actType: string
   legislationType: string
   legislationUnit: string
-  category: string
+  catagory: string
   announceDate: Date;
   enforceDate: Date;
   cancelDate: Date;

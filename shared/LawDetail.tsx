@@ -92,7 +92,7 @@ export default function LawDetail({ taskId }: { taskId: string }) {
 
             <View style={styles.ContentContainer}>
               <Text style={styles.TextHeader}>หมวดประเภทกฎหมาย </Text>
-              <Text style={styles.TextContentBox2}> {lawinfo?.category} </Text>
+              <Text style={styles.TextContentBox2}> {lawinfo?.catagory} </Text>
 
               <Text style={styles.TextHeader}>ประเภทกฎหมาย </Text>
               <Text style={styles.TextContentBox2}> {lawinfo?.legislationUnit} </Text>
