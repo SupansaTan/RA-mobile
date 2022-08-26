@@ -17,24 +17,25 @@ import { TaskProcess } from '../../enum/TaskProcess.enum';
 import { ViewStyle } from '../../style/ViewStyle';
 import { TextStyle } from '../../style/TextStyle';
 import Colors from '../../constants/Colors';
+import { RootStackScreenProps } from '../../types';
 
-export default function TaskLocationScreen() {
+export default function TaskLocationScreen({ navigation, route }: RootStackScreenProps<'TaskLocation'>) {
   const [taskList, setTaskList] = useState<Array<TaskListSortByProcessModel>>([])
   const [keyword, onChangeKeyword] = useState<string>('')
-  const navigation =  useNavigation()
   const [modalVisible, setModalVisible] = useState(false)
   const [relevantselected, setRelevantselected] = useState(true)
   const [relevantApproveselected, setRelevantApproveselected] = useState(true)
   const [consistanceselected, setConsistanceselected] = useState(true)
   const [consistanceApproveselected, setConsistanApproveceselected] = useState(true)
   const [isLoading, setIsLoading] = useState<boolean>(true);
+  const { locationId } = route.params;
 
   useEffect(() => {
     const getTaskList = () => {
       setIsLoading(true);
       const url = keyword
-        ? `${environment.apiRaUrl}/api/Task/GetTaskListByLocationId?locationId=${'a2f78363-bb14-4419-a7f9-305295204eb3'}&keyword=${keyword.trim()}`
-        : `${environment.apiRaUrl}/api/Task/GetTaskListByLocationId?locationId=${'a2f78363-bb14-4419-a7f9-305295204eb3'}`
+        ? `${environment.apiRaUrl}/api/Task/GetTaskListByLocationId?locationId=${locationId}&keyword=${keyword.trim()}`
+        : `${environment.apiRaUrl}/api/Task/GetTaskListByLocationId?locationId=${locationId}`
 
       fetch(url, {
         method: "GET",
@@ -59,7 +60,7 @@ export default function TaskLocationScreen() {
   const ContentElement = (contentItem: TaskDetailModel, i: number) => {
     return(
       <View key={`task-${contentItem.process}-${i}`}>
-        <TouchableOpacity onPress={()=> navigation.navigate(getScreenRoute(contentItem.process)) }>
+        <TouchableOpacity onPress={()=> navigation.navigate(getScreenRoute(contentItem.process), { taskId: contentItem.taskId }) }>
           <View style={ getCardColorClass(contentItem.datetimeStatus) }>
             <Text style={styles.TextHeader} numberOfLines={2}>{ contentItem.taskTitle }</Text>
 

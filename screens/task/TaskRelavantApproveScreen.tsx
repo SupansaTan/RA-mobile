@@ -12,18 +12,19 @@ import darkColors from 'react-native-elements/dist/config/colorsDark';
 
 import LawDetail from '../../shared/LawDetail';
 import { UserInfo } from '../../constants/UserInfo';
+import { RootStackScreenProps } from '../../types';
 
 const AppearanceColor = Appearance.getColorScheme()==='dark'? '#fff':'#000'
 
 // ============================= Detail =================================
 
-export function TaskRADetail() {
-    const navigation =  useNavigation()
+export function TaskRADetail({ navigation, route }: RootStackScreenProps<'TaskRADetail'>) {
+    const { taskId } = route.params;
   
     return (
         <View style={styles.Container}>
             <ScrollView contentContainerStyle={{ flexGrow:1 }}>
-                <LawDetail path="/screens/TaskDetailScreen.tsx"/>
+                <LawDetail taskId={taskId}/>
             </ScrollView>
             <Pressable onPress={()=> navigation.navigate('TaskRAAssessment')} style={styles.button}>
                 <Text style={[styles.TextHeader, {color:'#fff'}]}>เริ่มทำการประเมิน</Text>

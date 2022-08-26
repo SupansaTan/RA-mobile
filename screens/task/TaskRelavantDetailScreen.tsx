@@ -5,21 +5,21 @@ import { Fontisto, MaterialIcons } from '@expo/vector-icons';
 import { Text, View } from '../../components/Themed';
 import { useNavigation } from '@react-navigation/native';
 import LawDetail from '../../shared/LawDetail';
+import { RootStackScreenProps } from '../../types';
 
 
-export default function TaskRelavantDetailScreen() {
-    const navigation =  useNavigation()
-  
-    return (
-        <View style={styles.Container}>
-            <ScrollView contentContainerStyle={{ flexGrow:1 }}>
-                <LawDetail path="/screens/TaskDetailScreen.tsx"/>
-            </ScrollView>
-            <Pressable onPress={()=> navigation.navigate('TaskRelevantAssessment')} style={styles.button}>
-                <Text style={[styles.TextHeader, {color:'#fff'}]}>เริ่มทำการประเมิน</Text>
-            </Pressable>
-        </View>
-    );
+export default function TaskRelavantDetailScreen({ navigation, route }: RootStackScreenProps<'TaskRelevantDetail'>) {
+  const { taskId } = route.params;
+  return (
+    <View style={styles.Container}>
+      <ScrollView contentContainerStyle={{ flexGrow:1 }}>
+        <LawDetail taskId={taskId}/>
+      </ScrollView>
+      <Pressable onPress={()=> navigation.navigate('TaskRelevantAssessment')} style={styles.button}>
+        <Text style={[styles.TextHeader, {color:'#fff'}]}>เริ่มทำการประเมิน</Text>
+      </Pressable>
+    </View>
+  );
 }
 
 const styles = StyleSheet.create({

@@ -12,25 +12,25 @@ import darkColors from 'react-native-elements/dist/config/colorsDark';
 
 import LawDetail from '../../shared/LawDetail';
 import { UserInfo } from '../../constants/UserInfo';
+import { RootStackScreenProps } from '../../types';
 
 const AppearanceColor = Appearance.getColorScheme()==='dark'? '#fff':'#000'
 
 // ============================= Detail =================================
 
-export function TaskCADetail() {
-    const navigation =  useNavigation()
+export function TaskCADetail({ navigation, route }: RootStackScreenProps<'TaskCADetail'>) {
+  const { taskId } = route.params;
   
-    return (
-        <View style={styles.Container}>
-            <ScrollView contentContainerStyle={{ flexGrow:1 }}>
-                <LawDetail path="/screens/TaskDetailScreen.tsx"/>
-            </ScrollView>
-            <Pressable onPress={()=> navigation.navigate('TaskCAAssessment')} style={styles.button}>
-                <Text style={[styles.TextHeader, {color:'#fff'}]}>เริ่มทำการประเมิน</Text>
-            </Pressable>
-        </View>
-    );
-
+  return (
+    <View style={styles.Container}>
+      <ScrollView contentContainerStyle={{ flexGrow:1 }}>
+        <LawDetail taskId={taskId}/>
+      </ScrollView>
+      <Pressable onPress={()=> navigation.navigate('TaskCAAssessment')} style={styles.button}>
+        <Text style={[styles.TextHeader, {color:'#fff'}]}>เริ่มทำการประเมิน</Text>
+      </Pressable>
+    </View>
+  );
 }
 
 

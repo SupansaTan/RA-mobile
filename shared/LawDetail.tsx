@@ -11,7 +11,7 @@ import { ViewStyle } from '../style/ViewStyle';
 import Colors from '../constants/Colors';
 import { TextStyle } from '../style/TextStyle';
 
-export default function LawDetail({ path }: { path: string }) {
+export default function LawDetail({ taskId }: { taskId: string }) {
   const [lawinfo, setLawinfo] = useState<LawContentModel>()
   const [systemList, setSystemList] = useState([])
   const [isLoading, setIsLoading] = useState(true);
@@ -20,7 +20,7 @@ export default function LawDetail({ path }: { path: string }) {
     const getLawDetail = () => {
       setIsLoading(true);
 
-      fetch(`${environment.apiRaUrl}/api/Law/GetLawDetailByTaskId?taskId=${'770b7fde-e316-41cb-9f94-b9600d5794aa'}`, {
+      fetch(`${environment.apiRaUrl}/api/Law/GetLawDetailByTaskId?taskId=${taskId}`, {
         method: "GET",
         headers: {
           'Accept': 'application/json',

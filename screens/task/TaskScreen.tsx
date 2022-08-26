@@ -5,7 +5,7 @@ import { Fontisto, MaterialIcons } from '@expo/vector-icons';
 import Colors from '../../constants/Colors';
 import { Text, View } from '../../components/Themed';
 
-import { RootTabScreenProps } from '../../types';
+import { RootStackScreenProps } from '../../types';
 import { LocationList } from '../../constants/Location';
 import { useNavigation } from '@react-navigation/native';
 
@@ -16,10 +16,9 @@ import { LocationContentModel } from '../../model/Location.model';
 import { ViewStyle } from '../../style/ViewStyle';
 import { TextStyle } from '../../style/TextStyle';
 
-export default function TaskScreen() {
+export default function TaskScreen({ navigation }: RootStackScreenProps<'Task'>) {
     const [locationList, setLocationList] = useState<Array<LocationContentModel>>([]);
     const [isLoading, setIsLoading] = useState<boolean>(true);
-    const navigation =  useNavigation()
 
     useEffect(() => {
       const getLocationList = () => {
@@ -48,7 +47,7 @@ export default function TaskScreen() {
     const LocationElement = locationList.map((location, index) => {
       return(
         <View key={index} >
-          <TouchableOpacity onPress={() => navigation.navigate('TaskLocation')}>
+          <TouchableOpacity onPress={() => navigation.navigate('TaskLocation', { locationId: location.locationId })}>
             <View style={styles.ContentContainer}>
               {/* icon */}
               <View style={styles.IconWrapper}>
