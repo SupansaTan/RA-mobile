@@ -12,6 +12,8 @@ import darkColors from 'react-native-elements/dist/config/colorsDark';
 import { RootStackScreenProps } from '../../types';
 import { environment } from '../../environment';
 import { KeyActModel } from '../../model/KeyAct.model';
+import { KeyActAssessmentDetail, RelevantAssessmentModel } from '../../model/Logging.model';
+import { User } from '../../constants/UserInfo';
 
 const AppearanceColor = Appearance.getColorScheme()==='dark'? '#fff':'#000'
 
@@ -73,6 +75,7 @@ export default function TaskRelavantAssessmentScreen({ navigation, route }: Root
     const [isLoading, setIsLoading] = useState(true);
     const [notation, setNotation] = useState('');
     const { taskId } = route.params;
+    const [AssessmentList, setAssessmentList] = useState<Array<KeyActAssessmentDetail>>([]); 
 
     const [index, setIndex] = React.useState(0);
     const [routes] = React.useState([
@@ -102,7 +105,7 @@ export default function TaskRelavantAssessmentScreen({ navigation, route }: Root
           console.error(error);
         });
       };
-  
+
       getKeyActList();
     }, []);
 
@@ -135,6 +138,42 @@ export default function TaskRelavantAssessmentScreen({ navigation, route }: Root
       setDatalist(keyActList);
       setData(keyActList[keyorder - 1]);
     }, [notation])
+
+    const SaveAssessment = () => {
+      let keyActList = datalist;
+      let element = new KeyActAssessmentDetail();
+      keyActList.forEach(x => {
+          element.keyActId = x.id;
+          element.isRelated = x.isRelated;
+          element.notation = x.notation;
+        AssessmentList.push(element)
+      });
+      AddLogging();
+    };
+
+    const AddLogging = () => {
+      let request = new RelevantAssessmentModel();
+      request.EmployeeId = User.emdId;
+      request.TaskId = taskId;
+      request.Process = 1;
+      request.KeyActList = AssessmentList;
+
+      fetch(`${environment.apiRaUrl}/api/KeyAction/LoggingAssessment/Add`, {
+        method: "POST",
+        headers: {
+          'Accept': 'application/json',
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(request)
+      })
+      .then((response) => response.json())
+      .then((res) => {
+        navigation.navigate('TaskRelevantResult')
+      })
+      .catch((error) => {
+        console.error(error);
+      });
+    };
     
     return (
       <View style={styles.Container}>
@@ -254,7 +293,7 @@ export default function TaskRelavantAssessmentScreen({ navigation, route }: Root
 
         </ScrollView> 
 
-        <Pressable onPress={()=> navigation.navigate('TaskRelevantResult')} style={styles.button}>
+        <Pressable onPress={()=> SaveAssessment()} style={styles.button}>
           <Text style={[styles.TextHeader, {color:'#fff'}]}>สรุปแบบประเมิน</Text>
         </Pressable>
       </View>
