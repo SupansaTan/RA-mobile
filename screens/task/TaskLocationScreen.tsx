@@ -76,7 +76,7 @@ export default function TaskLocationScreen({ navigation, route }: RootStackScree
 
   const TaskElementList = taskList?.map((content: TaskListSortByProcessModel, index: number) => {
     return (
-      <View>
+      <View key={'element-' + index}>
         <Text style={[TextStyle.Heading, { fontSize: 16, marginTop: 15 }]}>
           { getProcessLabel(content.taskProcess) }
         </Text>
