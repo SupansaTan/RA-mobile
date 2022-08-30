@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { StyleSheet, ScrollView, Pressable, useWindowDimensions, TextInput, Appearance, KeyboardAvoidingView, Platform, Modal,Keyboard, InputAccessoryView} from 'react-native';
+import { StyleSheet, ScrollView, Pressable, useWindowDimensions, TextInput, Appearance, KeyboardAvoidingView, Platform, Modal,Keyboard, InputAccessoryView, ActivityIndicator} from 'react-native';
 import { Button } from 'react-native-elements';
 import { AntDesign, Feather, FontAwesome5,  MaterialCommunityIcons } from '@expo/vector-icons';
 import { TabView, SceneMap, TabBar } from 'react-native-tab-view';
@@ -11,6 +11,9 @@ import { MaterialIcons, Text, View } from '../../components/Themed';
 import { useNavigation } from '@react-navigation/native';
 import { TaskConsistanceAssessment } from '../../constants/Task';
 import darkColors from 'react-native-elements/dist/config/colorsDark';
+import { ViewStyle } from '../../style/ViewStyle';
+import Colors from '../../constants/Colors';
+import { TextStyle } from '../../style/TextStyle';
 
 const AppearanceColor = Appearance.getColorScheme()==='dark'? '#fff':'#000'
 
@@ -76,48 +79,49 @@ const Employeees = [
 ];
 
 export default function TaskConsistanceAssessmentScreen() {
-    const navigation =  useNavigation();
-    const layout = useWindowDimensions();
-    const [datalist, setDatalist] = useState(TaskConsistanceAssessment.keyact)
-    const [keyorder, setKeyorder] = useState(1)
-    const [data, setData] = useState(datalist[(keyorder-1)]);
-    const [consistance, setConsistance] = useState(data.consistance? true:false);
-    const [nonconsistance, setNonconsistance] = useState(data.consistance? false:true)
-    const [cost, onChangeCost] = useState<string>('')
-    
-    const [duedate, setDuedate] = useState(new Date())
-    const [assignshow, setAssignshow] = useState(false);
+  const navigation =  useNavigation();
+  const layout = useWindowDimensions();
+  const [datalist, setDatalist] = useState(TaskConsistanceAssessment.keyact)
+  const [keyorder, setKeyorder] = useState(1)
+  const [data, setData] = useState(datalist[(keyorder-1)]);
+  const [consistance, setConsistance] = useState(data.consistance? true:false);
+  const [nonconsistance, setNonconsistance] = useState(data.consistance? false:true)
+  const [cost, onChangeCost] = useState<string>('')
+  const [isLoading, setIsLoading] = useState<boolean>(true);
+  
+  const [duedate, setDuedate] = useState(new Date())
+  const [assignshow, setAssignshow] = useState(false);
 
-    const [index, setIndex] = React.useState(0);
-    const [routes] = React.useState([
-      { key: 'first', title: 'สาระสำคัญ' },
-      { key: 'second', title: 'เกณฑ์ชี้วัด' },
-      { key: 'third', title: 'ความถี่' },
-      { key: 'fourth', title: 'แนวทางปฎิบัติ' },
-    ]);
+  const [index, setIndex] = React.useState(0);
+  const [routes] = React.useState([
+    { key: 'first', title: 'สาระสำคัญ' },
+    { key: 'second', title: 'เกณฑ์ชี้วัด' },
+    { key: 'third', title: 'ความถี่' },
+    { key: 'fourth', title: 'แนวทางปฎิบัติ' },
+  ]);
 
-    const [selectedItems, setSelectedItems] = useState([]);
+  const [selectedItems, setSelectedItems] = useState([]);
 
+  const onSelectedItemsChange = (selectedItems:any) => {
+    setSelectedItems(selectedItems);
+    for (let i = 0; i < selectedItems.length; i++) {
+      var tempItem = Employeees.find(item => item.id === selectedItems[i]);
+      console.log(tempItem);
+    }
+  };
 
-    const onSelectedItemsChange = (selectedItems:any) => {
-      setSelectedItems(selectedItems);
-      for (let i = 0; i < selectedItems.length; i++) {
-        var tempItem = Employeees.find(item => item.id === selectedItems[i]);
-        console.log(tempItem);
-      }
-    };
+  const duedateOnChange = (event: any, selectedDate: any) => {
+    const currentDate = selectedDate;
+    setDuedate(currentDate);
+  };
 
-    const duedateOnChange = (event:any, selectedDate:any) => {
-      const currentDate = selectedDate;
-      setDuedate(currentDate);
-    };
+  useEffect(() => {
+    setData(datalist[(keyorder-1)])
+    setConsistance(data.consistance? true:false)
+    setNonconsistance(data.consistance? false:true)
+  }, [data,keyorder,consistance,nonconsistance])
 
-    useEffect(() => {
-      setData(datalist[(keyorder-1)])
-      setConsistance(data.consistance? true:false)
-      setNonconsistance(data.consistance? false:true)
-    }, [data,keyorder,consistance,nonconsistance])
-    
+  const AssessmentWrapper = () => {
     return (
       <View style={styles.Container}>
         <View style={{flexDirection:'row', alignItems:'center'}}>
@@ -320,9 +324,20 @@ export default function TaskConsistanceAssessmentScreen() {
           <Text style={[styles.TextHeader, {color:'#fff'}]}>สรุปแบบประเมิน</Text>
         </Pressable>
       </View>
-    );
+    )
+  }
+
+  return isLoading ? <LoadingElement/> : <AssessmentWrapper/>;
 }
 
+const LoadingElement = () => {
+  return (
+    <View style={ViewStyle.LoadingWrapper}>
+      <ActivityIndicator color={Colors.light.tint} size="large" />
+      <Text style={TextStyle.Loading}>Loading</Text>
+    </View>
+  )
+}
 
 const styles = StyleSheet.create({
   Container: {
