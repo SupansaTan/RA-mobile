@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { StyleSheet, ScrollView, Pressable, useWindowDimensions, TextInput, Appearance, KeyboardAvoidingView, Platform} from 'react-native';
+import { StyleSheet, ScrollView, Pressable, useWindowDimensions, TextInput, Appearance, KeyboardAvoidingView, Platform, ActivityIndicator} from 'react-native';
 import { Button } from 'react-native-elements';
 import { AntDesign, Feather, FontAwesome5,  MaterialCommunityIcons } from '@expo/vector-icons';
 import { TabView, SceneMap, TabBar } from 'react-native-tab-view';
@@ -14,6 +14,9 @@ import { environment } from '../../environment';
 import { KeyActModel } from '../../model/KeyAct.model';
 import { KeyActAssessmentDetail, RelevantAssessmentModel } from '../../model/Logging.model';
 import { User } from '../../constants/UserInfo';
+import { ViewStyle } from '../../style/ViewStyle';
+import Colors from '../../constants/Colors';
+import { TextStyle } from '../../style/TextStyle';
 
 const AppearanceColor = Appearance.getColorScheme()==='dark'? '#fff':'#000'
 
@@ -66,115 +69,116 @@ const FourthRoute = (data:string) => {
 }
 
 export default function TaskRelavantAssessmentScreen({ navigation, route }: RootStackScreenProps<'TaskRelevantAssessment'>) {
-    const layout = useWindowDimensions();
-    const [datalist, setDatalist] = useState<Array<KeyActModel>>([])
-    const [keyorder, setKeyorder] = useState(1)
-    const [data, setData] = useState(datalist[(keyorder-1)]);
-    const [related, setRelated] = useState(false);
-    const [nonrelated, setNonrelated] = useState(false);
-    const [isLoading, setIsLoading] = useState(true);
-    const [notation, setNotation] = useState('');
-    const { taskId } = route.params;
-    const [AssessmentList, setAssessmentList] = useState<Array<KeyActAssessmentDetail>>([]); 
+  const layout = useWindowDimensions();
+  const [datalist, setDatalist] = useState<Array<KeyActModel>>([])
+  const [keyorder, setKeyorder] = useState(1)
+  const [data, setData] = useState(datalist[(keyorder-1)]);
+  const [related, setRelated] = useState(false);
+  const [nonrelated, setNonrelated] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
+  const [notation, setNotation] = useState('');
+  const { taskId } = route.params;
+  const [AssessmentList, setAssessmentList] = useState<Array<KeyActAssessmentDetail>>([]); 
 
-    const [index, setIndex] = React.useState(0);
-    const [routes] = React.useState([
-      { key: 'first', title: 'สาระสำคัญ' },
-      { key: 'second', title: 'เกณฑ์ชี้วัด' },
-      { key: 'third', title: 'ความถี่' },
-      { key: 'fourth', title: 'แนวทางปฎิบัติ' },
-    ]);
+  const [index, setIndex] = React.useState(0);
+  const [routes] = React.useState([
+    { key: 'first', title: 'สาระสำคัญ' },
+    { key: 'second', title: 'เกณฑ์ชี้วัด' },
+    { key: 'third', title: 'ความถี่' },
+    { key: 'fourth', title: 'แนวทางปฎิบัติ' },
+  ]);
 
-    useEffect(() => {
-      const getKeyActList = () => {
-        setIsLoading(true);
-  
-        fetch(`${environment.apiRaUrl}/api/KeyAction/GetAllKeyAction?taskId=${taskId}`, {
-          method: "GET",
-          headers: {
-            'Accept': 'application/json',
-            'Content-Type': 'application/json'
-          },
-        })
-        .then((response) => response.json())
-        .then((res) => {
-          setDatalist(res.data);
-          setIsLoading(false);
-        })
-        .catch((error) => {
-          console.error(error);
-        });
-      };
+  useEffect(() => {
+    const getKeyActList = () => {
+      setIsLoading(true);
 
-      getKeyActList();
-    }, []);
-
-    useEffect(() => {
-      let currentKeyact = datalist[keyorder - 1];
-      setData(currentKeyact);
-      setRelated(currentKeyact?.isRelated ?? false);
-      setNonrelated((!currentKeyact?.isRelated) ?? false);
-      setNotation(currentKeyact?.notation ?? '');
-    }, [keyorder])
-
-    useEffect(() => {
-      let keyActList = datalist;
-      keyActList.forEach((x) => {
-        if (x.order === keyorder) {
-          x.isRelated = related;
-        }
-      })
-      setDatalist(keyActList);
-      setData(keyActList[keyorder - 1]);
-    }, [related])
-
-    useEffect(() => {
-      let keyActList = datalist;
-      keyActList.forEach((x) => {
-        if (x.order === keyorder) {
-          x.notation = notation;
-        }
-      })
-      setDatalist(keyActList);
-      setData(keyActList[keyorder - 1]);
-    }, [notation])
-
-    const SaveAssessment = () => {
-      let keyActList = datalist;
-      let element = new KeyActAssessmentDetail();
-      keyActList.forEach(x => {
-          element.keyActId = x.id;
-          element.isRelated = x.isRelated;
-          element.notation = x.notation;
-        AssessmentList.push(element)
-      });
-      AddLogging();
-    };
-
-    const AddLogging = () => {
-      let request = new RelevantAssessmentModel();
-      request.EmployeeId = User.emdId;
-      request.TaskId = taskId;
-      request.Process = 1;
-      request.KeyActList = AssessmentList;
-
-      fetch(`${environment.apiRaUrl}/api/KeyAction/LoggingAssessment/Add`, {
-        method: "POST",
+      fetch(`${environment.apiRaUrl}/api/KeyAction/GetAllKeyAction?taskId=${taskId}`, {
+        method: "GET",
         headers: {
           'Accept': 'application/json',
           'Content-Type': 'application/json'
         },
-        body: JSON.stringify(request)
       })
       .then((response) => response.json())
       .then((res) => {
-        navigation.navigate('TaskRelevantResult')
+        setDatalist(res.data);
+        setIsLoading(false);
       })
       .catch((error) => {
         console.error(error);
       });
     };
-    
+
+    getKeyActList();
+  }, []);
+
+  useEffect(() => {
+    let currentKeyact = datalist[keyorder - 1];
+    setData(currentKeyact);
+    setRelated(currentKeyact?.isRelated ?? false);
+    setNonrelated((!currentKeyact?.isRelated) ?? false);
+    setNotation(currentKeyact?.notation ?? '');
+  }, [keyorder])
+
+  useEffect(() => {
+    let keyActList = datalist;
+    keyActList.forEach((x) => {
+      if (x.order === keyorder) {
+        x.isRelated = related;
+      }
+    })
+    setDatalist(keyActList);
+    setData(keyActList[keyorder - 1]);
+  }, [related])
+
+  useEffect(() => {
+    let keyActList = datalist;
+    keyActList.forEach((x) => {
+      if (x.order === keyorder) {
+        x.notation = notation;
+      }
+    })
+    setDatalist(keyActList);
+    setData(keyActList[keyorder - 1]);
+  }, [notation])
+
+  const SaveAssessment = () => {
+    let keyActList = datalist;
+    let element = new KeyActAssessmentDetail();
+    keyActList.forEach(x => {
+        element.keyActId = x.id;
+        element.isRelated = x.isRelated;
+        element.notation = x.notation;
+      AssessmentList.push(element)
+    });
+    AddLogging();
+  };
+
+  const AddLogging = () => {
+    let request = new RelevantAssessmentModel();
+    request.EmployeeId = User.emdId;
+    request.TaskId = taskId;
+    request.Process = 1;
+    request.KeyActList = AssessmentList;
+
+    fetch(`${environment.apiRaUrl}/api/KeyAction/LoggingAssessment/Add`, {
+      method: "POST",
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(request)
+    })
+    .then((response) => response.json())
+    .then((res) => {
+      navigation.navigate('TaskRelevantResult')
+    })
+    .catch((error) => {
+      console.error(error);
+    });
+  };
+
+  const AssessmentWrapper = () => {
     return (
       <View style={styles.Container}>
         <View style={{flexDirection:'row', alignItems:'center'}}>
@@ -291,13 +295,25 @@ export default function TaskRelavantAssessmentScreen({ navigation, route }: Root
           }
           
 
-        </ScrollView> 
+        </ScrollView>
 
         <Pressable onPress={()=> SaveAssessment()} style={styles.button}>
           <Text style={[styles.TextHeader, {color:'#fff'}]}>สรุปแบบประเมิน</Text>
         </Pressable>
       </View>
-    );
+    )
+  }
+  
+  return isLoading ? <LoadingElement/>: <AssessmentWrapper/>;
+}
+
+const LoadingElement = () => {
+  return (
+    <View style={ViewStyle.LoadingWrapper}>
+      <ActivityIndicator color={Colors.light.tint} size="large" />
+      <Text style={TextStyle.Loading}>Loading</Text>
+    </View>
+  )
 }
 
 const styles = StyleSheet.create({
