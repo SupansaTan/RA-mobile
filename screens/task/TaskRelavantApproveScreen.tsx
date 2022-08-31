@@ -8,11 +8,14 @@ import { CheckBox } from 'react-native-elements';
 import { MaterialIcons, Text, View } from '../../components/Themed';
 import { useNavigation } from '@react-navigation/native';
 import { TaskRAAssessmentList, TaskRelativeAssessment } from '../../constants/Task';
+import { KeyActApproveModel } from '../../model/KeyAct.model';
+import { LoggingAssessmentModel } from '../../model/Logging.model';
 import darkColors from 'react-native-elements/dist/config/colorsDark';
 
 import LawDetail from '../../shared/LawDetail';
 import { UserInfo } from '../../constants/UserInfo';
 import { RootStackScreenProps } from '../../types';
+import { environment } from '../../environment';
 
 const AppearanceColor = Appearance.getColorScheme()==='dark'? '#fff':'#000'
 
@@ -38,17 +41,21 @@ export function TaskRADetail({ navigation, route }: RootStackScreenProps<'TaskRA
 
 // ============================= Assessment =================================
 
-export function TaskRAAssessment() {
-    const navigation =  useNavigation();
+export function TaskRAAssessment({ navigation, route }: RootStackScreenProps<'TaskRAAssessment'>) {
     const layout = useWindowDimensions();
-    const [datalist, setDatalist] = useState(TaskRelativeAssessment.keyact)
+    const [datalist, setDatalist] = useState<Array<KeyActApproveModel>>([])
     const [keyorder, setKeyorder] = useState(1)
     const [data, setData] = useState(datalist[(keyorder-1)]);
+    const { taskId } = route.params;
+    const [isLoading, setIsLoading] = useState(true);
+    const [notation, setNotation] = useState('');
+    const [assessmentLog, setAssessmentLog] = useState<Array<LoggingAssessmentModel>>([]);
 
-    const [approvallist, setApprovallist] = useState(TaskRAAssessmentList.approval)
-    const [approvaldata, setApprovaldata] = useState(approvallist[(keyorder-1)])
-    const [approved, setApproved] = useState(approvaldata.approved? true:false);
-    const [disapproved, setDisapprovedd] = useState(approvaldata.approved? false:true)
+    const [logrelated, setLogRelated] = useState(false);
+    const [logNotation, setLogNotaiton] = useState('');
+
+    const [approved, setApproved] = useState(false);
+    const [disapproved, setDisapprovedd] = useState(false)
 
     const [index, setIndex] = React.useState(0);
     const [routes] = React.useState([
@@ -59,11 +66,81 @@ export function TaskRAAssessment() {
     ]);
 
     useEffect(() => {
-      setData(datalist[(keyorder-1)])
-      setApprovaldata(approvallist[(keyorder-1)])
-      setApproved(approvaldata.approved? true:false)
-      setDisapprovedd(approvaldata.approved? false:true)
-    }, [data,keyorder,approvaldata,approved,disapproved])
+      const getKeyActList = () => {
+        setIsLoading(true);
+  
+        fetch(`${environment.apiRaUrl}/api/KeyAction/GetAllKeyAction?taskId=${taskId}`, {
+          method: "GET",
+          headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json'
+          },
+        })
+        .then((response) => response.json())
+        .then((res) => {
+          setDatalist(res.data);
+        })
+        .catch((error) => {
+          console.error(error);
+        });
+      };
+
+      const getLoggingList = () => {
+        setIsLoading(true);
+  
+        fetch(`${environment.apiRaUrl}/api/KeyAction/GetLoggingAssessment?taskId=${taskId}&process=${1}`, {
+          method: "GET",
+          headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json'
+          },
+        })
+        .then((response) => response.json())
+        .then((res) => {
+          setAssessmentLog(res.data);
+          setIsLoading(false);
+        })
+        .catch((error) => {
+          console.error(error);
+        });
+      };
+  
+      getKeyActList();
+      getLoggingList();
+    }, []);
+
+    useEffect(() => {
+      let currentKeyact = datalist[keyorder - 1];
+      let currentLog = assessmentLog[keyorder - 1]
+      setData(currentKeyact);
+      setApproved(currentKeyact?.isApprove ?? false);
+      setDisapprovedd((!currentKeyact?.isApprove) ?? false);
+      setNotation(currentKeyact?.notation ?? '');
+      setLogRelated(currentLog?.Status ?? false)
+      setLogNotaiton(currentLog?.Notation ?? '')
+    }, [keyorder])
+  
+    useEffect(() => {
+      let keyActList = datalist;
+      keyActList.forEach((x) => {
+        if (x.order === keyorder) {
+          x.isApprove = approved;
+        }
+      })
+      setDatalist(keyActList);
+      setData(keyActList[keyorder - 1]);
+    }, [approved])
+  
+    useEffect(() => {
+      let keyActList = datalist;
+      keyActList.forEach((x) => {
+        if (x.order === keyorder) {
+          x.notation = notation;
+        }
+      })
+      setDatalist(keyActList);
+      setData(keyActList[keyorder - 1]);
+    }, [notation])
     
     return (
       <View style={styles.Container}>
@@ -112,10 +189,10 @@ export function TaskRAAssessment() {
             navigationState={{ index, routes }}
             renderScene={
               SceneMap({
-                first: () => FirstRoute(data.keyreq),
-                second: () => SecondRoute(data.standard),
-                third: () => ThirdRoute(data.frequency),
-                fourth: () => FourthRoute(data.practice),
+                first: () => FirstRoute(data?.keyReq ?? ''),
+                second: () => SecondRoute(data?.standard),
+                third: () => ThirdRoute(data?.frequency),
+                fourth: () => FourthRoute(data?.practice),
               })
             }
             onIndexChange={setIndex}
@@ -131,7 +208,7 @@ export function TaskRAAssessment() {
           />
           <View style={styles.GreenCard}>
             <View style={{backgroundColor:'white',padding:5,borderRadius:5, marginLeft:10,width:'90%'}}>
-              <Text style={[styles.GreenCardText,{fontSize:18}]}>  ผลการประเมิน : {data.related==true? 'เกี่ยวข้อง':'ไม่เกี่ยวข้อง'}</Text>  
+              <Text style={[styles.GreenCardText,{fontSize:18}]}>  ผลการประเมิน : {logrelated==true? 'เกี่ยวข้อง':'ไม่เกี่ยวข้อง'}</Text>  
             </View>
             
             <View style={{flexDirection:'row',backgroundColor:'transparent', marginTop:10}}>
@@ -166,7 +243,7 @@ export function TaskRAAssessment() {
                 <TextInput 
                 style={[styles.InputText, {color:AppearanceColor, borderColor:AppearanceColor, width:370}]}
                 multiline={true}
-                defaultValue={approvaldata.comment}
+                defaultValue={data?.notation}
                 />
               </View>
           </KeyboardAvoidingView>
