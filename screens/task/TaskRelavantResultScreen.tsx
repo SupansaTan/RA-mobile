@@ -6,26 +6,25 @@ import { Text, View } from '../../components/Themed';
 import { useNavigation } from '@react-navigation/native';
 import { TaskRelativeAssessment } from '../../constants/Task';
 import { UserInfo } from '../../constants/UserInfo';
+import { RootStackScreenProps } from '../../types';
+import { User } from '../../constants/UserInfo';
 
-export default function TaskRelavantResultScreen() {
-    const navigation =  useNavigation()
-    const [datalist, setDatalist] = useState(TaskRelativeAssessment.keyact)
+export default function TaskRelavantResultScreen({ navigation, route }: RootStackScreenProps<'TaskRelevantResult'>) {
+    const { keyactList } = route.params;
 
-    const ContentElement = datalist.map((content,index) => {
+    const ContentElement = keyactList.map((content,index) => {
       return(
         <View key={index}>
           <View style={{borderWidth:1, borderColor:'#EEEEEE', marginVertical:10}}/>
           <View style={[styles.RowView, {justifyContent:'space-between'}]}>
-            <Text style={[styles.TextContent, {color:getTextcolor(content.related), width:'70%'}]}>ข้อ {content.order} {content.keyreq}</Text>
-            <Text style={styles.TextContent}>{content.related===true? 'เกี่ยวข้อง':'ไม่เกี่ยวข้อง'}</Text>
+            <Text style={[styles.TextContent, {color:getTextcolor(content.isRelated ?? false), width:'70%'}]}>ข้อ {content.order} {content.keyReq}</Text>
+            <Text style={styles.TextContent}>{content.isRelated===true? 'เกี่ยวข้อง':'ไม่เกี่ยวข้อง'}</Text>
           </View>
           {
-            content.comment===''? <></> : <Text style={{marginTop:5}}>{'\t'}หมายเหตุ : {content.comment}</Text>
+            content.notation===''? <></> : <Text style={{marginTop:5}}>{'\t'}หมายเหตุ : {content.notation}</Text>
           }
         </View>
-        
       )
-
     })
     
     return (
@@ -41,7 +40,7 @@ export default function TaskRelavantResultScreen() {
           <View style={styles.ContentContainer}>
             <View style={[styles.RowView, {justifyContent:'space-between'}]}>
               <Text style={[styles.TextHeader]}>ประเมินโดย</Text>
-              <Text style={[styles.TextContent]}>{UserInfo.Fname} {UserInfo.Lname}</Text>
+              <Text style={[styles.TextContent]}>{User.Fname} {User.Lname}</Text>
             </View>
           </View>
           

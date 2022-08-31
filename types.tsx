@@ -13,6 +13,18 @@ declare global {
   }
 }
 
+class KeyActModel {
+  id: string;
+  keyReq: string;
+  standard: string;
+  practice: string;
+  frequency: string;
+  order: number;
+  lawId: string;
+  isRelated?: boolean;
+  notation?: string;
+}
+
 export type RootStackParamList = {
   Root: NavigatorScreenParams<RootTabParamList> | undefined;
   Profile: undefined;
@@ -22,7 +34,7 @@ export type RootStackParamList = {
   TaskLocation: { locationId: string };
   TaskRelevantDetail: { taskId: string };
   TaskRelevantAssessment: { taskId: string };
-  TaskRelevantResult: undefined;
+  TaskRelevantResult: { keyactList: Array<KeyActModel>};
   TaskConsistanceDetail: { taskId: string };
   TaskConsistanceAssessment: { taskId: string };
   TaskConsistanceResult: undefined;

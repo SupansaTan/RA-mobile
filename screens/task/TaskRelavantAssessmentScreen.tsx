@@ -151,7 +151,8 @@ export default function TaskRelavantAssessmentScreen({ navigation, route }: Root
         element.notation = x.notation;
       AssessmentList.push(element)
     });
-    AddLogging();
+    // AddLogging();
+    navigation.navigate('TaskRelevantResult', { keyactList: datalist})
   };
 
   const AddLogging = () => {
@@ -171,7 +172,7 @@ export default function TaskRelavantAssessmentScreen({ navigation, route }: Root
     })
     .then((response) => response.json())
     .then((res) => {
-      navigation.navigate('TaskRelevantResult')
+      navigation.navigate('TaskRelevantResult', { keyactList: datalist})
     })
     .catch((error) => {
       console.error(error);
