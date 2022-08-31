@@ -11,3 +11,11 @@ export class KeyActAssessmentDetail {
    isRelated?: boolean;
    notation?: string;
 }
+
+export class LoggingAssessmentModel {
+    Id: string;
+    Process: number;
+    Status: boolean;
+    Notation: string;
+    KeyActId: string;
+}
