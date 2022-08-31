@@ -34,7 +34,7 @@ export type RootStackParamList = {
   TaskLocation: { locationId: string };
   TaskRelevantDetail: { taskId: string };
   TaskRelevantAssessment: { taskId: string };
-  TaskRelevantResult: { keyactList: Array<KeyActModel>};
+  TaskRelevantResult: { taskId: string , keyactList: Array<KeyActModel>};
   TaskConsistanceDetail: { taskId: string };
   TaskConsistanceAssessment: { taskId: string };
   TaskConsistanceResult: undefined;

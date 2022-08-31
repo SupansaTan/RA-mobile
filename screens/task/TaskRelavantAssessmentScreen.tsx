@@ -142,43 +142,6 @@ export default function TaskRelavantAssessmentScreen({ navigation, route }: Root
     setData(keyActList[keyorder - 1]);
   }, [notation])
 
-  const SaveAssessment = () => {
-    let keyActList = datalist;
-    let element = new KeyActAssessmentDetail();
-    keyActList.forEach(x => {
-        element.keyActId = x.id;
-        element.isRelated = x.isRelated;
-        element.notation = x.notation;
-      AssessmentList.push(element)
-    });
-    // AddLogging();
-    navigation.navigate('TaskRelevantResult', { keyactList: datalist})
-  };
-
-  const AddLogging = () => {
-    let request = new RelevantAssessmentModel();
-    request.EmployeeId = User.emdId;
-    request.TaskId = taskId;
-    request.Process = 1;
-    request.KeyActList = AssessmentList;
-
-    fetch(`${environment.apiRaUrl}/api/KeyAction/LoggingAssessment/Add`, {
-      method: "POST",
-      headers: {
-        'Accept': 'application/json',
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify(request)
-    })
-    .then((response) => response.json())
-    .then((res) => {
-      navigation.navigate('TaskRelevantResult', { keyactList: datalist})
-    })
-    .catch((error) => {
-      console.error(error);
-    });
-  };
-
   const AssessmentWrapper = () => {
     return (
       <View style={styles.Container}>
@@ -298,7 +261,7 @@ export default function TaskRelavantAssessmentScreen({ navigation, route }: Root
 
         </ScrollView>
 
-        <Pressable onPress={()=> SaveAssessment()} style={styles.button}>
+        <Pressable onPress={()=> navigation.navigate('TaskRelevantResult', { taskId: taskId, keyactList: datalist })} style={styles.button}>
           <Text style={[styles.TextHeader, {color:'#fff'}]}>สรุปแบบประเมิน</Text>
         </Pressable>
       </View>

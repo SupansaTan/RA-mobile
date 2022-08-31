@@ -8,9 +8,12 @@ import { TaskRelativeAssessment } from '../../constants/Task';
 import { UserInfo } from '../../constants/UserInfo';
 import { RootStackScreenProps } from '../../types';
 import { User } from '../../constants/UserInfo';
+import { KeyActAssessmentDetail, RelevantAssessmentModel } from '../../model/Logging.model';
+import { environment } from '../../environment';
 
 export default function TaskRelavantResultScreen({ navigation, route }: RootStackScreenProps<'TaskRelevantResult'>) {
-    const { keyactList } = route.params;
+    const { taskId, keyactList } = route.params;
+    const [AssessmentList, setAssessmentList] = useState<Array<KeyActAssessmentDetail>>([]); 
 
     const ContentElement = keyactList.map((content,index) => {
       return(
@@ -26,6 +29,42 @@ export default function TaskRelavantResultScreen({ navigation, route }: RootStac
         </View>
       )
     })
+
+    const SaveAssessment = () => {
+      let keyActList = keyactList;
+      let element = new KeyActAssessmentDetail();
+      keyActList.forEach(x => {
+          element.keyActId = x.id;
+          element.isRelated = x.isRelated;
+          element.notation = x.notation;
+        AssessmentList.push(element)
+      });
+      AddLogging();
+    };
+  
+    const AddLogging = () => {
+      let request = new RelevantAssessmentModel();
+      request.EmployeeId = User.emdId;
+      request.TaskId = taskId;
+      request.Process = 1;
+      request.KeyActList = AssessmentList;
+  
+      fetch(`${environment.apiRaUrl}/api/KeyAction/LoggingAssessment/Add`, {
+        method: "POST",
+        headers: {
+          'Accept': 'application/json',
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(request)
+      })
+      .then((response) => response.json())
+      .then((res) => {
+        navigation.navigate('Task')
+      })
+      .catch((error) => {
+        console.error(error);
+      });
+    };
     
     return (
         <View style={styles.Container}>
@@ -51,7 +90,7 @@ export default function TaskRelavantResultScreen({ navigation, route }: RootStac
             </View>
           </ScrollView>
 
-          <Pressable onPress={()=> navigation.navigate('Task')} style={styles.button}>
+          <Pressable onPress={()=> SaveAssessment()} style={styles.button}>
               <Text style={[styles.TextHeader, {color:'#fff'}]}>ส่งอนุมติ</Text>
           </Pressable>
         </View>
