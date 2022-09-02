@@ -1,9 +1,9 @@
 
 export class RelevantAssessmentModel {
-    EmployeeId: string;
-    TaskId: string;
-    Process: number;
-    KeyActList: Array<KeyActAssessmentDetail>
+    employeeId: string;
+    taskId: string;
+    process: number;
+    keyActList: Array<KeyActAssessmentDetail>
 }
 
 export class KeyActAssessmentDetail {
