@@ -190,25 +190,30 @@ export default function TaskRelavantAssessmentScreen({ navigation, route }: Root
   const AssessmentContainer = () => {
     return (
       <View style={[styles.GreenCard]}>
-        <Text style={[styles.GreenCardText,{fontSize:18}]}>ความเกี่ยวข้อง</Text>
-        <View style={{flexDirection:'row',backgroundColor:'transparent', marginTop:10}}>
+        <Text style={[TextStyle.Heading,{fontSize: 19, color: '#13AF82'}]}>ความเกี่ยวข้อง</Text>
+        <View style={{flexDirection:'row',backgroundColor:'transparent', justifyContent: 'center', width: '100%' }}>
           <CheckBox 
             center
-            title={'เกี่ยวข้อง'}
+            title={<Text style={[TextStyle.Content, { fontSize: 18, marginLeft: 5 }]}>เกี่ยวข้อง</Text>}
             checked={related}
             checkedColor={'#13AF82'}
+            iconType='font-awesome'
+            checkedIcon="check-square"
+            uncheckedIcon="square"
             onPress={()=> { setRelated(!related); setNonrelated(false); }}
+            style={{ borderColor:'#13AF82' }}
             containerStyle={{backgroundColor:'transparent'}}
-            textStyle={styles.GreenCardText}
           />
           <CheckBox 
             center
-            title={'ไม่เกี่ยวข้อง'} 
+            title={<Text style={[TextStyle.Content, { fontSize: 18, marginLeft: 5 }]}>ไม่เกี่ยวข้อง</Text>} 
             checked={nonrelated}
-            checkedColor={'red'}
+            checkedColor={'#FF4F4F'}
+            iconType='font-awesome'
+            checkedIcon="check-square"
+            uncheckedIcon="square"
             onPress={()=> { setNonrelated(!nonrelated); setRelated(false); }}
             containerStyle={{backgroundColor:'transparent'}}
-            textStyle={styles.GreenCardText}
           />
         </View>
       </View>
@@ -225,9 +230,16 @@ export default function TaskRelavantAssessmentScreen({ navigation, route }: Root
           <View style={styles.CommentWrapper}>
             <Text style={styles.TextHeader}>หมายเหตุ</Text>
             <TextInput 
-            style={[styles.InputText, {color: 'white', borderColor: '#B9B9B9', width: '100%'}]}
-            multiline={true}
-            defaultValue={data?.notation}
+              style={[styles.InputText, {color: 'black', borderColor: '#B9B9B9'}]}
+              editable
+              multiline
+              scrollEnabled
+              onChangeText={(text) => setNotation(text)}
+              value={data?.notation}
+              placeholder="หมายเหตุ"
+              numberOfLines={4}
+              textAlignVertical='top'
+              maxLength={256}
             />
           </View>
       </KeyboardAvoidingView>
@@ -235,10 +247,16 @@ export default function TaskRelavantAssessmentScreen({ navigation, route }: Root
     <View style={styles.CommentWrapper}>
       <Text style={styles.TextHeader}>หมายเหตุ</Text>
       <TextInput 
-        style={[styles.InputText, {color: 'white', borderColor: '#B9B9B9', width: '100%'}]}
-        multiline={true}
-        onChangeText={(val) => setNotation(val)}
-        defaultValue={notation}
+        style={[styles.InputText, {color: 'black', borderColor: '#B9B9B9'}]}
+        editable
+        multiline
+        scrollEnabled
+        onChangeText={(text) => setNotation(text)}
+        value={data?.notation}
+        placeholder="หมายเหตุ"
+        numberOfLines={4}
+        textAlignVertical='top'
+        maxLength={256}
       />
     </View>
   }
@@ -272,7 +290,6 @@ export default function TaskRelavantAssessmentScreen({ navigation, route }: Root
       case 4:
         return <MaterialCommunityIcons name="circle-slice-5" size={20} color={'#6C6C6C'} style={{ marginTop:5, marginHorizontal: 5 }} />
     }
-    return <></>
   }
 
   const KeyActContainer = (data: string) => {
@@ -282,7 +299,7 @@ export default function TaskRelavantAssessmentScreen({ navigation, route }: Root
           { getTabIcon() }
 
           <View style={[ViewStyle.ColumnContainer, { backgroundColor: 'white' }]}>
-            <Text style={styles.TextHeader}>{ getTabLabel() }</Text>
+            <Text style={[styles.TextHeader, { color: '#6C6C6C' }]}>{ getTabLabel() }</Text>
             <Text style={TextStyle.Content}>{data}</Text>
           </View>
         </View>
@@ -387,11 +404,11 @@ const styles = StyleSheet.create({
     backgroundColor: '#DEF4EC',
     alignItems:'flex-start',
     justifyContent:'center',
-    padding: 10,
+    paddingHorizontal: 15,
+    paddingVertical: 10,
     marginBottom: 5,
     marginHorizontal: 10,
     borderRadius: 10,
-    flex: 1
   },
   GreenCardText: {
     fontSize: 18,
@@ -402,16 +419,16 @@ const styles = StyleSheet.create({
     padding: 10,
     flex: 1,
     justifyContent: "flex-start",
+    backgroundColor: 'white'
   },
   InputText: {
-    marginVertical:5,
-    borderColor:'black', 
-    borderWidth:1, 
-    borderRadius:5,
+    marginVertical:5, 
+    borderWidth: 1,
+    borderRadius: 5,
     width:'100%',
-    padding:5,
-    height:100,
+    padding: 10,
     fontSize: 15,
+    backgroundColor: 'white',
     fontFamily: 'Mitr_400Regular',
   },
   TabViewPage: {

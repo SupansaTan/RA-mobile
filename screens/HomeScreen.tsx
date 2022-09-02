@@ -4,7 +4,7 @@ import { Ionicons, MaterialCommunityIcons } from '@expo/vector-icons';
 import { format } from 'date-fns'
 
 import { Text, View, MaterialIcons } from '../components/Themed';
-import { RootTabScreenProps } from '../types';
+import { RootStackParamList, RootTabParamList, RootTabScreenProps } from '../types';
 import { MenuList } from '../constants/Home';
 import { IncomingTask } from '../constants/Task';
 import { TaskContentModel } from '../model/Task';
@@ -172,7 +172,7 @@ const getTextColor = (status: TaskDatetimeStatus) => {
   }
 }
 
-const getScreenRoute = (process: TaskProcess): string => {
+const getScreenRoute = (process: TaskProcess): keyof RootTabParamList | keyof RootStackParamList => {
   switch(process) {
     case TaskProcess.Relevant:
       return 'TaskRelevantDetail';
@@ -183,9 +183,9 @@ const getScreenRoute = (process: TaskProcess): string => {
     case TaskProcess.ApproveConsistance:
       return 'TaskCADetail';
     case TaskProcess.Response:
-      return '';
+      return 'TaskRelevantDetail';
   }
-  return '';
+  return 'TaskRelevantDetail';
 }
 
 const LoadingElement = () => {
