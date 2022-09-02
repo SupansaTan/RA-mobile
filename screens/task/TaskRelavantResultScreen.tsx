@@ -34,9 +34,9 @@ export default function TaskRelavantResultScreen({ navigation, route }: RootStac
       let keyActList = keyactList;
       let element = new KeyActAssessmentDetail();
       keyActList.forEach(x => {
-          element.keyActId = x.id;
-          element.isRelated = x.isRelated;
-          element.notation = x.notation;
+        element.keyActId = x.id;
+        element.isRelated = x.isRelated;
+        element.notation = x.notation;
         AssessmentList.push(element)
       });
       AddLogging();
@@ -44,10 +44,10 @@ export default function TaskRelavantResultScreen({ navigation, route }: RootStac
   
     const AddLogging = () => {
       let request = new RelevantAssessmentModel();
-      request.EmployeeId = User.emdId;
-      request.TaskId = taskId;
-      request.Process = 1;
-      request.KeyActList = AssessmentList;
+      request.employeeId = User.emdId;
+      request.taskId = taskId;
+      request.process = 1;
+      request.keyActList = AssessmentList;
   
       fetch(`${environment.apiRaUrl}/api/KeyAction/LoggingAssessment/Add`, {
         method: "POST",
