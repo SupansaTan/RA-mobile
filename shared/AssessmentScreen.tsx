@@ -1,18 +1,15 @@
-import React, { useEffect, useState } from 'react';
-import { StyleSheet, ScrollView, Pressable, useWindowDimensions, TextInput, Appearance, KeyboardAvoidingView, Platform, ActivityIndicator} from 'react-native';
-import { Button } from 'react-native-elements';
-import { AntDesign, Feather, FontAwesome, FontAwesome5,  Ionicons,  MaterialCommunityIcons } from '@expo/vector-icons';
+import React, { LegacyRef, useEffect, useRef, useState } from 'react';
+import { StyleSheet, ScrollView, useWindowDimensions, TextInput, KeyboardAvoidingView, Platform, ActivityIndicator, Button as ButtonSubmit, SafeAreaView, Pressable } from 'react-native';
+import { FontAwesome, Ionicons,  MaterialCommunityIcons } from '@expo/vector-icons';
 import { TabView, SceneMap, TabBar } from 'react-native-tab-view';
-import { CheckBox } from 'react-native-elements';
+import { CheckBox } from "@rneui/themed";
+import { Button } from 'react-native-elements';
 
 import { MaterialIcons, Text, View } from '../components/Themed';
-import { TaskRelativeAssessment } from '../constants/Task';
-import darkColors from 'react-native-elements/dist/config/colorsDark';
 import { RootStackScreenProps } from '../types';
 import { environment } from '../environment';
 import { KeyActModel } from '../model/KeyAct.model';
 import { KeyActAssessmentDetail, RelevantAssessmentModel } from '../model/Logging.model';
-import { User } from '../constants/UserInfo';
 import { ViewStyle } from '../style/ViewStyle';
 import Colors from '../constants/Colors';
 import { TextStyle } from '../style/TextStyle';
@@ -23,10 +20,7 @@ export default function TaskRelavantAssessmentScreen({ navigation, route }: Root
   const [datalist, setDatalist] = useState<Array<KeyActModel>>([])
   const [keyorder, setKeyorder] = useState(1)
   const [data, setData] = useState(datalist[(keyorder-1)]);
-  const [related, setRelated] = useState(false);
-  const [nonrelated, setNonrelated] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
-  const [notation, setNotation] = useState('');
   const { taskId, taskProcess } = route.params;
   const [AssessmentList, setAssessmentList] = useState<Array<KeyActAssessmentDetail>>([]); 
 
@@ -61,37 +55,16 @@ export default function TaskRelavantAssessmentScreen({ navigation, route }: Root
     };
 
     getKeyActList();
+
+    return () => { }
   }, []);
 
   useEffect(() => {
     let currentKeyact = datalist[keyorder - 1];
     setData(currentKeyact);
-    setRelated(currentKeyact?.isRelated ?? false);
-    setNonrelated((!currentKeyact?.isRelated) ?? false);
-    setNotation(currentKeyact?.notation ?? '');
+
+    return () => { }
   }, [keyorder])
-
-  useEffect(() => {
-    let keyActList = datalist;
-    keyActList.forEach((x) => {
-      if (x.order === keyorder) {
-        x.isRelated = related;
-      }
-    })
-    setDatalist(keyActList);
-    setData(keyActList[keyorder - 1]);
-  }, [related])
-
-  useEffect(() => {
-    let keyActList = datalist;
-    keyActList.forEach((x) => {
-      if (x.order === keyorder) {
-        x.notation = notation;
-      }
-    })
-    setDatalist(keyActList);
-    setData(keyActList[keyorder - 1]);
-  }, [notation])
 
   const KeyActButton = () => {
     return (
@@ -171,7 +144,7 @@ export default function TaskRelavantAssessmentScreen({ navigation, route }: Root
         }
         onIndexChange={setIndex}
         initialLayout={{ width: layout.width }}
-        style={{width: '100%', backgroundColor: 'white', marginTop: 10 }}
+        style={{width: '100%', backgroundColor: 'white' }}
         renderTabBar={props => <TabBar {...props} 
           indicatorStyle={{backgroundColor: '#13AF82'}}
           pressColor={'#EEEEEE'}
@@ -187,10 +160,34 @@ export default function TaskRelavantAssessmentScreen({ navigation, route }: Root
     )
   }
 
+  const getAssessemntLabel = () => {
+    switch(taskProcess) {
+      case TaskProcess.Relevant:
+        return 'ความเกี่ยวข้อง';
+      case TaskProcess.Consistance:
+        return 'ความสอดคล้อง';
+      case TaskProcess.Response:
+        return 'ความสอดคล้อง'; 
+    }
+  }
+
   const AssessmentContainer = () => {
+    const [related, setRelated] = useState(data?.isRelated === undefined ? false : data?.isRelated);
+    const [nonRelated, setNonRelated] = useState(data?.isRelated === undefined ? false : !data?.isRelated);
+
+    const updateKeyActData = () => {
+      let keyActList = datalist;
+      keyActList.forEach((x) => {
+        if (x.order === keyorder) {
+          x.isRelated = !related;
+        }
+      })
+      setDatalist(keyActList);
+    }
+
     return (
       <View style={[styles.GreenCard]}>
-        <Text style={[TextStyle.Heading,{fontSize: 19, color: '#13AF82'}]}>ความเกี่ยวข้อง</Text>
+        <Text style={[TextStyle.Heading,{fontSize: 19, color: '#13AF82'}]}>{ getAssessemntLabel() }</Text>
         <View style={{flexDirection:'row',backgroundColor:'transparent', justifyContent: 'center', width: '100%' }}>
           <CheckBox 
             center
@@ -200,20 +197,19 @@ export default function TaskRelavantAssessmentScreen({ navigation, route }: Root
             iconType='font-awesome'
             checkedIcon="check-square"
             uncheckedIcon="square"
-            onPress={()=> { setRelated(!related); setNonrelated(false); }}
-            style={{ borderColor:'#13AF82' }}
-            containerStyle={{backgroundColor:'transparent'}}
+            onPress={()=> { setRelated(!related); setNonRelated(false); updateKeyActData() }}
+            containerStyle={{backgroundColor:'transparent', borderColor:'transparent'}}
           />
-          <CheckBox 
+          <CheckBox
             center
             title={<Text style={[TextStyle.Content, { fontSize: 18, marginLeft: 5 }]}>ไม่เกี่ยวข้อง</Text>} 
-            checked={nonrelated}
+            checked={nonRelated}
             checkedColor={'#FF4F4F'}
             iconType='font-awesome'
-            checkedIcon="check-square"
+            checkedIcon="minus-square"
             uncheckedIcon="square"
-            onPress={()=> { setNonrelated(!nonrelated); setRelated(false); }}
-            containerStyle={{backgroundColor:'transparent'}}
+            onPress={()=> { setNonRelated(!nonRelated); setRelated(false); updateKeyActData() }}
+            containerStyle={{backgroundColor:'transparent', borderColor:'transparent'}}
           />
         </View>
       </View>
@@ -221,6 +217,19 @@ export default function TaskRelavantAssessmentScreen({ navigation, route }: Root
   }
 
   const NotationContainer = () => {
+    const [notation, setNotation] = useState(data?.notation);
+    const updateKeyActData = (text: string) => {
+      setNotation(text);
+
+      let keyActList = datalist;
+      keyActList.forEach((x) => {
+        if (x.order === keyorder) {
+          x.notation = notation;
+        }
+      })
+      setDatalist(keyActList);
+    }
+
     return Platform.OS == 'ios'?
       <KeyboardAvoidingView
         behavior={Platform.OS === "ios" ? "padding" : "height"}
@@ -234,8 +243,8 @@ export default function TaskRelavantAssessmentScreen({ navigation, route }: Root
               editable
               multiline
               scrollEnabled
-              onChangeText={(text) => setNotation(text)}
-              value={data?.notation}
+              onChange={(text) => updateKeyActData(text.nativeEvent.text)}
+              value={notation}
               placeholder="หมายเหตุ"
               numberOfLines={4}
               textAlignVertical='top'
@@ -252,7 +261,7 @@ export default function TaskRelavantAssessmentScreen({ navigation, route }: Root
         multiline
         scrollEnabled
         onChangeText={(text) => setNotation(text)}
-        value={data?.notation}
+        value={notation}
         placeholder="หมายเหตุ"
         numberOfLines={4}
         textAlignVertical='top'
@@ -292,15 +301,20 @@ export default function TaskRelavantAssessmentScreen({ navigation, route }: Root
     }
   }
 
-  const KeyActContainer = (data: string) => {
+  const KeyActContainer = (content: string) => {
+    const ScrollViewRef = useRef() as LegacyRef<ScrollView>;
+    
     return(
-      <ScrollView contentContainerStyle={{flexGrow:1}}>
+      <ScrollView 
+        contentContainerStyle={{ height: 'auto' }}
+        ref={ScrollViewRef}
+        scrollEventThrottle={400}>
         <View style={[ViewStyle.RowContainer, { paddingVertical: 10, backgroundColor: 'white' }]} >
           { getTabIcon() }
 
           <View style={[ViewStyle.ColumnContainer, { backgroundColor: 'white' }]}>
             <Text style={[styles.TextHeader, { color: '#6C6C6C' }]}>{ getTabLabel() }</Text>
-            <Text style={TextStyle.Content}>{data}</Text>
+            <Text style={[TextStyle.Content, { fontSize: 18 }]}>{content}</Text>
           </View>
         </View>
 
@@ -315,9 +329,15 @@ export default function TaskRelavantAssessmentScreen({ navigation, route }: Root
       <View style={styles.Container}>
         <KeyActButton/>
         <TabContainer/>
-        <Pressable onPress={()=> navigation.navigate('TaskRelevantResult', { taskId: taskId, keyactList: datalist })} style={styles.button}>
-          <Text style={[styles.TextHeader, {color:'#fff'}]}>สรุปแบบประเมิน</Text>
-        </Pressable>
+
+        <SafeAreaView style={{ width: '100%' }}>
+          <View style={{ backgroundColor: 'white', paddingTop: 10 }}>
+            <Pressable style={styles.ButtonSubmit}
+              onPress={()=> navigation.navigate('TaskRelevantResult', { taskId: taskId, keyactList: datalist })}>
+              <Text style={[TextStyle.Heading, { color: 'white', textAlign: 'center' }]}>สรุปแบบประเมิน</Text>
+            </Pressable>
+          </View>
+        </SafeAreaView>
       </View>
     )
   }
@@ -379,15 +399,12 @@ const styles = StyleSheet.create({
     fontSize: 15,
     fontFamily: 'Mitr_400Regular'
   },
-  button: {
-    backgroundColor:'#13AF82',
-    width:'90%',
-    height:'7%',
-    borderRadius:10,
-    alignItems:'center',
-    justifyContent:'center',
-    marginBottom:20,
-    marginHorizontal:50,
+  ButtonSubmit: {
+    backgroundColor: '#13AF82',
+    paddingHorizontal: 10,
+    paddingVertical: 8,
+    borderRadius: 8,
+    marginHorizontal: 10
   },
   ArrowButton: {
     paddingVertical: 4,
