@@ -3,6 +3,7 @@ import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { NavigationContainer, DefaultTheme, DarkTheme } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { ColorSchemeName, Appearance } from 'react-native';
+import { Feather, FontAwesome, Ionicons } from '@expo/vector-icons'; 
 
 import Colors from '../constants/Colors';
 import useColorScheme from '../hooks/useColorScheme';
@@ -21,7 +22,6 @@ import { ReportTaskDetailScreen } from '../screens/report/TaskDetailScreen';
 import { LawSearchScreen } from '../screens/search-law/LawSearchScreen';
 import TaskLocationScreen from '../screens/task/TaskLocationScreen';
 import TaskRelavantDetailScreen from '../screens/task/TaskRelavantDetailScreen';
-import TaskRelavantAssessmentScreen from '../screens/task/TaskRelavantAssessmentScreen';
 import TaskRelavantResultScreen from '../screens/task/TaskRelavantResultScreen';
 import TaskConsistanceDetailScreen from '../screens/task/TaskConsistanceDetailScreen';
 import TaskConsistanceAssessmentScreen from '../screens/task/TaskConsistanceAssessmentScreen';
@@ -35,6 +35,8 @@ import { RootStackParamList, RootTabParamList, RootTabScreenProps } from '../typ
 import LinkingConfiguration from './LinkingConfiguration';
 import { BottomTabStyle, BottomTabLabelStyle, HeaderTitleStyle } from '../constants/NavigationStyle';
 import { TabBarFeatherIcon, TabBarSimpleLineIcon, TabBarMaterialIcon } from './TabBarIcon';
+import { useNavigation } from '@react-navigation/native';
+import AssessmentScreen from '../shared/AssessmentScreen';
 
 export default function Navigation({ colorScheme }: { colorScheme: ColorSchemeName }) {
   return (
@@ -51,6 +53,8 @@ const Stack = createNativeStackNavigator<RootStackParamList>();
 const HeaderColor = Appearance.getColorScheme()==='dark'? '#000':'#f8f8f8'
 
 function RootNavigator() {
+  const navigation = useNavigation();
+
   return (
     <Stack.Navigator>
       <Stack.Screen name="Root" component={BottomTabNavigator} options={{ headerShown: false }} />
@@ -142,13 +146,16 @@ function RootNavigator() {
           headerTitleStyle: HeaderTitleStyle,
           headerStyle: {backgroundColor: HeaderColor}
         }} />
-        <Stack.Screen name="TaskRelevantAssessment" component={TaskRelavantAssessmentScreen} 
+        <Stack.Screen name="Assessment" component={AssessmentScreen} 
         options={{ 
           animation: 'slide_from_right',
           title: '',
           headerShadowVisible: false,
-          headerTitleStyle: HeaderTitleStyle,
-          headerStyle: {backgroundColor: HeaderColor}
+          headerTitleStyle: [HeaderTitleStyle, { color: 'white' }],
+          headerStyle: {backgroundColor: Colors.light.tint },
+          headerTintColor: 'white',
+          headerLeft: () => <FontAwesome name="angle-left" size={40} color="white" onPress={() => navigation.goBack()} />,
+          headerRight: () => <Feather name="x" size={34} color="white" onPress={() => navigation.navigate('Task')} />
         }} />
         <Stack.Screen name="TaskRelevantResult" component={TaskRelavantResultScreen} 
         options={{ 

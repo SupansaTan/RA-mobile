@@ -6,23 +6,12 @@
 import { BottomTabScreenProps } from '@react-navigation/bottom-tabs';
 import { CompositeScreenProps, NavigatorScreenParams } from '@react-navigation/native';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
+import { KeyActModel } from './model/KeyAct.model';
 
 declare global {
   namespace ReactNavigation {
     interface RootParamList extends RootStackParamList {}
   }
-}
-
-class KeyActModel {
-  id: string;
-  keyReq: string;
-  standard: string;
-  practice: string;
-  frequency: string;
-  order: number;
-  lawId: string;
-  isRelated?: boolean;
-  notation?: string;
 }
 
 export type RootStackParamList = {
@@ -33,7 +22,6 @@ export type RootStackParamList = {
   TrackingLocation: undefined;
   TaskLocation: { locationId: string };
   TaskRelevantDetail: { taskId: string };
-  TaskRelevantAssessment: { taskId: string };
   TaskRelevantResult: { taskId: string , keyactList: Array<KeyActModel>};
   TaskConsistanceDetail: { taskId: string };
   TaskConsistanceAssessment: { taskId: string };
@@ -53,6 +41,7 @@ export type RootStackParamList = {
   NotFound: undefined;
   SignIn: undefined;
   ResetPassword: undefined;
+  Assessment: { taskId: string, taskProcess: number };
 };
 
 export type RootStackScreenProps<Screen extends keyof RootStackParamList> = NativeStackScreenProps<
