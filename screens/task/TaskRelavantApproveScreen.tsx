@@ -9,8 +9,8 @@ import { MaterialIcons, Text, View } from '../../components/Themed';
 import { useNavigation } from '@react-navigation/native';
 import { TaskRAAssessmentList, TaskRelativeAssessment } from '../../constants/Task';
 import { KeyActApproveModel } from '../../model/KeyAct.model';
-import { LoggingAssessmentModel } from '../../model/Logging.model';
-import darkColors from 'react-native-elements/dist/config/colorsDark';
+import { LoggingAssessmentModel, KeyActAssessmentDetail, RelevantAssessmentModel } from '../../model/Logging.model';
+import { User } from '../../constants/UserInfo';
 
 import LawDetail from '../../shared/LawDetail';
 import { UserInfo } from '../../constants/UserInfo';
@@ -258,7 +258,7 @@ export function TaskRAAssessment({ navigation, route }: RootStackScreenProps<'Ta
 
         </ScrollView> 
 
-        <Pressable onPress={()=> navigation.navigate('TaskRAResult')} style={styles.button}>
+        <Pressable onPress={()=> navigation.navigate('TaskRAResult', {taskId: taskId, keyactList: datalist})} style={styles.button}>
           <Text style={[styles.TextHeader, {color:'#fff'}]}>สรุปแบบประเมิน</Text>
         </Pressable>
       </View>
@@ -321,26 +321,59 @@ const FirstRoute = (data:string) => {
 
 // ============================= Result =================================
 
-export function TaskRAResult() {
-    const navigation =  useNavigation()
-    const [keylist, setKeylist] = useState(TaskRelativeAssessment.keyact)
-    const [approvallist, setApprovallist] = useState(TaskRAAssessmentList.approval)
+export function TaskRAResult({ navigation, route }: RootStackScreenProps<'TaskRAResult'>) {
+    const { taskId, keyactList } = route.params;
+    const [AssessmentList, setAssessmentList] = useState<Array<KeyActAssessmentDetail>>([]); 
 
-    const ContentElement = keylist.map((content,index) => {
+    const SaveAssessment = () => {
+      let keyActList = keyactList;
+      let element = new KeyActAssessmentDetail();
+      keyActList.forEach(x => {
+        element.keyActId = x.id;
+        element.isRelated = x.isApprove;
+        element.notation = x.notation;
+        AssessmentList.push(element)
+      });
+      AddLogging();
+    };
+  
+    const AddLogging = () => {
+      let request = new RelevantAssessmentModel();
+      request.employeeId = User.emdId;
+      request.taskId = taskId;
+      request.process = 2;
+      request.keyActList = AssessmentList;
+  
+      fetch(`${environment.apiRaUrl}/api/KeyAction/LoggingAssessment/Add`, {
+        method: "POST",
+        headers: {
+          'Accept': 'application/json',
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(request)
+      })
+      .then((response) => response.json())
+      .then((res) => {
+        navigation.navigate('Task')
+      })
+      .catch((error) => {
+        console.error(error);
+      });
+    };
+
+    const ContentElement = keyactList.map((content,index) => {
       return(
         <View key={index}>
-          <View style={{borderWidth:1, borderColor:'#EEEEEE', margin:10}}/>
+          <View style={{borderWidth:1, borderColor:'#EEEEEE', marginVertical:10}}/>
           <View style={[styles.RowView, {justifyContent:'space-between'}]}>
-            <Text style={[styles.TextContent, {color:getTextcolor((approvallist[index].approved)), width:'70%'}]}>ข้อ {content.order} {content.keyreq}</Text>
-            <Text style={styles.TextContent}>{(approvallist[index].approved)? 'อนุมติ':'ไม่อนุมติ'}</Text>
+            <Text style={[styles.TextContent, {color:getTextcolor(content.isApprove ?? false), width:'70%'}]}>ข้อ {content.order} {content.keyReq}</Text>
+            <Text style={styles.TextContent}>{content.isApprove===true? 'อนุมติ':'ไม่อนุมติ'}</Text>
           </View>
           {
-            (approvallist[index].comment)===''? <></> : <Text style={{marginTop:5}}>{'\t'}หมายเหตุ : {(approvallist[index].comment)}</Text>
+            content.notation? <></> : <Text style={{marginTop:5}}>{'\t'}หมายเหตุ : {content.notation}</Text>
           }
         </View>
-        
       )
-
     })
     
     return (
@@ -367,7 +400,7 @@ export function TaskRAResult() {
             </View>
           </ScrollView>
 
-          <Pressable onPress={()=> navigation.navigate('Task')} style={styles.button}>
+          <Pressable onPress={()=> SaveAssessment()} style={styles.button}>
               <Text style={[styles.TextHeader, {color:'#fff'}]}>ส่งอนุมติ</Text>
           </Pressable>
         </View>
