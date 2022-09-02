@@ -13,9 +13,9 @@ export class KeyActAssessmentDetail {
 }
 
 export class LoggingAssessmentModel {
-    Id: string;
-    Process: number;
-    Status: boolean;
-    Notation: string;
-    KeyActId: string;
+    id: string;
+    process: number;
+    status: boolean;
+    notation: string;
+    keyActId: string;
 }

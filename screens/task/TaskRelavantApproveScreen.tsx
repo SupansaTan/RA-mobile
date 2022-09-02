@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { StyleSheet, ScrollView, Pressable, useWindowDimensions, TextInput, Appearance, KeyboardAvoidingView, Platform} from 'react-native';
+import { StyleSheet, ScrollView, Pressable, useWindowDimensions, TextInput, Appearance, KeyboardAvoidingView, Platform, ActivityIndicator} from 'react-native';
 import { Button } from 'react-native-elements';
 import { AntDesign, Feather, FontAwesome5,  MaterialCommunityIcons } from '@expo/vector-icons';
 import { TabView, SceneMap, TabBar } from 'react-native-tab-view';
@@ -16,6 +16,10 @@ import LawDetail from '../../shared/LawDetail';
 import { UserInfo } from '../../constants/UserInfo';
 import { RootStackScreenProps } from '../../types';
 import { environment } from '../../environment';
+
+import { ViewStyle } from '../../style/ViewStyle';
+import Colors from '../../constants/Colors';
+import { TextStyle } from '../../style/TextStyle';
 
 const AppearanceColor = Appearance.getColorScheme()==='dark'? '#fff':'#000'
 
@@ -51,8 +55,8 @@ export function TaskRAAssessment({ navigation, route }: RootStackScreenProps<'Ta
     const [notation, setNotation] = useState('');
     const [assessmentLog, setAssessmentLog] = useState<Array<LoggingAssessmentModel>>([]);
 
-    const [logrelated, setLogRelated] = useState(false);
-    const [logNotation, setLogNotaiton] = useState('');
+    const [logRelated, setLogRelated] = useState(true);
+    const [logNotation, setLogNotaiton] = useState('comment');
 
     const [approved, setApproved] = useState(false);
     const [disapproved, setDisapprovedd] = useState(false)
@@ -116,8 +120,8 @@ export function TaskRAAssessment({ navigation, route }: RootStackScreenProps<'Ta
       setApproved(currentKeyact?.isApprove ?? false);
       setDisapprovedd((!currentKeyact?.isApprove) ?? false);
       setNotation(currentKeyact?.notation ?? '');
-      setLogRelated(currentLog?.Status ?? false)
-      setLogNotaiton(currentLog?.Notation ?? '')
+      setLogRelated(currentLog?.status)
+      setLogNotaiton(currentLog?.notation ?? '')
     }, [keyorder])
   
     useEffect(() => {
@@ -142,7 +146,7 @@ export function TaskRAAssessment({ navigation, route }: RootStackScreenProps<'Ta
       setData(keyActList[keyorder - 1]);
     }, [notation])
     
-    return (
+    return ( isLoading? <LoadingElement/> :
       <View style={styles.Container}>
         <View style={{flexDirection:'row', alignItems:'center'}}>
           <Button
@@ -208,7 +212,11 @@ export function TaskRAAssessment({ navigation, route }: RootStackScreenProps<'Ta
           />
           <View style={styles.GreenCard}>
             <View style={{backgroundColor:'white',padding:5,borderRadius:5, marginLeft:10,width:'90%'}}>
-              <Text style={[styles.GreenCardText,{fontSize:18}]}>  ผลการประเมิน : {logrelated==true? 'เกี่ยวข้อง':'ไม่เกี่ยวข้อง'}</Text>  
+              <Text style={[styles.GreenCardText,{fontSize:18}]}>  ผลการประเมิน : {logRelated? 'เกี่ยวข้อง':'ไม่เกี่ยวข้อง'}</Text>  
+              { logNotation==''? 
+              <></> : <Text style={[styles.GreenCardText,{fontSize:18}]}>  หมายเหตุ : {logNotation}</Text> 
+              }
+              
             </View>
             
             <View style={{flexDirection:'row',backgroundColor:'transparent', marginTop:10}}>
@@ -370,6 +378,16 @@ export function TaskRAResult() {
 const getTextcolor = (Assessment:boolean) => {
   return(
     Assessment===true? '#13AF82': '#FF4F4F'
+  )
+}
+
+
+const LoadingElement = () => {
+  return (
+    <View style={ViewStyle.LoadingWrapper}>
+      <ActivityIndicator color={Colors.light.tint} size="large" />
+      <Text style={TextStyle.Loading}>Loading</Text>
+    </View>
   )
 }
 
