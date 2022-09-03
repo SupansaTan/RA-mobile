@@ -6,7 +6,7 @@
 import { BottomTabScreenProps } from '@react-navigation/bottom-tabs';
 import { CompositeScreenProps, NavigatorScreenParams } from '@react-navigation/native';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
-import { KeyActModel } from './model/KeyAct.model';
+import { KeyActModel, KeyActApproveModel } from './model/KeyAct.model';
 
 declare global {
   namespace ReactNavigation {
@@ -28,7 +28,7 @@ export type RootStackParamList = {
   TaskConsistanceResult: undefined;
   TaskRADetail: { taskId: string };
   TaskRAAssessment: { taskId: string };
-  TaskRAResult: undefined;
+  TaskRAResult: { taskId: string , keyactList: Array<KeyActApproveModel>};
   TaskCADetail: { taskId: string };
   TaskCAAssessment: { taskId: string };
   TaskCAResult: undefined;
