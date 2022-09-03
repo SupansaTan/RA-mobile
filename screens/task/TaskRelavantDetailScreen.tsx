@@ -7,7 +7,7 @@ import { useNavigation } from '@react-navigation/native';
 import LawDetail from '../../shared/LawDetail';
 import { RootStackScreenProps } from '../../types';
 import { ViewStyle } from '../../style/ViewStyle';
-
+import TaskDetailScreen from '../../shared/TaskDetailScreen';
 
 export default function TaskRelavantDetailScreen({ navigation, route }: RootStackScreenProps<'TaskRelevantDetail'>) {
   const { taskId } = route.params;
@@ -15,7 +15,8 @@ export default function TaskRelavantDetailScreen({ navigation, route }: RootStac
     <View style={styles.Container}>
       <View style={[ViewStyle.RowContainer, { paddingHorizontal: 0}]}>
         <ScrollView contentContainerStyle={{ flexGrow:1 }}>
-          <LawDetail taskId={taskId}/>
+          {/* <LawDetail taskId={taskId}/> */}
+          <TaskDetailScreen taskId={taskId}/>
         </ScrollView>
       </View>
       <Pressable onPress={()=> navigation.navigate('Assessment', { taskId: taskId, taskProcess: 1 })} style={styles.button}>

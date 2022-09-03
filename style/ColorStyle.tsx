@@ -9,5 +9,11 @@ export const ColorStyle = StyleSheet.create({
   },
   Grey: {
     color: '#6c6c6c'
-  }
+  },
+  Green: {
+    color: '#13AF82'
+  },
+  LightGreen: {
+    color: '#DEF4EC'
+  },
 });
