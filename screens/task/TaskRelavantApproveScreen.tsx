@@ -20,6 +20,7 @@ import { environment } from '../../environment';
 import { ViewStyle } from '../../style/ViewStyle';
 import Colors from '../../constants/Colors';
 import { TextStyle } from '../../style/TextStyle';
+import { TaskDataModel } from '../../model/Task.model';
 
 const AppearanceColor = Appearance.getColorScheme()==='dark'? '#fff':'#000'
 
@@ -324,6 +325,28 @@ const FirstRoute = (data:string) => {
 export function TaskRAResult({ navigation, route }: RootStackScreenProps<'TaskRAResult'>) {
     const { taskId, keyactList } = route.params;
     const [AssessmentList, setAssessmentList] = useState<Array<KeyActAssessmentDetail>>([]); 
+    const [ taskData, setTaskData ] = useState<TaskDataModel>();
+
+    useEffect(() => {
+      const getTaskData = () => {
+
+        fetch(`${environment.apiRaUrl}/api/Task/GetTaskDataById?taskId=${taskId}`, {
+          method: "GET",
+          headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json'
+          },
+        })
+        .then((response) => response.json())
+        .then((res) => {
+          setTaskData(res.data);
+        })
+        .catch((error) => {
+          console.error(error);
+        });
+      };
+      getTaskData();
+    }, []);
 
     const SaveAssessment = () => {
       let keyActList = keyactList;
@@ -379,10 +402,10 @@ export function TaskRAResult({ navigation, route }: RootStackScreenProps<'TaskRA
     return (
         <View style={styles.Container}>
           <View style={[styles.GreenCard,{alignItems:'center'}]}>
-            <Text style={[styles.TextHeader, {color:'#000'}]}>{TaskRelativeAssessment.title}</Text>
+            <Text style={[styles.TextHeader, {color:'#000'}]}>{taskData?.taskTitle}</Text>
             <View style={styles.RowView}>
               <Feather name="map-pin" size={22} color="#13AF82" style={{marginRight:5}}/>
-              <Text style={[styles.TextContent, {color:'#13AF82'}]}>{TaskRelativeAssessment.location}</Text>
+              <Text style={[styles.TextContent, {color:'#13AF82'}]}>{taskData?.locationName}</Text>
             </View>
           </View>
 

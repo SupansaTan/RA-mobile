@@ -1,34 +1,43 @@
 import React, { useState, useEffect } from 'react';
-import { StyleSheet, ScrollView, Pressable, Platform } from 'react-native';
+import { StyleSheet, ScrollView, Pressable, ActivityIndicator } from 'react-native';
 import { Feather } from '@expo/vector-icons';
 
 import { Text, View } from '../../components/Themed';
 import { useNavigation } from '@react-navigation/native';
-import { TaskRelativeAssessment } from '../../constants/Task';
+import { TaskData, TaskRelativeAssessment } from '../../constants/Task';
 import { UserInfo } from '../../constants/UserInfo';
 import { RootStackScreenProps } from '../../types';
 import { User } from '../../constants/UserInfo';
 import { KeyActAssessmentDetail, RelevantAssessmentModel } from '../../model/Logging.model';
 import { environment } from '../../environment';
+import { TaskDataModel } from '../../model/Task.model';
+
 
 export default function TaskRelavantResultScreen({ navigation, route }: RootStackScreenProps<'TaskRelevantResult'>) {
     const { taskId, keyactList } = route.params;
     const [AssessmentList, setAssessmentList] = useState<Array<KeyActAssessmentDetail>>([]); 
+    const [ taskData, setTaskData ] = useState<TaskDataModel>();
 
-    const ContentElement = keyactList.map((content,index) => {
-      return(
-        <View key={index}>
-          <View style={{borderWidth:1, borderColor:'#EEEEEE', marginVertical:10}}/>
-          <View style={[styles.RowView, {justifyContent:'space-between'}]}>
-            <Text style={[styles.TextContent, {color:getTextcolor(content.isRelated ?? false), width:'70%'}]}>ข้อ {content.order} {content.keyReq}</Text>
-            <Text style={styles.TextContent}>{content.isRelated===true? 'เกี่ยวข้อง':'ไม่เกี่ยวข้อง'}</Text>
-          </View>
-          {
-            content.notation===''? <></> : <Text style={{marginTop:5}}>{'\t'}หมายเหตุ : {content.notation}</Text>
-          }
-        </View>
-      )
-    })
+    useEffect(() => {
+      const getTaskData = () => {
+
+        fetch(`${environment.apiRaUrl}/api/Task/GetTaskDataById?taskId=${taskId}`, {
+          method: "GET",
+          headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json'
+          },
+        })
+        .then((response) => response.json())
+        .then((res) => {
+          setTaskData(res.data);
+        })
+        .catch((error) => {
+          console.error(error);
+        });
+      };
+      getTaskData();
+    }, []);
 
     const SaveAssessment = () => {
       let keyActList = keyactList;
@@ -65,14 +74,29 @@ export default function TaskRelavantResultScreen({ navigation, route }: RootStac
         console.error(error);
       });
     };
+
+    const ContentElement = keyactList.map((content,index) => {
+      return(
+        <View key={index}>
+          <View style={{borderWidth:1, borderColor:'#EEEEEE', marginVertical:10}}/>
+          <View style={[styles.RowView, {justifyContent:'space-between'}]}>
+            <Text style={[styles.TextContent, {color:getTextcolor(content.isRelated ?? false), width:'70%'}]}>ข้อ {content.order} {content.keyReq}</Text>
+            <Text style={styles.TextContent}>{content.isRelated===true? 'เกี่ยวข้อง':'ไม่เกี่ยวข้อง'}</Text>
+          </View>
+          {
+            content.notation===''? <></> : <Text style={{marginTop:5}}>{'\t'}หมายเหตุ : {content.notation}</Text>
+          }
+        </View>
+      )
+    })
     
     return (
         <View style={styles.Container}>
           <View style={styles.GreenCard}>
-            <Text style={[styles.TextHeader, {color:'#000'}]}>{TaskRelativeAssessment.title}</Text>
+            <Text style={[styles.TextHeader, {color:'#000', alignItems:'center'}]}>{taskData?.taskTitle}</Text>
             <View style={styles.RowView}>
               <Feather name="map-pin" size={22} color="#13AF82" style={{marginRight:5}}/>
-              <Text style={[styles.TextContent, {color:'#13AF82'}]}>{TaskRelativeAssessment.location}</Text>
+              <Text style={[styles.TextContent, {color:'#13AF82'}]}>{taskData?.locationName}</Text>
             </View>
           </View>
 
@@ -103,6 +127,7 @@ const getTextcolor = (Assessment:boolean) => {
     Assessment===true? '#13AF82': '#FF4F4F'
   )
 }
+
 
 const styles = StyleSheet.create({
   Container: {

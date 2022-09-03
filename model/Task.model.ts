@@ -14,3 +14,9 @@ export class TaskListSortByProcessModel {
   taskProcess: TaskProcess;
   taskList: Array<TaskDetailModel>
 }
+
+export class TaskDataModel {
+  taskId: string;
+  taskTitle: string;
+  locationName: string;
+}
