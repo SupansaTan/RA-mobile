@@ -17,7 +17,7 @@ import { TaskProcess } from '../../enum/TaskProcess.enum';
 import { ViewStyle } from '../../style/ViewStyle';
 import { TextStyle } from '../../style/TextStyle';
 import Colors from '../../constants/Colors';
-import { RootStackScreenProps } from '../../types';
+import { RootStackParamList, RootStackScreenProps } from '../../types';
 
 export default function TaskLocationScreen({ navigation, route }: RootStackScreenProps<'TaskLocation'>) {
   const [taskList, setTaskList] = useState<Array<TaskListSortByProcessModel>>([])
@@ -153,7 +153,7 @@ const getProcessLabel = (process: TaskProcess) => {
   }
 }
 
-const getScreenRoute = (process: TaskProcess): string => {
+const getScreenRoute = (process: TaskProcess): keyof RootStackParamList => {
   switch(process) {
     case TaskProcess.Relevant:
       return 'TaskRelevantDetail';
@@ -164,9 +164,9 @@ const getScreenRoute = (process: TaskProcess): string => {
     case TaskProcess.ApproveConsistance:
       return 'TaskCADetail';
     case TaskProcess.Response:
-      return '';
+      return 'Task';
   }
-  return '';
+  return 'Task';
 }
 
 const LoadingElement = () => {
