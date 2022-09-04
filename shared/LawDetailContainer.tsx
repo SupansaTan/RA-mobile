@@ -1,28 +1,23 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { StyleSheet, ScrollView, Pressable } from 'react-native';
-import { Fontisto, MaterialIcons } from '@expo/vector-icons';
 
-import { Text, View } from '../../components/Themed';
-import { useNavigation } from '@react-navigation/native';
-import LawDetail from '../../shared/LawDetail';
-import { RootStackScreenProps } from '../../types';
-import { ViewStyle } from '../../style/ViewStyle';
-import TaskDetailScreen from '../../shared/TaskDetailScreen';
+import { Text, View } from '../components/Themed';
+import LawDetail from './LawDetail';
+import { RootStackScreenProps } from '../types';
+import { ViewStyle } from '../style/ViewStyle';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
-export default function TaskRelavantDetailScreen({ navigation, route }: RootStackScreenProps<'TaskRelevantDetail'>) {
-  const { taskId } = route.params;
+
+export default function LawDetailContainerScreen({ navigation, route }: RootStackScreenProps<'LawDetailContainer'>) {
+  const { taskId, taskProcess } = route.params;
   return (
     <View style={styles.Container}>
       <View style={[ViewStyle.RowContainer, { paddingHorizontal: 0}]}>
-        <ScrollView contentContainerStyle={{ flexGrow:1 }}>
-          {/* <LawDetail taskId={taskId}/> */}
-          <TaskDetailScreen taskId={taskId}/>
-        </ScrollView>
+        <LawDetail taskId={taskId}/>
       </View>
 
       <SafeAreaView style={{ width: '100%' }}>
-        <Pressable onPress={()=> navigation.navigate('Assessment', { taskId: taskId, taskProcess: 1 })} style={styles.button}>
+        <Pressable onPress={()=> navigation.navigate('Assessment', { taskId: taskId, taskProcess: taskProcess })} style={styles.button}>
           <Text style={[styles.TextHeader, {color:'#fff'}]}>เริ่มทำการประเมิน</Text>
         </Pressable>
       </SafeAreaView>

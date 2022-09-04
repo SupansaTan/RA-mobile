@@ -5,7 +5,6 @@ import { Fontisto, MaterialIcons } from '@expo/vector-icons';
 import Colors from '../../constants/Colors';
 import { Text, View } from '../../components/Themed';
 
-import { RootTabScreenProps } from '../../types';
 import { LocationList } from '../../constants/Location';
 import { ReportDetail } from '../../constants/Report';
 import { useNavigation } from '@react-navigation/native';

@@ -1,5 +1,6 @@
 export interface LawContentModel {
   title: string
+  locationName: string;
   actType: string
   legislationType: string
   legislationUnit: string

@@ -3,11 +3,9 @@ import { StyleSheet, TouchableOpacity, ScrollView, Appearance, Platform, Activit
 import { Ionicons, MaterialCommunityIcons } from '@expo/vector-icons';
 import { format } from 'date-fns'
 
-import { Text, View, MaterialIcons } from '../components/Themed';
+import { Text, View } from '../components/Themed';
 import { RootStackParamList, RootTabParamList, RootTabScreenProps } from '../types';
 import { MenuList } from '../constants/Home';
-import { IncomingTask } from '../constants/Task';
-import { TaskContentModel } from '../model/Task';
 import { ViewStyle } from '../style/ViewStyle';
 import { environment } from '../environment';
 import { User } from '../constants/UserInfo';

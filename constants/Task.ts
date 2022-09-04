@@ -46,27 +46,6 @@ export const TaskData = [
   }
 ]
 
-export const IncomingTask = [
-  {
-    title: 'พ.ร.บ.ข้อมูลส่วนบุคคล',
-    datetime: 'เมื่อวาน 15.00 น.',
-    timestatus: 3,
-    location:'โรงงานร้อยเพชร',
-  },
-  {
-    title: 'พ.ร.บ.พลังงานนิวเคลียร์',
-    datetime: '1 พ.ค. 2565 15.00 น.',
-    timestatus: 2,
-    location:'โรงงานร้อยเพชร',
-  },
-  {
-    title: 'พ.ร.บ.ความปลอดภัย',
-    datetime: '1 พ.ค. 2565 15.00 น.',
-    timestatus: 2,
-    location:'โรงงานผลิตอาหารสัตว์บกปักธงชัย',
-  },
-]
-
 export const TaskRelativeAssessment = {
   location: 'โรงงานร้อยเพชร',
   title: 'พ.ร.บ.พลังงานนิวเคลียร์',

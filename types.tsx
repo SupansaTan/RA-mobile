@@ -20,6 +20,7 @@ export type RootStackParamList = {
   Task: undefined;
   Tracking: undefined;
   TrackingLocation: undefined;
+  LawDetailContainer: { taskId: string, taskProcess: number }
   TaskLocation: { locationId: string };
   TaskRelevantDetail: { taskId: string };
   TaskRelevantResult: { taskId: string , keyactList: Array<KeyActModel>};

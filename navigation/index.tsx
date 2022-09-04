@@ -37,6 +37,7 @@ import { BottomTabStyle, BottomTabLabelStyle, HeaderTitleStyle } from '../consta
 import { TabBarFeatherIcon, TabBarSimpleLineIcon, TabBarMaterialIcon } from './TabBarIcon';
 import { useNavigation } from '@react-navigation/native';
 import AssessmentScreen from '../shared/AssessmentScreen';
+import LawDetailContainerScreen from '../shared/LawDetailContainer';
 
 export default function Navigation({ colorScheme }: { colorScheme: ColorSchemeName }) {
   return (
@@ -145,6 +146,16 @@ function RootNavigator() {
           headerShadowVisible: false,
           headerTitleStyle: HeaderTitleStyle,
           headerStyle: {backgroundColor: HeaderColor}
+        }} />
+        <Stack.Screen name="LawDetailContainer" component={LawDetailContainerScreen} 
+        options={{ 
+          animation: 'slide_from_right',
+          title: 'รายละเอียดกฎหมาย',
+          headerShadowVisible: false,
+          headerTitleStyle: [HeaderTitleStyle, { color: 'white' }],
+          headerStyle: {backgroundColor: Colors.light.tint },
+          headerTintColor: 'white',
+          headerLeft: () => <FontAwesome name="angle-left" size={40} color="white" onPress={() => navigation.goBack()} />,
         }} />
         <Stack.Screen name="Assessment" component={AssessmentScreen} 
         options={{ 
