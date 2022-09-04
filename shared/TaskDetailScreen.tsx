@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
-import { StyleSheet, ScrollView, FlatList, TouchableOpacity, Appearance, Linking, ActivityIndicator } from 'react-native';
-import { AntDesign, Feather, Fontisto, MaterialCommunityIcons  } from '@expo/vector-icons';
+import { StyleSheet, TouchableOpacity, ActivityIndicator } from 'react-native';
+import { Feather, MaterialCommunityIcons  } from '@expo/vector-icons';
 import { format } from 'date-fns'
 
 import { Text, View } from '../components/Themed';

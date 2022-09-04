@@ -1,23 +1,19 @@
 import React, { useEffect, useState } from 'react';
-import { StyleSheet, TouchableOpacity, ScrollView, TextInput, Modal ,Pressable, ActivityIndicator} from 'react-native';
+import { StyleSheet, TouchableOpacity, ScrollView, TextInput, ActivityIndicator} from 'react-native';
 import { MaterialCommunityIcons, Feather, AntDesign } from '@expo/vector-icons';
 import { format } from 'date-fns'
 
 import { Text, View } from '../../components/Themed';
-import { TaskContentModel } from '../../model/Task';
-import { TaskData } from '../../constants/Task'
-
 import { CardStyle } from '../../style/CardStyle';
 import { TaskDatetimeStatus } from '../../enum/TaskDatetimeStatus.enum';
 import { ColorStyle } from '../../style/ColorStyle';
-import { useNavigation } from '@react-navigation/native';
 import { environment } from '../../environment';
 import { TaskDetailModel, TaskListSortByProcessModel } from '../../model/Task.model';
 import { TaskProcess } from '../../enum/TaskProcess.enum';
 import { ViewStyle } from '../../style/ViewStyle';
 import { TextStyle } from '../../style/TextStyle';
 import Colors from '../../constants/Colors';
-import { RootStackParamList, RootStackScreenProps } from '../../types';
+import { RootStackScreenProps } from '../../types';
 
 export default function TaskLocationScreen({ navigation, route }: RootStackScreenProps<'TaskLocation'>) {
   const [taskList, setTaskList] = useState<Array<TaskListSortByProcessModel>>([])
@@ -151,22 +147,6 @@ const getProcessLabel = (process: TaskProcess) => {
     case TaskProcess.Response:
       return 'รอดำเนินการให้สอดคล้อง';
   }
-}
-
-const getScreenRoute = (process: TaskProcess): keyof RootStackParamList => {
-  switch(process) {
-    case TaskProcess.Relevant:
-      return 'TaskRelevantDetail';
-    case TaskProcess.ApproveRelevant:
-      return 'TaskRADetail';
-    case TaskProcess.Consistance:
-      return 'TaskConsistanceDetail';
-    case TaskProcess.ApproveConsistance:
-      return 'TaskCADetail';
-    case TaskProcess.Response:
-      return 'Task';
-  }
-  return 'Task';
 }
 
 const LoadingElement = () => {

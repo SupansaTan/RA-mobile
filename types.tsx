@@ -23,15 +23,11 @@ export type RootStackParamList = {
   LawDetailContainer: { taskId: string, taskProcess: number }
   TaskDetailContainer: { taskId: string, taskProcess: number }
   TaskLocation: { locationId: string };
-  TaskRelevantDetail: { taskId: string };
   TaskRelevantResult: { taskId: string , keyactList: Array<KeyActModel>};
-  TaskConsistanceDetail: { taskId: string };
   TaskConsistanceAssessment: { taskId: string };
   TaskConsistanceResult: undefined;
-  TaskRADetail: { taskId: string };
   TaskRAAssessment: { taskId: string };
   TaskRAResult: { taskId: string , keyactList: Array<KeyActApproveModel>};
-  TaskCADetail: { taskId: string };
   TaskCAAssessment: { taskId: string };
   TaskCAResult: undefined;
   LawSearch: undefined;

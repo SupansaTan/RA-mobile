@@ -47,6 +47,7 @@ export default function TaskRelavantAssessmentScreen({ navigation, route }: Root
       .then((response) => response.json())
       .then((res) => {
         setDatalist(res.data);
+        setData(res.data[keyorder - 1]);
         setIsLoading(false);
       })
       .catch((error) => {
