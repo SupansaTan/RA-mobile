@@ -1,7 +1,8 @@
 import React, { LegacyRef, useEffect, useRef, useState } from 'react';
-import { StyleSheet, ScrollView, useWindowDimensions, TextInput, KeyboardAvoidingView, Platform, ActivityIndicator, Button as ButtonSubmit, SafeAreaView, Pressable } from 'react-native';
-import { FontAwesome, Ionicons,  MaterialCommunityIcons } from '@expo/vector-icons';
+import { StyleSheet, ScrollView, useWindowDimensions, TextInput, KeyboardAvoidingView, Platform, ActivityIndicator, Button as ButtonSubmit, SafeAreaView, Pressable, InputAccessoryView, Modal, Keyboard, TouchableWithoutFeedback, Dimensions } from 'react-native';
+import { AntDesign, FontAwesome, Ionicons,  MaterialCommunityIcons } from '@expo/vector-icons';
 import { TabView, SceneMap, TabBar } from 'react-native-tab-view';
+import DateTimePicker from '@react-native-community/datetimepicker';
 import { CheckBox } from "@rneui/themed";
 import { Button } from 'react-native-elements';
 
@@ -14,6 +15,8 @@ import { ViewStyle } from '../style/ViewStyle';
 import Colors from '../constants/Colors';
 import { TextStyle } from '../style/TextStyle';
 import { TaskProcess } from '../enum/TaskProcess.enum';
+import MultiSelect from 'react-native-multiple-select';
+import { ColorStyle } from '../style/ColorStyle';
 
 export default function TaskRelavantAssessmentScreen({ navigation, route }: RootStackScreenProps<'Assessment'>) {
   const layout = useWindowDimensions();
@@ -217,6 +220,199 @@ export default function TaskRelavantAssessmentScreen({ navigation, route }: Root
     )
   }
 
+  const ConsistanceAssessmentContainer = () => {
+    const [consist, setConsist] = useState(data?.isConsist === undefined ? false : data?.isConsist);
+    const [nonConsist, setNonConsist] = useState(data?.isConsist === undefined ? false : !data?.isConsist);
+    const [showAssign, setShowAssign] = useState<boolean>(false);
+    const [dueDate, setDueDate] = useState<Date>(new Date());
+    const [employee, setEmployee] = useState([]);
+    const [employeeSelect, setEmployeeSelect] = useState<any[]>([]);
+    const [cost, setCost] = useState('');
+
+    const updateKeyActData = () => {
+      let keyActList = datalist;
+      keyActList.forEach((x) => {
+        if (x.order === keyorder) {
+          x.isRelated = !consist;
+        }
+      })
+      setDatalist(keyActList);
+    }
+
+    const OnDueDateChange = (event: any, selectedDate: any) => {
+      setDueDate(new Date(selectedDate));
+    };
+
+    return (
+      <View style={[styles.GreenCard]}>
+        <Text style={[TextStyle.Heading,{fontSize: 19, color: '#13AF82'}]}>{ getAssessemntLabel() }</Text>
+
+        {/* checkbox */}
+        <View style={{flexDirection:'row',backgroundColor:'transparent', justifyContent: 'center', width: '100%' }}>
+          <CheckBox
+            center
+            title={<Text style={[TextStyle.Content, { fontSize: 18, marginLeft: 5 }]}>สอดคล้อง</Text>}
+            checked={consist}
+            checkedColor={'#13AF82'}
+            iconType='font-awesome'
+            checkedIcon="check-square"
+            uncheckedIcon="square"
+            onPress={()=> { setConsist(!consist); setNonConsist(false); updateKeyActData() }}
+            containerStyle={{backgroundColor:'transparent', borderColor:'transparent'}}
+          />
+          <CheckBox
+            center
+            title={<Text style={[TextStyle.Content, { fontSize: 18, marginLeft: 5 }]}>ไม่สอดคล้อง</Text>} 
+            checked={nonConsist}
+            checkedColor={'#FF4F4F'}
+            iconType='font-awesome'
+            checkedIcon="minus-square"
+            uncheckedIcon="square"
+            onPress={()=> { setNonConsist(!nonConsist); setConsist(false); updateKeyActData() }}
+            containerStyle={{backgroundColor:'transparent', borderColor:'transparent'}}
+          />
+        </View>
+
+        {
+          nonConsist ? 
+          <View style={styles.AssignWrapper}>
+            <Pressable onPress={() => setShowAssign(true)} style={{borderWidth:1, padding:10, borderRadius:10, width:'100%', alignItems:'center'}}>
+              <Text style={styles.GreenCardText}>มอบหมายงาน</Text>
+            </Pressable>
+          </View> : <></>
+        }
+        
+        <Modal
+          animationType="slide"
+          transparent={true}
+          visible={showAssign}
+          onRequestClose={() => {setShowAssign(!showAssign)}}
+        >
+          <View style={styles.ModalContainer}>
+            <Pressable onPress={() => setShowAssign(!showAssign)} >
+              <AntDesign name='left' size={20} color={'black'}/>
+            </Pressable>
+              
+            <View style={{ flexDirection: 'column', height: '100%' }}>
+              <View style={{ flex:1, justifyContent:'flex-start', width: '100%', backgroundColor: 'white' }}>
+                <Text style={[styles.TextContent, {marginVertical:10}]}>ผู้รับผิดชอบ</Text>
+                <View style={{ width:'100%', padding: 10, backgroundColor:'transparent'}}>
+                  <MultiSelect
+                    hideTags
+                    items={employee}
+                    uniqueKey="id"
+                    onSelectedItemsChange={(item) => setEmployeeSelect(item)}
+                    selectedItems={employeeSelect}
+                    selectText="Select Items"
+                    searchInputPlaceholderText="Search Here..."
+                    onChangeInput={(text) => console.log(text)}
+                    tagRemoveIconColor="#CCC"
+                    tagBorderColor="#CCC"
+                    tagTextColor="#CCC"
+                    selectedItemTextColor="#CCC"
+                    selectedItemIconColor="#CCC"
+                    itemTextColor="#000"
+                    displayKey="name"
+                    searchInputStyle={{ color: '#CCC' }}
+                    submitButtonColor="#00BFA5"
+                    submitButtonText="Submit"
+                  />
+                </View>
+
+                <Text style={styles.TextContent} >รายชื่อผู้รับผิดชอบ</Text>
+                {
+                  employeeSelect.map((item, index) => 
+                  <View key={index} style={{marginLeft:10,marginVertical:5, backgroundColor:'transparent'}}>
+                    <Text>{'\u2022' + ' ' + item}</Text>
+                  </View>
+                )}
+
+                <Text style={[styles.TextContent, {marginTop:10}]}>กำหนดวันเสร็จ</Text>
+                <View style={styles.DateSelect}>
+                  <DateTimePicker
+                    testID="duedatePicker"
+                    value={dueDate}
+                    mode={'date'}
+                    onChange={OnDueDateChange}
+                    minimumDate={new Date()}
+                    is24Hour
+                    locale='th-TH'
+                    dateFormat='day month year'
+                    style={{ flexGrow: 1 }}
+                  />
+                </View>
+                <Text style={styles.TextContent}>งบประมาณ</Text>
+                <TextInput 
+                  style={[styles.InputText, {borderColor: '#B9B9B9', width:'100%' }]}
+                  defaultValue={'0'}
+                  onChangeText={setCost}
+                  value={cost}
+                  numberOfLines={1}
+                  keyboardType="numeric"
+                  placeholder='งบประมาณ'
+                  inputAccessoryViewID='Close'
+                />
+              </View>
+
+              <SafeAreaView>
+                <Pressable 
+                  onPress={() => setShowAssign(!showAssign)} 
+                  style={{backgroundColor:'#13AF82', width:'100%', alignItems:'center', justifyContent:'center',borderRadius: 8, height:50 }} >
+                  <Text style={[styles.TextHeader, {color:'#fff'}]}>บันทึก</Text>
+                </Pressable>
+              </SafeAreaView>
+            </View> 
+          </View>
+        </Modal>
+      </View>
+    )
+  }
+
+  const ApproveRelevantAssessmentContainer = () => {
+    const [approve, setApprove] = useState(data?.isApprove === undefined ? false : data?.isApprove);
+    const [disapprove, setDisapprove] = useState(data?.isApprove === undefined ? false : !data?.isApprove);
+
+    const updateKeyActData = () => {
+      let keyActList = datalist;
+      keyActList.forEach((x) => {
+        if (x.order === keyorder) {
+          x.isApprove = !approve;
+        }
+      })
+      setDatalist(keyActList);
+    }
+
+    return (
+      <View style={[styles.GreenCard]}>
+        <Text style={[TextStyle.Heading,{fontSize: 19, color: '#13AF82'}]}>{ getAssessemntLabel() }</Text>
+        <View style={{flexDirection:'row',backgroundColor:'transparent', justifyContent: 'center', width: '100%' }}>
+          <CheckBox
+            center
+            title={<Text style={[TextStyle.Content, { fontSize: 18, marginLeft: 5 }]}>สอดคล้อง</Text>}
+            checked={approve}
+            checkedColor={'#13AF82'}
+            iconType='font-awesome'
+            checkedIcon="check-square"
+            uncheckedIcon="square"
+            onPress={()=> { setApprove(!approve); setDisapprove(false); updateKeyActData() }}
+            containerStyle={{backgroundColor:'transparent', borderColor:'transparent'}}
+          />
+          <CheckBox
+            center
+            title={<Text style={[TextStyle.Content, { fontSize: 18, marginLeft: 5 }]}>ไม่สอดคล้อง</Text>} 
+            checked={disapprove}
+            checkedColor={'#FF4F4F'}
+            iconType='font-awesome'
+            checkedIcon="minus-square"
+            uncheckedIcon="square"
+            onPress={()=> { setDisapprove(!disapprove); setApprove(false); updateKeyActData() }}
+            containerStyle={{backgroundColor:'transparent', borderColor:'transparent'}}
+          />
+        </View>
+      </View>
+    )
+  }
+
   const NotationContainer = () => {
     const [notation, setNotation] = useState(data?.notation);
     const updateKeyActData = (text: string) => {
@@ -302,6 +498,17 @@ export default function TaskRelavantAssessmentScreen({ navigation, route }: Root
     }
   }
 
+  const getAssessmentContainer = () => {
+    switch(taskProcess) {
+      case TaskProcess.Relevant:
+        return <ConsistanceAssessmentContainer/>
+      case TaskProcess.Consistance:
+        return <ConsistanceAssessmentContainer/>
+      case TaskProcess.ApproveRelevant:
+        return <ApproveRelevantAssessmentContainer/>
+    }
+  }
+
   const KeyActContainer = (content: string) => {
     const ScrollViewRef = useRef() as LegacyRef<ScrollView>;
     
@@ -319,7 +526,7 @@ export default function TaskRelavantAssessmentScreen({ navigation, route }: Root
           </View>
         </View>
 
-        <AssessmentContainer/>
+        { getAssessmentContainer() }
         <NotationContainer/>
       </ScrollView>
     )
@@ -455,8 +662,34 @@ const styles = StyleSheet.create({
     backgroundColor: 'white',
     flexDirection:'row',
     justifyContent: 'flex-start',
-    // marginTop: 15,
     width:'100%',
     flex: 1
+  },
+  AssignWrapper: {
+    backgroundColor:'transparent',
+    alignItems:'flex-start',
+    justifyContent:'center',
+    width: 375,
+    borderRadius:10,
+  },
+  DateSelect:{
+    width:'100%',
+    borderRadius: 10,
+    padding: 10,
+    backgroundColor: 'transparent'
+  },
+  ModalContainer: {
+    marginTop: Dimensions.get('window').height / 3,
+    height: Dimensions.get('window').height - (Dimensions.get('window').height / 3),
+    padding: 20,
+    borderRadius: 15,
+    elevation: 20,
+    backgroundColor: 'white'
+  },
+  KeyboardBT: {
+    flexDirection: 'row',
+    justifyContent: 'flex-end',
+    alignItems: 'center',
+    paddingHorizontal: 8
   },
 });

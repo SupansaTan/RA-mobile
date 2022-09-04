@@ -7,6 +7,8 @@ export class KeyActModel {
   order: number;
   lawId: string;
   isRelated?: boolean;
+  isConsist?: boolean;
+  isApprove?: boolean;
   notation?: string;
 }
 
