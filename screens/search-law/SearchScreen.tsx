@@ -1,18 +1,24 @@
-import React, { useState, useMemo } from 'react';
-import { StyleSheet, TouchableOpacity, ScrollView, TextInput, Modal, Pressable, Platform } from 'react-native';
+import React, { useState, useMemo, useEffect } from 'react';
+import { StyleSheet, TouchableOpacity, ScrollView, TextInput, Modal, Pressable, Platform, ActivityIndicator } from 'react-native';
 import { Feather, AntDesign} from '@expo/vector-icons';
 import DateTimePicker from '@react-native-community/datetimepicker';
 import { Picker, onOpen } from 'react-native-actions-sheet-picker';
 
 import { Text, View } from '../../components/Themed';
 import { RootTabScreenProps } from '../../types';
-import { LawList, lawtypeList, ministryList, actList } from '../../constants/Law';
-import { LawContentModel } from '../../model/Law';
+import { lawtypeList, ministryList, actList } from '../../constants/Law';
+import { environment } from '../../environment';
+import { LawListModel, LawListDetail } from '../../model/Law.model';
+
+import { ViewStyle } from '../../style/ViewStyle';
+import { TextStyle } from '../../style/TextStyle';
+import Colors from '../../constants/Colors';
 
 export default function SearchScreen({ navigation }: RootTabScreenProps<'Search'>) {
-  const [keyword, onChangeKeyword] = useState<string>('')
-  const [lawdata, setLawdata] = useState(LawList)
+  const [keyword, onChangeKeyword] = useState<string>('');
+  const [lawList, setLawList] = useState<LawListModel>();
   const [modalVisible, setModalVisible] = useState(false)
+  const [isLoading, setIsLoading] = useState<boolean>(true);
 
   const [announceDate, setAnnounceDate] = useState(new Date())
   const [announceshow, setAnnounceshow] = useState(false);
@@ -33,6 +39,31 @@ export default function SearchScreen({ navigation }: RootTabScreenProps<'Search'
   const [act, setAct] = useState(actList);
   const [actselected, setActSelected] = useState(clearPicker);
   const [actquery, setActQuery] = useState('');
+
+  useEffect(() => {
+    const getTaskList = () => {
+      setIsLoading(true);
+      const url = `${environment.apiRaUrl}/api/Law/GetLawList?Keyword=${keyword.trim()}`
+
+      fetch(url, {
+        method: "GET",
+        headers: {
+          'Accept': 'application/json',
+          'Content-Type': 'application/json'
+        },
+      })
+      .then((response) => response.json())
+      .then((res) => {
+        setLawList(res.data);
+        setIsLoading(false);
+      })
+      .catch((error) => {
+        console.error(error);
+      });
+    };
+
+    getTaskList();
+  }, [keyword]);
 
 
   const filteredMinistry = useMemo(() => {
@@ -80,13 +111,13 @@ export default function SearchScreen({ navigation }: RootTabScreenProps<'Search'
     setCancelDate(currentDate);
   };
 
-  const LawElement = lawdata.map((content: LawContentModel, index: number)=> {
-    return(
+  const LawElement = lawList?.lawList.map((content: LawListDetail, index: number)=> {
+    return( 
         <View key={index} >
-            <TouchableOpacity activeOpacity={0.5} onPress={() => navigation.navigate('LawSearch')}>
+            <TouchableOpacity activeOpacity={0.5} onPress={() => navigation.navigate('LawSearch', {lawId: content.lawId })}>
             <View style={styles.LawWrapper}>
-              <Text style={styles.HeaderText}>{content.ActType}</Text>
-              <Text style={styles.ContentText}>{content.LegislationType}</Text>
+              <Text style={styles.HeaderText}>{content.title}</Text>
+              <Text style={styles.ContentText}>{content.legislationType}</Text>
             </View>
           </TouchableOpacity>
         </View>
@@ -115,6 +146,7 @@ export default function SearchScreen({ navigation }: RootTabScreenProps<'Search'
               onChangeText={onChangeKeyword}
               value={keyword}
               placeholder='ชื่อกฎหมาย'
+              clearButtonMode='always'
             />
           </View>
 
@@ -122,7 +154,7 @@ export default function SearchScreen({ navigation }: RootTabScreenProps<'Search'
           <TouchableOpacity activeOpacity={0.5} onPress={() =>setModalVisible(true) }>
             <View style={styles.Filter}>
               <AntDesign name="filter" size={25} color={'#13AF82'} />
-              <Text style={[styles.ContentText, {color:'#13AF82'}]}>ตัวกรอง</Text>
+              <Text style={[styles.HeaderText, {color:'#13AF82'}]}>ตัวกรอง</Text>
             </View>
             
             {/* Filter Modal */}
@@ -285,17 +317,24 @@ export default function SearchScreen({ navigation }: RootTabScreenProps<'Search'
           </TouchableOpacity>
         </View> 
 
-        <Text style={[styles.ContentText, {margin:5}]}> ผลการค้นหา ( {lawdata.length} ) </Text>
+        <Text style={[styles.ContentText, {margin:5}]}> ผลการค้นหา ( {lawList?.totalLaw} ) </Text>
       </View>
 
       <ScrollView contentContainerStyle={{ flexGrow:1 }}>
-        { LawElement}
+        { isLoading? <LoadingElement/> : LawElement}
       </ScrollView>
 
     </View>
   );
 
 }
+
+const LoadingElement = () => (
+  <View style={ViewStyle.LoadingWrapper}>
+    <ActivityIndicator color={Colors.light.tint} size="large" />
+    <Text style={TextStyle.Loading}>Loading</Text>
+  </View>
+)
 
 
 const styles = StyleSheet.create({
@@ -305,7 +344,7 @@ const styles = StyleSheet.create({
     paddingTop: 100,
     paddingHorizontal: 10,
     flexDirection: 'column',
-    alignItems: 'flex-start',
+    alignItems: 'center',
     justifyContent: 'center',
   },
   LawWrapper: {
@@ -325,7 +364,7 @@ const styles = StyleSheet.create({
   ContentText: {
     fontSize: 15,
     color: '#4a4a4a',
-    fontFamily: 'Mitr_500Medium'
+    fontFamily: 'Mitr_300Light'
   },
   SearchWrapper: {
     flexDirection: 'row',

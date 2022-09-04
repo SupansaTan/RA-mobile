@@ -30,7 +30,7 @@ export type RootStackParamList = {
   TaskRAResult: { taskId: string , keyactList: Array<KeyActApproveModel>};
   TaskCAAssessment: { taskId: string };
   TaskCAResult: undefined;
-  LawSearch: undefined;
+  LawSearch: { lawId: string };
   Report: undefined;
   ReportLocation: undefined;
   ReportTaskProgress: undefined;

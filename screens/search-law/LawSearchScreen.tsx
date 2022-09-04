@@ -1,17 +1,12 @@
-import React, { useState } from 'react';
-import { StyleSheet, TouchableOpacity, ScrollView} from 'react-native';
-import { MaterialCommunityIcons, Feather} from '@expo/vector-icons';
+import React, { useState, useEffect } from 'react';
+import { StyleSheet} from 'react-native';
 
-import { Text, View } from '../../components/Themed';
-import LawDetail from '../../shared/LawDetail';
+import LawDetailOnSearch from '../../shared/LawDetailOnSearch';
+import { RootStackScreenProps } from '../../types';
 
-export function LawSearchScreen() {
-    return(
-        <View style={styles.container}>
-            <LawDetail path="/screens/LawSearchScreen.tsx"/>
-
-        </View>
-    )
+export function LawSearchScreen({ navigation, route }: RootStackScreenProps<'LawSearch'>) {
+  const { lawId } = route.params;
+  return <LawDetailOnSearch lawId={lawId}/>
 }
 
 const styles = StyleSheet.create({
