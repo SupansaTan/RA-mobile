@@ -15,6 +15,16 @@ export class TaskListSortByProcessModel {
   taskList: Array<TaskDetailModel>
 }
 
+export class TaskInfoModel {
+  taskId: string;
+  taskTitle: string;
+  locationName: string;
+  dueDate: Date;
+  actType: string;
+  totalKeyAct: number;
+  datetimeStatus: TaskDatetimeStatus;
+}
+
 export class TaskDataModel {
   taskId: string;
   taskTitle: string;

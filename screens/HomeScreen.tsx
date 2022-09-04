@@ -4,7 +4,7 @@ import { Ionicons, MaterialCommunityIcons } from '@expo/vector-icons';
 import { format } from 'date-fns'
 
 import { Text, View } from '../components/Themed';
-import { RootStackParamList, RootTabParamList, RootTabScreenProps } from '../types';
+import { RootTabScreenProps } from '../types';
 import { MenuList } from '../constants/Home';
 import { ViewStyle } from '../style/ViewStyle';
 import { environment } from '../environment';
@@ -18,7 +18,6 @@ import { CardStyle } from '../style/CardStyle';
 import { TaskDatetimeStatus } from '../enum/TaskDatetimeStatus.enum';
 import { ColorStyle } from '../style/ColorStyle';
 import { TaskDetailModel } from '../model/Task.model';
-import { TaskProcess } from '../enum/TaskProcess.enum';
 
 export default function HomeScreen({ navigation }: RootTabScreenProps<'Home'>) {
   const [username, setUsername] = useState<string>('');
@@ -95,7 +94,9 @@ export default function HomeScreen({ navigation }: RootTabScreenProps<'Home'>) {
   const TaskElement = (contentItem: TaskDetailModel, i: number) => {
     return(
       <View key={'content' + i}>
-        <TouchableOpacity onPress={() => navigation.navigate(getScreenRoute(contentItem.process), { taskId: contentItem.taskId })}>
+        <TouchableOpacity 
+          onPress={() => navigation.navigate('TaskDetailContainer', { taskId: contentItem.taskId, taskProcess: contentItem.process })}
+          >
           <View style={ getCardColorClass(contentItem.datetimeStatus) }>
             <Text style={styles.TextHeader} numberOfLines={2}>{ contentItem.taskTitle }</Text>
             <Text style={[styles.TextContent, {color: '#6C6C6C'}]}>{ contentItem.locationName }</Text>
@@ -168,22 +169,6 @@ const getTextColor = (status: TaskDatetimeStatus) => {
     case TaskDatetimeStatus.Remain:
       return ColorStyle.Grey.color;
   }
-}
-
-const getScreenRoute = (process: TaskProcess): keyof RootTabParamList | keyof RootStackParamList => {
-  switch(process) {
-    case TaskProcess.Relevant:
-      return 'TaskRelevantDetail';
-    case TaskProcess.ApproveRelevant:
-      return 'TaskRADetail';
-    case TaskProcess.Consistance:
-      return 'TaskConsistanceDetail';
-    case TaskProcess.ApproveConsistance:
-      return 'TaskCADetail';
-    case TaskProcess.Response:
-      return 'TaskRelevantDetail';
-  }
-  return 'TaskRelevantDetail';
 }
 
 const LoadingElement = () => {

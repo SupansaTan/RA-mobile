@@ -21,9 +21,7 @@ import { ReportTaskProgressScreen } from '../screens/report/TaskProgressScreen';
 import { ReportTaskDetailScreen } from '../screens/report/TaskDetailScreen';
 import { LawSearchScreen } from '../screens/search-law/LawSearchScreen';
 import TaskLocationScreen from '../screens/task/TaskLocationScreen';
-import TaskRelavantDetailScreen from '../screens/task/TaskRelavantDetailScreen';
 import TaskRelavantResultScreen from '../screens/task/TaskRelavantResultScreen';
-import TaskConsistanceDetailScreen from '../screens/task/TaskConsistanceDetailScreen';
 import TaskConsistanceAssessmentScreen from '../screens/task/TaskConsistanceAssessmentScreen';
 import TaskConsistanceResultScreen from '../screens/task/TaskConsistanceResultScreen';
 import { TaskRADetail, TaskRAAssessment, TaskRAResult } from '../screens/task/TaskRelavantApproveScreen';
@@ -38,6 +36,7 @@ import { TabBarFeatherIcon, TabBarSimpleLineIcon, TabBarMaterialIcon } from './T
 import { useNavigation } from '@react-navigation/native';
 import AssessmentScreen from '../shared/AssessmentScreen';
 import LawDetailContainerScreen from '../shared/LawDetailContainer';
+import TaskDetailContainerScreen from '../shared/TaskDetailContainer';
 
 export default function Navigation({ colorScheme }: { colorScheme: ColorSchemeName }) {
   return (
@@ -139,10 +138,10 @@ function RootNavigator() {
           headerTitleStyle: HeaderTitleStyle,
           headerStyle: {backgroundColor: HeaderColor}
         }} />
-        <Stack.Screen name="TaskRelevantDetail" component={TaskRelavantDetailScreen} 
+        <Stack.Screen name="TaskDetailContainer" component={TaskDetailContainerScreen} 
         options={{ 
           animation: 'slide_from_right',
-          title: 'รายละเอียดกฎหมาย',
+          title: 'รายละเอียดงาน',
           headerShadowVisible: false,
           headerTitleStyle: HeaderTitleStyle,
           headerStyle: {backgroundColor: HeaderColor}
@@ -176,14 +175,6 @@ function RootNavigator() {
           headerTitleStyle: HeaderTitleStyle,
           headerStyle: {backgroundColor: HeaderColor}
         }} />
-        <Stack.Screen name="TaskConsistanceDetail" component={TaskConsistanceDetailScreen} 
-        options={{ 
-          animation: 'slide_from_right',
-          title: 'รายละเอียดกฎหมาย',
-          headerShadowVisible: false,
-          headerTitleStyle: HeaderTitleStyle,
-          headerStyle: {backgroundColor: HeaderColor}
-        }} />
         <Stack.Screen name="TaskConsistanceAssessment" component={TaskConsistanceAssessmentScreen} 
         options={{ 
           animation: 'slide_from_right',
@@ -200,17 +191,6 @@ function RootNavigator() {
           headerTitleStyle: HeaderTitleStyle,
           headerStyle: {backgroundColor: HeaderColor}
         }} />
-
-
-      <Stack.Screen name="TaskRADetail" component={TaskRADetail}
-        options={{ 
-          animation: 'slide_from_right',
-          title: 'รายละเอียดกฎหมาย',
-          headerShadowVisible: false,
-          headerTitleStyle: HeaderTitleStyle,
-          headerStyle: {backgroundColor: HeaderColor}
-        }} />
-
       <Stack.Screen name="TaskRAAssessment" component={TaskRAAssessment} 
         options={{ 
           animation: 'slide_from_right',
@@ -228,16 +208,6 @@ function RootNavigator() {
           headerTitleStyle: HeaderTitleStyle,
           headerStyle: {backgroundColor: HeaderColor}
         }} />
-
-      <Stack.Screen name="TaskCADetail" component={TaskCADetail}
-        options={{ 
-          animation: 'slide_from_right',
-          title: 'รายละเอียดกฎหมาย',
-          headerShadowVisible: false,
-          headerTitleStyle: HeaderTitleStyle,
-          headerStyle: {backgroundColor: HeaderColor}
-        }} />
-
       <Stack.Screen name="TaskCAAssessment" component={TaskCAAssessment} 
         options={{ 
           animation: 'slide_from_right',

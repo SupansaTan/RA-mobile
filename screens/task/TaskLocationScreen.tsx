@@ -55,7 +55,7 @@ export default function TaskLocationScreen({ navigation, route }: RootStackScree
   const ContentElement = (contentItem: TaskDetailModel, i: number) => {
     return(
       <View key={`task-${contentItem.process}-${i}`}>
-        <TouchableOpacity onPress={()=> navigation.navigate('LawDetailContainer', { taskId: contentItem.taskId, taskProcess: contentItem.process }) }>
+        <TouchableOpacity onPress={()=> navigation.navigate('TaskDetailContainer', { taskId: contentItem.taskId, taskProcess: contentItem.process }) }>
           <View style={ getCardColorClass(contentItem.datetimeStatus) }>
             <Text style={styles.TextHeader} numberOfLines={2}>{ contentItem.taskTitle }</Text>
 

@@ -1,19 +1,20 @@
-import React from 'react';
-import { StyleSheet, ScrollView, Pressable } from 'react-native';
+import React, { useState } from 'react';
+import { StyleSheet, Pressable } from 'react-native';
 
 import { Text, View } from '../components/Themed';
-import LawDetail from './LawDetail';
 import { RootStackScreenProps } from '../types';
 import { ViewStyle } from '../style/ViewStyle';
 import { SafeAreaView } from 'react-native-safe-area-context';
+import TaskDetailScreen from './TaskDetailScreen';
 
 
-export default function LawDetailContainerScreen({ navigation, route }: RootStackScreenProps<'LawDetailContainer'>) {
+export default function TaskDetailContainerScreen({ navigation, route }: RootStackScreenProps<'TaskDetailContainer'>) {
   const { taskId, taskProcess } = route.params;
+
   return (
     <View style={styles.Container}>
       <View style={[ViewStyle.RowContainer, { paddingHorizontal: 0}]}>
-        <LawDetail taskId={taskId}/>
+        <TaskDetailScreen taskId={taskId} taskProcess={taskProcess} />
       </View>
 
       <SafeAreaView style={{ width: '100%' }}>
