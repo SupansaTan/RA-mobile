@@ -3,15 +3,17 @@ import { StyleSheet, ScrollView, TouchableOpacity, Linking, ActivityIndicator } 
 import { AntDesign, Fontisto  } from '@expo/vector-icons';
 import { format } from 'date-fns'
 
-import { Text, View } from '../components/Themed';
-import { LawContentModel } from '../model/Law';
-import { environment } from '../environment';
-import { ViewStyle } from '../style/ViewStyle';
-import Colors from '../constants/Colors';
-import { TextStyle } from '../style/TextStyle';
-import { ColorStyle } from '../style/ColorStyle';
+import { Text, View } from '../../components/Themed';
+import { LawContentModel } from '../../model/Law';
+import { environment } from '../../environment';
+import { ViewStyle } from '../../style/ViewStyle';
+import Colors from '../../constants/Colors';
+import { TextStyle } from '../../style/TextStyle';
+import { ColorStyle } from '../../style/ColorStyle';
+import { RootStackScreenProps } from '../../types';
 
-export default function LawDetailOnSearch({ lawId }: { lawId: string }) {
+export function LawSearchDetailScreen({ navigation, route }: RootStackScreenProps<'LawSearchDetail'>) {
+  const { lawId } = route.params;
   const [lawinfo, setLawinfo] = useState<LawContentModel>()
   const [systemList, setSystemList] = useState<Array<string>>([])
   const [isLoading, setIsLoading] = useState(true);

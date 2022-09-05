@@ -19,7 +19,7 @@ import { TrackScreen, TrackLocationScreen}  from '../screens/TrackScreen';
 import { ReportScreen, ReportLocationScreen } from '../screens/report/ReportScreen';
 import { ReportTaskProgressScreen } from '../screens/report/TaskProgressScreen';
 import { ReportTaskDetailScreen } from '../screens/report/TaskDetailScreen';
-import { LawSearchScreen } from '../screens/search-law/LawSearchScreen';
+import { LawSearchDetailScreen } from '../screens/search-law/LawSearchDetailScreen';
 import TaskLocationScreen from '../screens/task/TaskLocationScreen';
 import TaskRelavantResultScreen from '../screens/task/TaskRelavantResultScreen';
 import TaskConsistanceAssessmentScreen from '../screens/task/TaskConsistanceAssessmentScreen';
@@ -98,7 +98,7 @@ function RootNavigator() {
           headerTitleStyle: HeaderTitleStyle,
           headerStyle: {backgroundColor: HeaderColor}
         }} />
-      <Stack.Screen name="LawSearch" component={LawSearchScreen} 
+      <Stack.Screen name="LawSearchDetail" component={LawSearchDetailScreen} 
         options={{ 
           animation: 'slide_from_right',
           title: 'รายละเอียดกฎหมาย',

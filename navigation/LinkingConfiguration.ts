@@ -51,7 +51,7 @@ const linking: LinkingOptions<RootStackParamList> = {
       Assessment: 'assessment',
       Tracking: 'tracking',
       TrackingLocation: 'trackinglocation',
-      LawSearch: 'lawsearch',
+      LawSearchDetail: 'lawsearchdetail',
       Report: 'report',
       ReportLocation: 'reportlocation',
       ReportTaskProgress: 'reporttaskprogress',

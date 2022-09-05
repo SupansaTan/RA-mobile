@@ -114,7 +114,7 @@ export default function SearchScreen({ navigation }: RootTabScreenProps<'Search'
   const LawElement = lawList?.lawList.map((content: LawListDetail, index: number)=> {
     return( 
         <View key={index} >
-            <TouchableOpacity activeOpacity={0.5} onPress={() => navigation.navigate('LawSearch', {lawId: content.lawId })}>
+            <TouchableOpacity activeOpacity={0.5} onPress={() => navigation.navigate('LawSearchDetail', {lawId: content.lawId })}>
             <View style={styles.LawWrapper}>
               <Text style={styles.HeaderText}>{content.title}</Text>
               <Text style={styles.ContentText}>{content.legislationType}</Text>
