@@ -30,7 +30,7 @@ export default function SearchScreen({ navigation }: RootTabScreenProps<'Search'
   const clearPicker = { name: 'Select'}
 
   const [legislationType, setLegislationType] = useState(legislationTypeList);
-  const [lawtypeselected, setLawtypeSelected] = useState(clearPicker);
+  const [legislationTypeSelected, setLegislationTypeSelected] = useState(clearPicker);
 
   const [ministry, setMinistry] = useState<Array<NameData>>([]);
   const [ministryselected, setMinistrySelected] = useState(clearPicker);
@@ -43,7 +43,7 @@ export default function SearchScreen({ navigation }: RootTabScreenProps<'Search'
   useEffect(() => {
     const getTaskList = () => {
       setIsLoading(true);
-      const url = `${environment.apiRaUrl}/api/Law/GetLawList?Keyword=${keyword.trim()}`
+      const url = `${environment.apiRaUrl}/api/Law/GetLawList?${getURL()}`
 
       fetch(url, {
         method: "GET",
@@ -63,7 +63,7 @@ export default function SearchScreen({ navigation }: RootTabScreenProps<'Search'
     };
 
     getTaskList();
-  }, [keyword]);
+  }, [keyword, legislationTypeSelected, ministryselected, actselected]);
 
   useEffect(() => {
     const GetActTypeName = () => {
@@ -158,6 +158,35 @@ export default function SearchScreen({ navigation }: RootTabScreenProps<'Search'
     setCancelDate(currentDate);
   };
 
+  const getURL = () => {
+    var url = '';
+    if (keyword.length != 0){
+      url += `Keyword=${keyword.trim()}`;
+    }
+    if (legislationTypeSelected.name != clearPicker.name) {
+      (url.length != 0) ? url+= '&' : ''
+      url += `LegislationType=${legislationTypeSelected.name}`;
+    }
+    if (ministryselected.name != clearPicker.name) {
+      (url.length != 0) ? url+= '&' : ''
+      url += `LegislationUnit=${ministryselected.name}`;
+    }
+    if (actselected.name != clearPicker.name) {
+      (url.length != 0) ? url+= '&' : ''
+      url += `ActType=${actselected.name}`;
+    }
+    return url;
+  }
+
+  const FilterClear = () => {
+    setLegislationTypeSelected(clearPicker);
+    setMinistrySelected(clearPicker);
+    setActSelected(clearPicker);
+    setAnnounceDate(new Date())
+    setEnforceDate(new Date())
+    setCancelDate(new Date())
+  }
+
   const LawElement = lawList?.lawList.map((content: LawListDetail, index: number)=> {
     return( 
         <View key={index} >
@@ -170,15 +199,6 @@ export default function SearchScreen({ navigation }: RootTabScreenProps<'Search'
         </View>
     )
   })
-
-  const FilterClear = () => {
-    setLawtypeSelected(clearPicker);
-    setMinistrySelected(clearPicker);
-    setActSelected(clearPicker);
-    setAnnounceDate(new Date())
-    setEnforceDate(new Date())
-    setCancelDate(new Date())
-  }
   
   return (
     <View style={styles.Container}>
@@ -235,13 +255,13 @@ export default function SearchScreen({ navigation }: RootTabScreenProps<'Search'
                           onOpen('actType');
                         }}
                       >
-                        <Text>{lawtypeselected.name}</Text>
+                        <Text>{legislationTypeSelected.name}</Text>
                       </TouchableOpacity>
                       <Picker
                         id="actType"
                         data={legislationType}
                         label="Select"
-                        setSelected={setLawtypeSelected}
+                        setSelected={setLegislationTypeSelected}
                       />
 
                       <Text style={styles.HeaderText}>กระทรวง</Text>
