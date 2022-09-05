@@ -1,5 +1,5 @@
 import React, { useState, useMemo, useEffect } from 'react';
-import { StyleSheet, TouchableOpacity, ScrollView, TextInput, Modal, Pressable, Platform, ActivityIndicator } from 'react-native';
+import { StyleSheet, TouchableOpacity, ScrollView, TextInput, Modal, Pressable, Platform, ActivityIndicator,Dimensions  } from 'react-native';
 import { Feather, AntDesign} from '@expo/vector-icons';
 import DateTimePicker from '@react-native-community/datetimepicker';
 import { Picker, onOpen } from 'react-native-actions-sheet-picker';
@@ -20,11 +20,13 @@ export default function SearchScreen({ navigation }: RootTabScreenProps<'Search'
   const [modalVisible, setModalVisible] = useState(false)
   const [isLoading, setIsLoading] = useState<boolean>(true);
 
-  const [announceDate, setAnnounceDate] = useState(new Date())
+  const defaultDate = new Date()
+
+  const [announceDate, setAnnounceDate] = useState(defaultDate)
   const [announceshow, setAnnounceshow] = useState(false);
-  const [enforceDate, setEnforceDate] = useState(new Date())
+  const [enforceDate, setEnforceDate] = useState(defaultDate)
   const [enforceshow, setEnforceshow] = useState(false);
-  const [cancelDate, setCancelDate] = useState(new Date())
+  const [cancelDate, setCancelDate] = useState(defaultDate)
   const [cancelshow, setCancelshow] = useState(false);
 
   const clearPicker = { name: 'Select'}
@@ -63,7 +65,7 @@ export default function SearchScreen({ navigation }: RootTabScreenProps<'Search'
     };
 
     getTaskList();
-  }, [keyword, legislationTypeSelected, ministryselected, actselected]);
+  }, [keyword, legislationTypeSelected, ministryselected, actselected, announceDate, enforceDate, cancelDate]);
 
   useEffect(() => {
     const GetActTypeName = () => {
@@ -164,17 +166,29 @@ export default function SearchScreen({ navigation }: RootTabScreenProps<'Search'
       url += `Keyword=${keyword.trim()}`;
     }
     if (legislationTypeSelected.name != clearPicker.name) {
-      (url.length != 0) ? url+= '&' : ''
+      url += (url.length != 0) ? '&' : ''
       url += `LegislationType=${legislationTypeSelected.name}`;
     }
     if (ministryselected.name != clearPicker.name) {
-      (url.length != 0) ? url+= '&' : ''
+      url += (url.length != 0) ? '&' : ''
       url += `LegislationUnit=${ministryselected.name}`;
     }
     if (actselected.name != clearPicker.name) {
-      (url.length != 0) ? url+= '&' : ''
+      url += (url.length != 0) ? '&' : ''
       url += `ActType=${actselected.name}`;
     }
+    if (announceDate.toDateString() != defaultDate.toDateString()){
+        url += (url.length != 0) ? '&' : ''
+        url += `AnnounceDate=${announceDate.toDateString()}&IsFilterByAnnounceDate=true`;
+    }
+    if (enforceDate.toDateString() != defaultDate.toDateString()){
+      url += (url.length != 0) ? '&' : ''
+      url += `EnforceDate=${enforceDate.toDateString()}&IsFilterByEnforceDate=true`;
+    }
+    if (cancelDate.toDateString() != defaultDate.toDateString()){
+      url += (url.length != 0) ? '&' : ''
+      url += `CancelDate=${cancelDate.toDateString()}&IsFilterByCancelDate=true`;
+    } 
     return url;
   }
 
@@ -182,9 +196,9 @@ export default function SearchScreen({ navigation }: RootTabScreenProps<'Search'
     setLegislationTypeSelected(clearPicker);
     setMinistrySelected(clearPicker);
     setActSelected(clearPicker);
-    setAnnounceDate(new Date())
-    setEnforceDate(new Date())
-    setCancelDate(new Date())
+    setAnnounceDate(defaultDate)
+    setEnforceDate(defaultDate)
+    setCancelDate(defaultDate)
   }
 
   const LawElement = lawList?.lawList.map((content: LawListDetail, index: number)=> {
@@ -421,6 +435,7 @@ const styles = StyleSheet.create({
     marginLeft:5,
     padding: 10,
     elevation:2,
+    width: Dimensions.get('window').width,
   },
   HeaderText: {
     fontSize: 17,
