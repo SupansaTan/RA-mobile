@@ -40,6 +40,7 @@ export type RootStackParamList = {
   SignIn: undefined;
   ResetPassword: undefined;
   Assessment: { taskId: string, taskProcess: number };
+  TaskResultContainer: { taskId: string , keyactList: Array<KeyActModel> }
 };
 
 export type RootStackScreenProps<Screen extends keyof RootStackParamList> = NativeStackScreenProps<

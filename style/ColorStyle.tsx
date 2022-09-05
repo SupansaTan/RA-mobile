@@ -16,4 +16,10 @@ export const ColorStyle = StyleSheet.create({
   LightGreen: {
     color: '#DEF4EC'
   },
+  LightRed: {
+    color: '#FFDBDB'
+  },
+  LightGrey: {
+    color: '#EEEEEE'
+  }
 });

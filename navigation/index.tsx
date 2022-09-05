@@ -37,6 +37,7 @@ import { useNavigation } from '@react-navigation/native';
 import AssessmentScreen from '../shared/AssessmentScreen';
 import LawDetailContainerScreen from '../shared/LawDetailContainer';
 import TaskDetailContainerScreen from '../shared/TaskDetailContainer';
+import TaskResultContainerScreen from '../shared/TaskResultContainer';
 
 export default function Navigation({ colorScheme }: { colorScheme: ColorSchemeName }) {
   return (
@@ -166,6 +167,16 @@ function RootNavigator() {
           headerTintColor: 'white',
           headerLeft: () => <FontAwesome name="angle-left" size={40} color="white" onPress={() => navigation.goBack()} />,
           headerRight: () => <Feather name="x" size={34} color="white" onPress={() => navigation.navigate('Task')} />
+        }} />
+         <Stack.Screen name="TaskResultContainer" component={TaskResultContainerScreen} 
+        options={{ 
+          animation: 'slide_from_right',
+          title: 'สรุปแบบประเมิน',
+          headerShadowVisible: false,
+          headerTitleStyle: HeaderTitleStyle,
+          headerStyle: {backgroundColor: HeaderColor},
+          headerLeft: () => <FontAwesome name="angle-left" size={40} color="black" onPress={() => navigation.goBack()} />,
+          headerRight: () => <Feather name="x" size={34} color="black" onPress={() => navigation.navigate('Task')} />
         }} />
         <Stack.Screen name="TaskRelevantResult" component={TaskRelavantResultScreen} 
         options={{ 

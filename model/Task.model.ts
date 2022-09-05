@@ -30,3 +30,20 @@ export class TaskDataModel {
   taskTitle: string;
   locationName: string;
 }
+
+export class TaskAssessmentModel {
+  taskId: string;
+  employeeId: string;
+  process: TaskProcess;
+  keyActionList: Array<KeyActionAssessmentModel>;
+}
+
+export class KeyActionAssessmentModel {
+  keyActId: string;
+  keyReq?: string;
+  isChecked: boolean;
+  notation: string;
+  responsePersonId?: Array<string>;
+  cost?: number;
+  dueDate?: Date;
+}

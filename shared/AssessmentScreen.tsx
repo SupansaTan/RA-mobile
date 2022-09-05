@@ -433,7 +433,7 @@ export default function TaskRelavantAssessmentScreen({ navigation, route }: Root
         <View style={{flexDirection:'row',backgroundColor:'transparent', justifyContent: 'center', width: '100%' }}>
           <CheckBox
             center
-            title={<Text style={[TextStyle.Content, { fontSize: 18, marginLeft: 5 }]}>สอดคล้อง</Text>}
+            title={<Text style={[TextStyle.Content, { fontSize: 18, marginLeft: 5 }]}>อนุมัติ</Text>}
             checked={approve}
             checkedColor={'#13AF82'}
             iconType='font-awesome'
@@ -444,7 +444,7 @@ export default function TaskRelavantAssessmentScreen({ navigation, route }: Root
           />
           <CheckBox
             center
-            title={<Text style={[TextStyle.Content, { fontSize: 18, marginLeft: 5 }]}>ไม่สอดคล้อง</Text>} 
+            title={<Text style={[TextStyle.Content, { fontSize: 18, marginLeft: 5 }]}>ไม่อนุมัติ</Text>} 
             checked={disapprove}
             checkedColor={'#FF4F4F'}
             iconType='font-awesome'
@@ -546,7 +546,7 @@ export default function TaskRelavantAssessmentScreen({ navigation, route }: Root
   const getAssessmentContainer = () => {
     switch(taskProcess) {
       case TaskProcess.Relevant:
-        return <ConsistanceAssessmentContainer/>
+        return <AssessmentContainer/>
       case TaskProcess.Consistance:
         return <ConsistanceAssessmentContainer/>
       case TaskProcess.ApproveRelevant:
@@ -586,7 +586,7 @@ export default function TaskRelavantAssessmentScreen({ navigation, route }: Root
         <SafeAreaView style={{ width: '100%' }}>
           <View style={{ backgroundColor: 'white', paddingTop: 10 }}>
             <Pressable style={styles.ButtonSubmit}
-              onPress={()=> navigation.navigate('TaskRelevantResult', { taskId: taskId, keyactList: datalist })}>
+              onPress={()=> navigation.navigate('TaskResultContainer', { taskId: taskId, keyactList: datalist })}>
               <Text style={[TextStyle.Heading, { color: 'white', textAlign: 'center' }]}>สรุปแบบประเมิน</Text>
             </Pressable>
           </View>
