@@ -435,7 +435,7 @@ const styles = StyleSheet.create({
     marginLeft:5,
     padding: 10,
     elevation:2,
-    width: Dimensions.get('window').width,
+    width: Dimensions.get('window').width-30,
   },
   HeaderText: {
     fontSize: 17,
