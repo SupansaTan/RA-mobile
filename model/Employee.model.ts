@@ -16,3 +16,8 @@ export class UpdateEmployeeInfoModel {
   notificationStatus: boolean;
   advanceNotify: number;
 }
+
+export class EmployeeInfoModel {
+  employeeId: string;
+  name: string;
+}

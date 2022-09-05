@@ -17,6 +17,7 @@ import { TextStyle } from '../style/TextStyle';
 import { TaskProcess } from '../enum/TaskProcess.enum';
 import MultiSelect from 'react-native-multiple-select';
 import { ColorStyle } from '../style/ColorStyle';
+import { EmployeeInfoModel } from '../model/Employee.model';
 
 export default function TaskRelavantAssessmentScreen({ navigation, route }: RootStackScreenProps<'Assessment'>) {
   const layout = useWindowDimensions();
@@ -226,8 +227,34 @@ export default function TaskRelavantAssessmentScreen({ navigation, route }: Root
     const [showAssign, setShowAssign] = useState<boolean>(false);
     const [dueDate, setDueDate] = useState<Date>(new Date());
     const [employee, setEmployee] = useState([]);
+    const [employeeList, setEmployeeList] = useState<Array<EmployeeInfoModel>>([]);
     const [employeeSelect, setEmployeeSelect] = useState<any[]>([]);
+    const [employeeLabel, setEmployeeSelectLabel] = useState<any[]>([]);
     const [cost, setCost] = useState('');
+
+    useEffect(() => {
+      const getEmployeeList = () => {
+        fetch(`${environment.apiRaUrl}/api/Employee/GetEmployeeList?taskId=${taskId}`, {
+          method: "GET",
+          headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json'
+          },
+        })
+        .then((response) => response.json())
+        .then((res) => {
+          setEmployee(res.data);
+          setEmployeeList(res.data);
+        })
+        .catch((error) => {
+          console.error(error);
+        });
+      };
+  
+      getEmployeeList();
+  
+      return () => { setEmployee([]) }
+    }, []);
 
     const updateKeyActData = () => {
       let keyActList = datalist;
@@ -237,6 +264,16 @@ export default function TaskRelavantAssessmentScreen({ navigation, route }: Root
         }
       })
       setDatalist(keyActList);
+    }
+
+    const onEmployeeSelectChange = (emp: any[]) => {
+      setEmployeeSelect(emp);
+
+      let empList: any[] = [];
+      emp.forEach(e => {
+        empList.push(employeeList.find(x => x.employeeId === e)?.name)
+      })
+      setEmployeeSelectLabel(empList);
     }
 
     const OnDueDateChange = (event: any, selectedDate: any) => {
@@ -295,17 +332,17 @@ export default function TaskRelavantAssessmentScreen({ navigation, route }: Root
               
             <View style={{ flexDirection: 'column', height: '100%' }}>
               <View style={{ flex:1, justifyContent:'flex-start', width: '100%', backgroundColor: 'white' }}>
-                <Text style={[styles.TextContent, {marginVertical:10}]}>ผู้รับผิดชอบ</Text>
-                <View style={{ width:'100%', padding: 10, backgroundColor:'transparent'}}>
+                <Text style={[TextStyle.Heading, { marginVertical: 10 }]}>ผู้รับผิดชอบ</Text>
+                <View style={{ width:'100%', backgroundColor:'transparent'}}>
                   <MultiSelect
                     hideTags
                     items={employee}
-                    uniqueKey="id"
-                    onSelectedItemsChange={(item) => setEmployeeSelect(item)}
+                    uniqueKey="employeeId"
+                    onSelectedItemsChange={(item) => onEmployeeSelectChange(item)}
                     selectedItems={employeeSelect}
-                    selectText="Select Items"
-                    searchInputPlaceholderText="Search Here..."
-                    onChangeInput={(text) => console.log(text)}
+                    selectText="Select Employee"
+                    searchInputPlaceholderText="Search Employee..."
+                    noItemsText='Not found employee'
                     tagRemoveIconColor="#CCC"
                     tagBorderColor="#CCC"
                     tagTextColor="#CCC"
@@ -313,22 +350,29 @@ export default function TaskRelavantAssessmentScreen({ navigation, route }: Root
                     selectedItemIconColor="#CCC"
                     itemTextColor="#000"
                     displayKey="name"
-                    searchInputStyle={{ color: '#CCC' }}
+                    searchInputStyle={{ color: '#CCC', fontSize: 18, paddingVertical: 10 }}
                     submitButtonColor="#00BFA5"
-                    submitButtonText="Submit"
+                    submitButtonText="Submit Selected"
+                    styleItemsContainer={{ paddingVertical: 5 }}
+                    fontSize={18}
+                    itemFontSize={18}
                   />
                 </View>
 
-                <Text style={styles.TextContent} >รายชื่อผู้รับผิดชอบ</Text>
                 {
-                  employeeSelect.map((item, index) => 
+                  employeeLabel.length > 0 ?
+                  <Text style={[TextStyle.Heading, { marginTop: 10 }]}>รายชื่อผู้รับผิดชอบ</Text>
+                  : <></>
+                }
+                {
+                  employeeLabel.map((item, index) => 
                   <View key={index} style={{marginLeft:10,marginVertical:5, backgroundColor:'transparent'}}>
-                    <Text>{'\u2022' + ' ' + item}</Text>
+                    <Text style={TextStyle.Content}>{'\u2022' + ' ' + item}</Text>
                   </View>
                 )}
 
-                <Text style={[styles.TextContent, {marginTop:10}]}>กำหนดวันเสร็จ</Text>
-                <View style={styles.DateSelect}>
+                <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', backgroundColor: 'transparent', marginTop:10}}>
+                  <Text style={TextStyle.Heading}>กำหนดวันเสร็จ</Text>
                   <DateTimePicker
                     testID="duedatePicker"
                     value={dueDate}
@@ -338,10 +382,11 @@ export default function TaskRelavantAssessmentScreen({ navigation, route }: Root
                     is24Hour
                     locale='th-TH'
                     dateFormat='day month year'
-                    style={{ flexGrow: 1 }}
+                    style={{ flex: 1 }}
                   />
                 </View>
-                <Text style={styles.TextContent}>งบประมาณ</Text>
+                
+                <Text style={[TextStyle.Heading, {marginTop:10}]}>งบประมาณ</Text>
                 <TextInput 
                   style={[styles.InputText, {borderColor: '#B9B9B9', width:'100%' }]}
                   defaultValue={'0'}
