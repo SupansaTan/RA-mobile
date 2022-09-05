@@ -49,9 +49,9 @@ export const LawList = [
     },
 ]
 
-export const lawtypeList = [
-    {name: 'Law (กฎหมาย)'},
-    {name: 'Ordinance (ข้อบัญญัติ)'},
+export const legislationTypeList = [
+    {name: 'กฎกระทรวง'},
+    {name: 'ประกาศ'}
 ]
   
 export const ministryList = [

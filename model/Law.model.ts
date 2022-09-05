@@ -22,3 +22,7 @@ export class LawListDetail {
     title: string;
     legislationType: string;
 }
+
+export class NameData {
+    name: string;
+}

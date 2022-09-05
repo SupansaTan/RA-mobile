@@ -6,9 +6,9 @@ import { Picker, onOpen } from 'react-native-actions-sheet-picker';
 
 import { Text, View } from '../../components/Themed';
 import { RootTabScreenProps } from '../../types';
-import { lawtypeList, ministryList, actList } from '../../constants/Law';
+import { legislationTypeList, ministryList, actList } from '../../constants/Law';
 import { environment } from '../../environment';
-import { LawListModel, LawListDetail } from '../../model/Law.model';
+import { LawListModel, LawListDetail, NameData } from '../../model/Law.model';
 
 import { ViewStyle } from '../../style/ViewStyle';
 import { TextStyle } from '../../style/TextStyle';
@@ -29,14 +29,14 @@ export default function SearchScreen({ navigation }: RootTabScreenProps<'Search'
 
   const clearPicker = { name: 'Select'}
 
-  const [lawtype, setLawtype] = useState(lawtypeList);
+  const [legislationType, setLegislationType] = useState(legislationTypeList);
   const [lawtypeselected, setLawtypeSelected] = useState(clearPicker);
 
-  const [ministry, setMinistry] = useState(ministryList);
+  const [ministry, setMinistry] = useState<Array<NameData>>([]);
   const [ministryselected, setMinistrySelected] = useState(clearPicker);
   const [ministryquery, setMinistryQuery] = useState('');
 
-  const [act, setAct] = useState(actList);
+  const [act, setAct] = useState<Array<NameData>>([]);
   const [actselected, setActSelected] = useState(clearPicker);
   const [actquery, setActQuery] = useState('');
 
@@ -64,6 +64,53 @@ export default function SearchScreen({ navigation }: RootTabScreenProps<'Search'
 
     getTaskList();
   }, [keyword]);
+
+  useEffect(() => {
+    const GetActTypeName = () => {
+      setIsLoading(true);
+      const url = `${environment.apiRaUrl}/api/Law/GetActTypeName`
+
+      fetch(url, {
+        method: "GET",
+        headers: {
+          'Accept': 'application/json',
+          'Content-Type': 'application/json'
+        },
+      })
+      .then((response) => response.json())
+      .then((res) => {
+        setAct(res.data);
+        setIsLoading(false);
+      })
+      .catch((error) => {
+        console.error(error);
+      });
+    };
+
+    const GetLegislationUnitName = () => {
+      setIsLoading(true);
+      const url = `${environment.apiRaUrl}/api/Law/GetLegislationUnitName`
+
+      fetch(url, {
+        method: "GET",
+        headers: {
+          'Accept': 'application/json',
+          'Content-Type': 'application/json'
+        },
+      })
+      .then((response) => response.json())
+      .then((res) => {
+        setMinistry(res.data);
+        setIsLoading(false);
+      })
+      .catch((error) => {
+        console.error(error);
+      });
+    };
+
+    GetActTypeName();
+    GetLegislationUnitName();
+  }, []);
 
 
   const filteredMinistry = useMemo(() => {
@@ -192,7 +239,7 @@ export default function SearchScreen({ navigation }: RootTabScreenProps<'Search'
                       </TouchableOpacity>
                       <Picker
                         id="actType"
-                        data={lawtype}
+                        data={legislationType}
                         label="Select"
                         setSelected={setLawtypeSelected}
                       />
