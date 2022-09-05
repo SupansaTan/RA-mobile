@@ -6,7 +6,7 @@ import { Picker, onOpen } from 'react-native-actions-sheet-picker';
 
 import { Text, View } from '../../components/Themed';
 import { RootTabScreenProps } from '../../types';
-import { legislationTypeList, ministryList, actList } from '../../constants/Law';
+import { legislationTypeList } from '../../constants/Law';
 import { environment } from '../../environment';
 import { LawListModel, LawListDetail, NameData } from '../../model/Law.model';
 
