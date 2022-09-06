@@ -77,7 +77,7 @@ export default function TaskResultScreen({ taskId, keyactList, taskProcess }: { 
             <View style={{borderWidth: 0.8, borderColor:'#EEEEEE', marginVertical: 10 }}/> : <></>
           }
           <View style={[styles.RowView, {justifyContent:'space-between', flexGrow: 1 }]}>
-            <Text style={[styles.TextContent, {color:getTextcolor(content.isChecked), width: '80%'}]} numberOfLines={1}>
+            <Text style={[styles.TextContent, {color:getTextcolor(content.isChecked), width: '70%'}]} numberOfLines={1}>
               ข้อ {content.order} {content.keyReq}
             </Text>
             <Text style={styles.TextContent}>

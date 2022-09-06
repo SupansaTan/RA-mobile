@@ -401,8 +401,8 @@ export default function TaskAssessmentScreen({ navigation, route }: RootStackScr
         {
           nonConsist ? 
           <View style={styles.AssignWrapper}>
-            <Pressable onPress={() => setShowAssign(true)} style={{borderWidth:1, padding:10, borderRadius:10, width:'100%', alignItems:'center'}}>
-              <Text style={styles.GreenCardText}>มอบหมายงาน</Text>
+            <Pressable onPress={() => setShowAssign(true)} style={{ padding:10, borderRadius: 8, width:'100%', alignItems:'center'}}>
+              <Text style={[styles.GreenCardText, { color: 'white' }]}>มอบหมายงาน</Text>
             </Pressable>
           </View> : <></>
         }
@@ -872,7 +872,11 @@ export default function TaskAssessmentScreen({ navigation, route }: RootStackScr
         <View style={{ backgroundColor: ColorStyle.LightGrey.color, borderRadius: 8, paddingHorizontal: 5 }}>
           <Text style={TextStyle.Content}>{log.employeeName} : {log.taskProcessTitle}</Text>
         </View>
-        <Text style={[TextStyle.Content, { fontSize: 12, marginLeft: 5 }]}>{ format(new Date(log.createDate), 'dd/MM/yyyy HH:mm') }</Text>
+
+        <View style={{ backgroundColor: 'transparent' }}>
+          <Text style={[TextStyle.Content, { fontSize: 10, marginLeft: 5 }]}>{ format(new Date(log.createDate), 'dd/MM/yyyy') }</Text>
+          <Text style={[TextStyle.Content, { fontSize: 10, marginLeft: 5, marginTop: -3 }]}>{ format(new Date(log.createDate), 'HH:mm') }</Text>
+        </View>
       </View>
     )
   }
@@ -1039,11 +1043,11 @@ const styles = StyleSheet.create({
     flex: 1
   },
   AssignWrapper: {
-    backgroundColor:'transparent',
+    backgroundColor: ColorStyle.Green.color,
     alignItems:'flex-start',
     justifyContent:'center',
-    width: 375,
-    borderRadius:10,
+    width: '100%',
+    borderRadius: 8,
   },
   DateSelect:{
     width:'100%',
