@@ -62,7 +62,6 @@ export default function TaskResultContainerScreen({ navigation, route }: RootSta
     request.process = taskProcess;
     request.keyActionList = assessmentList;
 
-    console.log(JSON.stringify(request))
     fetch(`${environment.apiRaUrl}/api/Task/${getApiPath()}`, {
       method: "POST",
       headers: {
@@ -73,7 +72,6 @@ export default function TaskResultContainerScreen({ navigation, route }: RootSta
     })
     .then((response) => response.json())
     .then((res) => {
-      console.log(res)
       navigation.navigate('Task')
     })
     .catch((error) => {

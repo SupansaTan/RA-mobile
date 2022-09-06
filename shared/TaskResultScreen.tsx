@@ -25,7 +25,7 @@ export default function TaskResultScreen({ taskId, keyactList, taskProcess }: { 
     useEffect(() => {
       const getTaskData = () => {
         setIsLoading(true);
-
+        console.log(keyactList)
         fetch(`${environment.apiRaUrl}/api/Task/GetTaskDataById?taskId=${taskId}`, {
           method: "GET",
           headers: {

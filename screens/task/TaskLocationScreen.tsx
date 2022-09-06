@@ -146,6 +146,8 @@ const getProcessLabel = (process: TaskProcess) => {
       return 'รออนุมัติความสอดคล้อง';
     case TaskProcess.Response:
       return 'รอดำเนินการให้สอดคล้อง';
+    case TaskProcess.ApproveResponse:
+      return 'รออนุมัติการปฏิบัติให้สอดคล้อง'
   }
 }
 
