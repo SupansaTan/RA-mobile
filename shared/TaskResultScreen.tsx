@@ -1,25 +1,29 @@
 import React, { useState, useEffect } from 'react';
-import { StyleSheet, ScrollView, Pressable, ActivityIndicator, SafeAreaView } from 'react-native';
+import { StyleSheet, ScrollView, ActivityIndicator } from 'react-native';
 import { AntDesign, Feather } from '@expo/vector-icons';
 
 import { Text, View } from '../components/Themed';
-import { useNavigation } from '@react-navigation/native';
-import { RootStackScreenProps } from '../types';
 import { User } from '../constants/UserInfo';
-import { KeyActAssessmentDetail, RelevantAssessmentModel } from '../model/Logging.model';
 import { environment } from '../environment';
-import { KeyActionAssessmentModel, TaskAssessmentModel, TaskDataModel } from '../model/Task.model';
+import { TaskDataModel } from '../model/Task.model';
 import { TextStyle } from '../style/TextStyle';
 import { ColorStyle } from '../style/ColorStyle';
 import { KeyActModel } from '../model/KeyAct.model';
+import { ViewStyle } from '../style/ViewStyle';
+import Colors from '../constants/Colors';
 
 
 export default function TaskResultScreen({ taskId, keyactList }: { taskId: string, keyactList: Array<KeyActModel>}) {
-    const [AssessmentList, setAssessmentList] = useState<Array<KeyActionAssessmentModel>>([]); 
     const [ taskData, setTaskData ] = useState<TaskDataModel>();
+    const [ totalChecked, setTotalChecked ] = useState<number>(0);
+    const [ totalUncheck, setTotalUncheck ] = useState<number>(0);
+    const [ totalNotDo, setTotalNotDo ] = useState<number>(0);
+    const [ isLoading, setIsLoading ] = useState<boolean>(true);
 
     useEffect(() => {
       const getTaskData = () => {
+        setIsLoading(true);
+
         fetch(`${environment.apiRaUrl}/api/Task/GetTaskDataById?taskId=${taskId}`, {
           method: "GET",
           headers: {
@@ -30,12 +34,20 @@ export default function TaskResultScreen({ taskId, keyactList }: { taskId: strin
         .then((response) => response.json())
         .then((res) => {
           setTaskData(res.data);
+          setIsLoading(false);
         })
         .catch((error) => {
           console.error(error);
         });
       };
       getTaskData();
+
+      const checked = keyactList.filter(x => x.isChecked === true).length;
+      const uncheck = keyactList.filter(x => x.isChecked === false && x.isChecked != undefined).length;
+      const notDo = keyactList.filter(x => x.isChecked === undefined).length;
+      setTotalChecked(checked);
+      setTotalUncheck(uncheck);
+      setTotalNotDo(notDo);
     }, []);
 
     const ContentElement = keyactList.map((content,index) => {
@@ -46,10 +58,12 @@ export default function TaskResultScreen({ taskId, keyactList }: { taskId: strin
             <View style={{borderWidth: 0.8, borderColor:'#EEEEEE', marginVertical: 10 }}/> : <></>
           }
           <View style={[styles.RowView, {justifyContent:'space-between', flexGrow: 1 }]}>
-            <Text style={[styles.TextContent, {color:getTextcolor(content.isRelated ?? false), width: '80%'}]} numberOfLines={1}>
+            <Text style={[styles.TextContent, {color:getTextcolor(content.isChecked), width: '80%'}]} numberOfLines={1}>
               ข้อ {content.order} {content.keyReq}
             </Text>
-            <Text style={styles.TextContent}>{content.isRelated===true? 'เกี่ยวข้อง':'ไม่เกี่ยวข้อง'}</Text>
+            <Text style={styles.TextContent}>
+              {content.isChecked === undefined? 'ยังไม่ประเมิน': content.isChecked ? 'เกี่ยวข้อง':'ไม่เกี่ยวข้อง'}
+            </Text>
           </View>
           {
             content.notation ? <Text style={[TextStyle.Content, {marginTop:5}]}>{'\t'}หมายเหตุ : {content.notation}</Text> : <></>
@@ -57,64 +71,81 @@ export default function TaskResultScreen({ taskId, keyactList }: { taskId: strin
         </View>
       )
     })
-    
-    return (
-      <View style={styles.Container}>
-        <View style={styles.GreenCard}>
-          <Text style={[TextStyle.Heading, {alignItems:'center'}]}>{taskData?.taskTitle}</Text>
-          <View style={[styles.RowView, { marginTop: 5 }]}>
-            <Feather name="map-pin" size={25} color="#13AF82" style={{marginRight:5}}/>
-            <Text style={[TextStyle.Content, { color:'#13AF82', fontSize: 18 }]}>{taskData?.locationName}</Text>
-          </View>
-        </View>
 
-        <View style={styles.ContentContainer}>
-          <View style={[styles.RowView, {justifyContent:'space-between'}]}>
-            <Text style={[TextStyle.Content]}>ประเมินโดย</Text>
-            <Text style={[TextStyle.Content]}>{User.Fname} {User.Lname}</Text>
+    const ResultWrapper = () => {
+      return (
+        <View style={styles.Container}>
+          <View style={styles.GreenCard}>
+            <Text style={[TextStyle.Heading, {alignItems:'center'}]}>{taskData?.taskTitle}</Text>
+            <View style={[styles.RowView, { marginTop: 5 }]}>
+              <Feather name="map-pin" size={25} color="#13AF82" style={{marginRight:5}}/>
+              <Text style={[TextStyle.Content, { color:'#13AF82', fontSize: 18 }]}>{taskData?.locationName}</Text>
+            </View>
           </View>
-        </View>
-        
-        <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', backgroundColor: 'transparent', width: '100%' }}>
-          <View style={{ flexDirection: 'row' }}>
-            <View style={{ backgroundColor: ColorStyle.LightGreen.color, borderRadius: 8, 
-              flexDirection: 'row', paddingHorizontal: 5, paddingVertical: 2, marginRight: 5, alignItems: 'center' }}>
-              <AntDesign name="check" size={16} color={ColorStyle.Green.color} style={{ marginRight: 5 }}/>
-              <Text style={[TextStyle.Content, ColorStyle.Green]}>{ '3' }</Text>
-            </View>
-            <View style={{ backgroundColor: ColorStyle.LightRed.color, borderRadius: 8, 
-              flexDirection: 'row', paddingHorizontal: 5, paddingVertical: 2, marginRight: 5, alignItems: 'center' }}>
-              <Feather name="x" size={16} color={ColorStyle.Danger.color} style={{ marginRight: 5 }}/>
-              <Text style={[TextStyle.Content, ColorStyle.Danger]}>{ '0' }</Text>
-            </View>
-            <View style={{ backgroundColor: ColorStyle.LightGrey.color, borderRadius: 8, 
-              flexDirection: 'row', paddingHorizontal: 5, paddingVertical: 2, alignItems: 'center' }}>
-              <AntDesign name="minuscircleo" size={16} color={ColorStyle.Grey.color} style={{ marginRight: 5 }} />
-              <Text style={[TextStyle.Content, ColorStyle.Grey]}>{ '0' }</Text>
+
+          <View style={styles.ContentContainer}>
+            <View style={[styles.RowView, {justifyContent:'space-between'}]}>
+              <Text style={[TextStyle.Content]}>ประเมินโดย</Text>
+              <Text style={[TextStyle.Content]}>{User.Fname} {User.Lname}</Text>
             </View>
           </View>
           
-          <View style={{ backgroundColor: ColorStyle.LightGrey.color, 
-            paddingHorizontal: 10, paddingVertical: 2, borderRadius: 8 }}>
-            <Text style={[TextStyle.Content]}>
-              ทั้งหมด {3} ข้อ
-            </Text>
+          <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', backgroundColor: 'transparent', width: '100%' }}>
+            <View style={{ flexDirection: 'row' }}>
+              <View style={{ backgroundColor: ColorStyle.LightGreen.color, borderRadius: 8, 
+                flexDirection: 'row', paddingHorizontal: 10, paddingVertical: 2, marginRight: 5, alignItems: 'center' }}>
+                <AntDesign name="check" size={16} color={ColorStyle.Green.color} style={{ marginRight: 5 }}/>
+                <Text style={[TextStyle.Content, ColorStyle.Green]}>{ totalChecked }</Text>
+              </View>
+              <View style={{ backgroundColor: ColorStyle.LightRed.color, borderRadius: 8, 
+                flexDirection: 'row', paddingHorizontal: 10, paddingVertical: 2, marginRight: 5, alignItems: 'center' }}>
+                <Feather name="x" size={16} color={ColorStyle.Danger.color} style={{ marginRight: 5 }}/>
+                <Text style={[TextStyle.Content, ColorStyle.Danger]}>{ totalUncheck }</Text>
+              </View>
+              <View style={{ backgroundColor: ColorStyle.LightGrey.color, borderRadius: 8, 
+                flexDirection: 'row', paddingHorizontal: 10, paddingVertical: 2, alignItems: 'center' }}>
+                <AntDesign name="minuscircleo" size={16} color={ColorStyle.Grey.color} style={{ marginRight: 5 }} />
+                <Text style={[TextStyle.Content, ColorStyle.Grey]}>{ totalNotDo }</Text>
+              </View>
+            </View>
+            
+            <View style={{ backgroundColor: ColorStyle.LightGrey.color, 
+              paddingHorizontal: 10, paddingVertical: 2, borderRadius: 8 }}>
+              <Text style={[TextStyle.Content]}>
+                ทั้งหมด {keyactList.length ?? 0} ข้อ
+              </Text>
+            </View>
+          </View>
+          
+          <View style={{ flexDirection: 'row', width: '100%', marginVertical: 10 }}>
+            <ScrollView contentContainerStyle={{ flexGrow:1, width: '100%' }}>
+              {ContentElement}
+            </ScrollView>
           </View>
         </View>
-        
-        <View style={{ flexDirection: 'row', width: '100%', marginVertical: 10 }}>
-          <ScrollView contentContainerStyle={{ flexGrow:1, width: '100%' }}>
-            {ContentElement}
-          </ScrollView>
-        </View>
-      </View>
-    );
+      )
+    }
+    
+    return isLoading ? <LoadingElement/> : <ResultWrapper/>;
 }
 
 
-const getTextcolor = (Assessment:boolean) => {
+const getTextcolor = (Assessment: boolean | undefined) => {
   return(
-    Assessment===true? '#13AF82': '#FF4F4F'
+    Assessment === undefined
+    ? ColorStyle.Grey.color
+    : Assessment
+    ? ColorStyle.Green.color
+    : ColorStyle.Danger.color
+  )
+}
+
+const LoadingElement = () => {
+  return (
+    <View style={[ViewStyle.LoadingWrapper, { height: '100%' }]}>
+      <ActivityIndicator color={Colors.light.tint} size="large" />
+      <Text style={TextStyle.Loading}>Loading</Text>
+    </View>
   )
 }
 

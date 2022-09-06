@@ -21,7 +21,6 @@ import { ReportTaskProgressScreen } from '../screens/report/TaskProgressScreen';
 import { ReportTaskDetailScreen } from '../screens/report/TaskDetailScreen';
 import { LawSearchDetailScreen } from '../screens/search-law/LawSearchDetailScreen';
 import TaskLocationScreen from '../screens/task/TaskLocationScreen';
-import TaskRelavantResultScreen from '../screens/task/TaskRelavantResultScreen';
 import TaskConsistanceAssessmentScreen from '../screens/task/TaskConsistanceAssessmentScreen';
 import TaskConsistanceResultScreen from '../screens/task/TaskConsistanceResultScreen';
 import { TaskRADetail, TaskRAAssessment, TaskRAResult } from '../screens/task/TaskRelavantApproveScreen';
@@ -177,14 +176,6 @@ function RootNavigator() {
           headerStyle: {backgroundColor: HeaderColor},
           headerLeft: () => <FontAwesome name="angle-left" size={40} color="black" onPress={() => navigation.goBack()} />,
           headerRight: () => <Feather name="x" size={34} color="black" onPress={() => navigation.navigate('Task')} />
-        }} />
-        <Stack.Screen name="TaskRelevantResult" component={TaskRelavantResultScreen} 
-        options={{ 
-          animation: 'slide_from_right',
-          title: 'สรุปแบบประเมิน',
-          headerShadowVisible: false,
-          headerTitleStyle: HeaderTitleStyle,
-          headerStyle: {backgroundColor: HeaderColor}
         }} />
         <Stack.Screen name="TaskConsistanceAssessment" component={TaskConsistanceAssessmentScreen} 
         options={{ 

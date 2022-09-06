@@ -6,9 +6,7 @@ export class KeyActModel {
   frequency: string;
   order: number;
   lawId: string;
-  isRelated?: boolean;
-  isConsist?: boolean;
-  isApprove?: boolean;
+  isChecked?: boolean;
   notation?: string;
 }
 

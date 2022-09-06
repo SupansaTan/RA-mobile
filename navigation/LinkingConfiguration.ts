@@ -41,7 +41,6 @@ const linking: LinkingOptions<RootStackParamList> = {
       Task: 'task',
       LawDetailContainer: 'lawDetailContainer',
       TaskLocation: 'tasklocation',
-      TaskRelevantResult: 'taskrelevantresult',
       TaskResultContainer: 'taskResultContainer',
       TaskConsistanceAssessment: 'taskconsistanceassessment',
       TaskConsistanceResult: 'taskconsistanceresult',
