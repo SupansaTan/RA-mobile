@@ -226,13 +226,15 @@ export default function TaskAssessmentScreen({ navigation, route }: RootStackScr
     const [related, setRelated] = useState(data?.isChecked === undefined ? false : data?.isChecked);
     const [nonRelated, setNonRelated] = useState(data?.isChecked === undefined ? false : !data?.isChecked);
 
-    const updateKeyActData = () => {
+    const updateKeyActData = (related: boolean, nonRelated: boolean) => {
       let keyActList = datalist;
       keyActList.forEach((x) => {
         if (x.order === keyorder) {
-          x.isChecked = !related;
+          x.isChecked = (!related && !nonRelated) ? undefined : related;
         }
       })
+      setRelated(related);
+      setNonRelated(nonRelated);
       setDatalist(keyActList);
     }
 
@@ -248,7 +250,7 @@ export default function TaskAssessmentScreen({ navigation, route }: RootStackScr
             iconType='font-awesome'
             checkedIcon="check-square"
             uncheckedIcon="square"
-            onPress={()=> { setRelated(!related); setNonRelated(false); updateKeyActData() }}
+            onPress={()=> { updateKeyActData(!related, false) }}
             containerStyle={{backgroundColor:'transparent', borderColor:'transparent'}}
           />
           <CheckBox
@@ -259,7 +261,7 @@ export default function TaskAssessmentScreen({ navigation, route }: RootStackScr
             iconType='font-awesome'
             checkedIcon="minus-square"
             uncheckedIcon="square"
-            onPress={()=> { setNonRelated(!nonRelated); setRelated(false); updateKeyActData() }}
+            onPress={()=> { updateKeyActData(false, !nonRelated) }}
             containerStyle={{backgroundColor:'transparent', borderColor:'transparent'}}
           />
         </View>
@@ -302,13 +304,15 @@ export default function TaskAssessmentScreen({ navigation, route }: RootStackScr
       return () => { setEmployee([]) }
     }, []);
 
-    const updateKeyActData = () => {
+    const updateKeyActData = (consist: boolean, nonConsist: boolean) => {
       let keyActList = datalist;
       keyActList.forEach((x) => {
         if (x.order === keyorder) {
-          x.isChecked = !consist;
+          x.isChecked = (!consist && !nonConsist) ? undefined : consist;
         }
       })
+      setConsist(consist);
+      setNonConsist(nonConsist);
       setDatalist(keyActList);
     }
 
@@ -340,7 +344,7 @@ export default function TaskAssessmentScreen({ navigation, route }: RootStackScr
             iconType='font-awesome'
             checkedIcon="check-square"
             uncheckedIcon="square"
-            onPress={()=> { setConsist(!consist); setNonConsist(false); updateKeyActData() }}
+            onPress={()=> { updateKeyActData(!consist, false) }}
             containerStyle={{backgroundColor:'transparent', borderColor:'transparent'}}
           />
           <CheckBox
@@ -351,7 +355,7 @@ export default function TaskAssessmentScreen({ navigation, route }: RootStackScr
             iconType='font-awesome'
             checkedIcon="minus-square"
             uncheckedIcon="square"
-            onPress={()=> { setNonConsist(!nonConsist); setConsist(false); updateKeyActData() }}
+            onPress={()=> { updateKeyActData(false, !nonConsist) }}
             containerStyle={{backgroundColor:'transparent', borderColor:'transparent'}}
           />
         </View>
@@ -470,13 +474,15 @@ export default function TaskAssessmentScreen({ navigation, route }: RootStackScr
       setIsRelated(loggingList[keyorder - 1]?.status);
     }, [])
 
-    const updateKeyActData = () => {
+    const updateKeyActData = (approve: boolean, disapprove: boolean) => {
       let keyActList = datalist;
       keyActList.forEach((x) => {
         if (x.order === keyorder) {
-          x.isChecked = !approve;
+          x.isChecked = (!approve && !disapprove) ? undefined : approve;
         }
       })
+      setApprove(approve);
+      setDisapprove(disapprove);
       setDatalist(keyActList);
     }
 
@@ -495,7 +501,7 @@ export default function TaskAssessmentScreen({ navigation, route }: RootStackScr
             iconType='font-awesome'
             checkedIcon="check-square"
             uncheckedIcon="square"
-            onPress={()=> { setApprove(!approve); setDisapprove(false); updateKeyActData() }}
+            onPress={()=> { updateKeyActData(!approve, false) }}
             containerStyle={{backgroundColor:'transparent', borderColor:'transparent'}}
           />
           <CheckBox
@@ -506,7 +512,7 @@ export default function TaskAssessmentScreen({ navigation, route }: RootStackScr
             iconType='font-awesome'
             checkedIcon="minus-square"
             uncheckedIcon="square"
-            onPress={()=> { setDisapprove(!disapprove); setApprove(false); updateKeyActData() }}
+            onPress={()=> { updateKeyActData(false, !disapprove) }}
             containerStyle={{backgroundColor:'transparent', borderColor:'transparent'}}
           />
         </View>
@@ -522,7 +528,7 @@ export default function TaskAssessmentScreen({ navigation, route }: RootStackScr
       let keyActList = datalist;
       keyActList.forEach((x) => {
         if (x.order === keyorder) {
-          x.notation = notation;
+          x.notation = text;
         }
       })
       setDatalist(keyActList);
@@ -541,7 +547,7 @@ export default function TaskAssessmentScreen({ navigation, route }: RootStackScr
               editable
               multiline
               scrollEnabled
-              onChange={(text) => updateKeyActData(text.nativeEvent.text)}
+              onChangeText={(text) => updateKeyActData(text)}
               value={notation}
               placeholder="หมายเหตุ"
               numberOfLines={4}
