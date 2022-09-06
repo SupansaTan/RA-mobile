@@ -24,13 +24,6 @@ export type RootStackParamList = {
   LawDetailContainer: { taskId: string, taskProcess: number }
   TaskDetailContainer: { taskId: string, taskProcess: number }
   TaskLocation: { locationId: string };
-  TaskRelevantResult: { taskId: string , keyactList: Array<KeyActModel>};
-  TaskConsistanceAssessment: { taskId: string };
-  TaskConsistanceResult: undefined;
-  TaskRAAssessment: { taskId: string };
-  TaskRAResult: { taskId: string , keyactList: Array<KeyActApproveModel>};
-  TaskCAAssessment: { taskId: string };
-  TaskCAResult: undefined;
   LawSearchDetail: { lawId: string };
   Report: undefined;
   ReportLocation: undefined;

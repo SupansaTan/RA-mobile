@@ -3,11 +3,10 @@ import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { NavigationContainer, DefaultTheme, DarkTheme } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { ColorSchemeName, Appearance } from 'react-native';
-import { Feather, FontAwesome, Ionicons } from '@expo/vector-icons'; 
+import { Feather, FontAwesome } from '@expo/vector-icons'; 
 
 import Colors from '../constants/Colors';
 import useColorScheme from '../hooks/useColorScheme';
-import ModalScreen from '../screens/ModalScreen';
 import NotFoundScreen from '../screens/NotFoundScreen';
 import HomeScreen from '../screens/HomeScreen';
 import SettingScreen from '../screens/setting/SettingScreen';
@@ -21,17 +20,13 @@ import { ReportTaskProgressScreen } from '../screens/report/TaskProgressScreen';
 import { ReportTaskDetailScreen } from '../screens/report/TaskDetailScreen';
 import { LawSearchDetailScreen } from '../screens/search-law/LawSearchDetailScreen';
 import TaskLocationScreen from '../screens/task/TaskLocationScreen';
-import TaskConsistanceAssessmentScreen from '../screens/task/TaskConsistanceAssessmentScreen';
-import TaskConsistanceResultScreen from '../screens/task/TaskConsistanceResultScreen';
-import { TaskRADetail, TaskRAAssessment, TaskRAResult } from '../screens/task/TaskRelavantApproveScreen';
-import { TaskCADetail, TaskCAAssessment, TaskCAResult } from '../screens/task/TaskConsistanceApproveScreen';
 import SignInScreen from '../screens/sign-in/SignIn';
 import ResetPasswordScreen from '../screens/sign-in/ResetPassword';
 
-import { RootStackParamList, RootTabParamList, RootTabScreenProps } from '../types';
+import { RootStackParamList, RootTabParamList } from '../types';
 import LinkingConfiguration from './LinkingConfiguration';
 import { BottomTabStyle, BottomTabLabelStyle, HeaderTitleStyle } from '../constants/NavigationStyle';
-import { TabBarFeatherIcon, TabBarSimpleLineIcon, TabBarMaterialIcon } from './TabBarIcon';
+import { TabBarFeatherIcon, TabBarMaterialIcon } from './TabBarIcon';
 import { useNavigation } from '@react-navigation/native';
 import LawDetailContainerScreen from '../shared/LawDetailContainer';
 import TaskDetailContainerScreen from '../shared/TaskDetailContainer';
@@ -167,67 +162,16 @@ function RootNavigator() {
           headerLeft: () => <FontAwesome name="angle-left" size={40} color="white" onPress={() => navigation.goBack()} />,
           headerRight: () => <Feather name="x" size={34} color="white" onPress={() => navigation.navigate('Task')} />
         }} />
-         <Stack.Screen name="TaskResultContainer" component={TaskResultContainerScreen} 
-        options={{ 
-          animation: 'slide_from_right',
-          title: 'สรุปแบบประเมิน',
-          headerShadowVisible: false,
-          headerTitleStyle: HeaderTitleStyle,
-          headerStyle: {backgroundColor: HeaderColor},
-          headerLeft: () => <FontAwesome name="angle-left" size={40} color="black" onPress={() => navigation.goBack()} />,
-          headerRight: () => <Feather name="x" size={34} color="black" onPress={() => navigation.navigate('Task')} />
-        }} />
-        <Stack.Screen name="TaskConsistanceAssessment" component={TaskConsistanceAssessmentScreen} 
-        options={{ 
-          animation: 'slide_from_right',
-          title: '',
-          headerShadowVisible: false,
-          headerTitleStyle: HeaderTitleStyle,
-          headerStyle: {backgroundColor: HeaderColor}
-        }} />
-        <Stack.Screen name="TaskConsistanceResult" component={TaskConsistanceResultScreen} 
-        options={{ 
-          animation: 'slide_from_right',
-          title: 'สรุปแบบประเมิน',
-          headerShadowVisible: false,
-          headerTitleStyle: HeaderTitleStyle,
-          headerStyle: {backgroundColor: HeaderColor}
-        }} />
-      <Stack.Screen name="TaskRAAssessment" component={TaskRAAssessment} 
-        options={{ 
-          animation: 'slide_from_right',
-          title: '',
-          headerShadowVisible: false,
-          headerTitleStyle: HeaderTitleStyle,
-          headerStyle: {backgroundColor: HeaderColor}
-        }} />
-
-      <Stack.Screen name="TaskRAResult" component={TaskRAResult} 
-        options={{ 
-          animation: 'slide_from_right',
-          title: 'สรุปแบบประเมิน',
-          headerShadowVisible: false,
-          headerTitleStyle: HeaderTitleStyle,
-          headerStyle: {backgroundColor: HeaderColor}
-        }} />
-      <Stack.Screen name="TaskCAAssessment" component={TaskCAAssessment} 
-        options={{ 
-          animation: 'slide_from_right',
-          title: '',
-          headerShadowVisible: false,
-          headerTitleStyle: HeaderTitleStyle,
-          headerStyle: {backgroundColor: HeaderColor}
-        }} />
-
-      <Stack.Screen name="TaskCAResult" component={TaskCAResult} 
-        options={{ 
-          animation: 'slide_from_right',
-          title: 'สรุปแบบประเมิน',
-          headerShadowVisible: false,
-          headerTitleStyle: HeaderTitleStyle,
-          headerStyle: {backgroundColor: HeaderColor}
-        }} />
-
+        <Stack.Screen name="TaskResultContainer" component={TaskResultContainerScreen} 
+          options={{ 
+            animation: 'slide_from_right',
+            title: 'สรุปแบบประเมิน',
+            headerShadowVisible: false,
+            headerTitleStyle: HeaderTitleStyle,
+            headerStyle: {backgroundColor: HeaderColor},
+            headerLeft: () => <FontAwesome name="angle-left" size={40} color="black" onPress={() => navigation.goBack()} />,
+            headerRight: () => <Feather name="x" size={34} color="black" onPress={() => navigation.navigate('Task')} />
+          }} />
 
       <Stack.Screen name="NotFound" component={NotFoundScreen} options={{ title: 'Oops!' }} />
       <Stack.Screen name="SignIn" component={SignInScreen} 
