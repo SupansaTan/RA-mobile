@@ -252,8 +252,8 @@ export default function TaskAssessmentScreen({ navigation, route }: RootStackScr
 
     const updateKeyActData = (related: boolean, nonRelated: boolean) => {
       let keyActList = datalist;
-      keyActList.forEach((x) => {
-        if (x.order === keyorder) {
+      keyActList.forEach((x, index) => {
+        if (index === (keyorder - 1)) {
           x.isChecked = (!related && !nonRelated) ? undefined : related;
         }
       })
@@ -330,8 +330,8 @@ export default function TaskAssessmentScreen({ navigation, route }: RootStackScr
 
     const onSaveAssign = () => {
       let keyActList = datalist;
-      keyActList.forEach((x) => {
-        if (x.order === keyorder) {
+      keyActList.forEach((x, index) => {
+        if (index === (keyorder - 1)) {
           x.responsePersonList = employeeSelect;
           x.responsePersonListLabel = employeeLabel;
           x.dueDate = dueDate;
@@ -344,8 +344,8 @@ export default function TaskAssessmentScreen({ navigation, route }: RootStackScr
 
     const updateKeyActData = (consist: boolean, nonConsist: boolean) => {
       let keyActList = datalist;
-      keyActList.forEach((x) => {
-        if (x.order === keyorder) {
+      keyActList.forEach((x, index) => {
+        if (index === (keyorder - 1)) {
           x.isChecked = (!consist && !nonConsist) ? undefined : consist;
         }
       })
@@ -507,8 +507,8 @@ export default function TaskAssessmentScreen({ navigation, route }: RootStackScr
 
     const updateKeyActData = (consisted: boolean, inconsisted: boolean) => {
       let keyActList = datalist;
-      keyActList.forEach((x) => {
-        if (x.order === keyorder) {
+      keyActList.forEach((x, index) => {
+        if (index === (keyorder - 1)) {
           x.isChecked = (!consisted && !inconsisted) ? undefined : consisted;
         }
       })
@@ -561,8 +561,8 @@ export default function TaskAssessmentScreen({ navigation, route }: RootStackScr
 
     const updateKeyActData = (approve: boolean, disapprove: boolean) => {
       let keyActList = datalist;
-      keyActList.forEach((x) => {
-        if (x.order === keyorder) {
+      keyActList.forEach((x, index) => {
+        if (index === (keyorder - 1)) {
           x.isChecked = (!approve && !disapprove) ? undefined : approve;
         }
       })
@@ -624,8 +624,8 @@ export default function TaskAssessmentScreen({ navigation, route }: RootStackScr
 
     const updateKeyActData = (approve: boolean, disapprove: boolean) => {
       let keyActList = datalist;
-      keyActList.forEach((x) => {
-        if (x.order === keyorder) {
+      keyActList.forEach((x, index) => {
+        if (index === (keyorder - 1)) {
           x.isChecked = (!approve && !disapprove) ? undefined : approve;
         }
       })
@@ -697,8 +697,8 @@ export default function TaskAssessmentScreen({ navigation, route }: RootStackScr
 
     const updateKeyActData = (approve: boolean, disapprove: boolean) => {
       let keyActList = datalist;
-      keyActList.forEach((x) => {
-        if (x.order === keyorder) {
+      keyActList.forEach((x, index) => {
+        if (index === (keyorder - 1)) {
           x.isChecked = (!approve && !disapprove) ? undefined : approve;
         }
       })
@@ -747,8 +747,8 @@ export default function TaskAssessmentScreen({ navigation, route }: RootStackScr
       setNotation(text);
 
       let keyActList = datalist;
-      keyActList.forEach((x) => {
-        if (x.order === keyorder) {
+      keyActList.forEach((x, index) => {
+        if (index === (keyorder - 1)) {
           x.notation = text;
         }
       })
