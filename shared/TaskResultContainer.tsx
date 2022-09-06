@@ -47,15 +47,22 @@ export default function TaskResultContainerScreen({ navigation, route }: RootSta
       element.keyActId = x.id;
       element.isChecked = x.isChecked ?? false;
       element.notation = x.notation ?? '';
+
+      if (taskProcess === TaskProcess.Consistance) {
+        element.cost = x?.cost ?? 0;
+        element.dueDate = x?.dueDate;
+        element.responsePersonId = x?.responsePersonList ?? [];
+      }
       assessmentList.push(element)
     });
 
     let request = new TaskAssessmentModel();
     request.employeeId = User.emdId;
     request.taskId = taskId;
-    request.process = 1;
+    request.process = taskProcess;
     request.keyActionList = assessmentList;
 
+    console.log(JSON.stringify(request))
     fetch(`${environment.apiRaUrl}/api/Task/${getApiPath()}`, {
       method: "POST",
       headers: {

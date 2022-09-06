@@ -8,6 +8,10 @@ export class KeyActModel {
   lawId: string;
   isChecked?: boolean;
   notation?: string;
+  cost?: number;
+  dueDate?: Date;
+  responsePersonList?: Array<string>;
+  responsePersonListLabel?: Array<string>;
 }
 
 export class KeyActApproveModel {

@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { StyleSheet, ScrollView, ActivityIndicator } from 'react-native';
-import { AntDesign, Feather } from '@expo/vector-icons';
+import { AntDesign, Entypo, Feather, Ionicons } from '@expo/vector-icons';
 
 import { Text, View } from '../components/Themed';
 import { User } from '../constants/UserInfo';
@@ -12,6 +12,7 @@ import { KeyActModel } from '../model/KeyAct.model';
 import { ViewStyle } from '../style/ViewStyle';
 import Colors from '../constants/Colors';
 import { TaskProcess } from '../enum/TaskProcess.enum';
+import { format } from 'date-fns';
 
 
 export default function TaskResultScreen({ taskId, keyactList, taskProcess }: { taskId: string, keyactList: Array<KeyActModel>, taskProcess: number}) {
@@ -83,8 +84,42 @@ export default function TaskResultScreen({ taskId, keyactList, taskProcess }: { 
               { content.isChecked === undefined? 'ยังไม่ประเมิน': getLabel(content.isChecked) }
             </Text>
           </View>
+
+          {/* assign detail */}
           {
-            content.notation ? <Text style={[TextStyle.Content, {marginTop:5}]}>{'\t'}หมายเหตุ : {content.notation}</Text> : <></>
+            taskProcess === TaskProcess.Consistance && content.isChecked === false
+            ? (<View style={{ flexDirection: 'row', backgroundColor: 'transparent', width: '100%', justifyContent: 'space-between', alignItems: 'center' }}>
+                <View style={{ flexDirection: 'row', backgroundColor: 'transparent' }}>
+                  {/* responsible person */}
+                  {
+                    content.responsePersonListLabel
+                    ? 
+                      content.responsePersonListLabel.map((p, index) => 
+                        responsePersonWrapper(p, index)
+                      )
+                    : <></>
+                  }
+
+                  {/* cost */}
+                  <View style={{ flexDirection: 'row', backgroundColor: ColorStyle.LightGreen.color, borderRadius: 8, 
+                    marginRight: 5, paddingHorizontal: 5, alignItems: 'center' }}>
+                    <Entypo name="wallet" size={14} color={ColorStyle.Green.color} style={{ marginRight: 5 }} />
+                    <Text style={[TextStyle.Content, ColorStyle.Green]}>{ content.cost }</Text>
+                  </View>
+                </View>
+
+                {/* date */}
+                <View style={{ backgroundColor: 'transparent', flexDirection: 'row', alignItems: 'center' }}>
+                  <Ionicons name="calendar" size={14} color={ColorStyle.Green.color} style={{ marginRight: 5 }} />
+                  <Text style={[TextStyle.Content, ColorStyle.Green]}>{ format(new Date(content.dueDate ?? new Date()), 'dd/MM/yyyy') }</Text>
+                </View>
+              </View>)
+            : <></>
+          }
+
+          {/* notation */}
+          {
+            content.notation ? <Text style={[TextStyle.Content, {marginTop: 3}]}>หมายเหตุ : {content.notation}</Text> : <></>
           }
         </View>
       )
@@ -147,6 +182,13 @@ export default function TaskResultScreen({ taskId, keyactList, taskProcess }: { 
     return isLoading ? <LoadingElement/> : <ResultWrapper/>;
 }
 
+const responsePersonWrapper = (name: string, index: number) => {
+  return (
+    <View key={'person-'+index} style={{ backgroundColor: ColorStyle.LightGreen.color, borderRadius: 8, marginRight: 5, paddingHorizontal: 5 }}>
+      <Text style={[TextStyle.Content, ColorStyle.Green]}>{ name }</Text>
+    </View>
+  )
+}
 
 const getTextcolor = (Assessment: boolean | undefined) => {
   return(
