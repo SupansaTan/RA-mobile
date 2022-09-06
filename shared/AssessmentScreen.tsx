@@ -10,7 +10,7 @@ import { MaterialIcons, Text, View } from '../components/Themed';
 import { RootStackScreenProps } from '../types';
 import { environment } from '../environment';
 import { KeyActModel } from '../model/KeyAct.model';
-import { KeyActAssessmentDetail, RelevantAssessmentModel } from '../model/Logging.model';
+import { KeyActAssessmentDetail, LoggingAssessmentModel, RelevantAssessmentModel } from '../model/Logging.model';
 import { ViewStyle } from '../style/ViewStyle';
 import Colors from '../constants/Colors';
 import { TextStyle } from '../style/TextStyle';
@@ -25,8 +25,8 @@ export default function TaskRelavantAssessmentScreen({ navigation, route }: Root
   const [keyorder, setKeyorder] = useState(1)
   const [data, setData] = useState(datalist[(keyorder-1)]);
   const [isLoading, setIsLoading] = useState(true);
+  const [loggingList, setLoggingList] = useState<Array<LoggingAssessmentModel>>([]);
   const { taskId, taskProcess } = route.params;
-  const [AssessmentList, setAssessmentList] = useState<Array<KeyActAssessmentDetail>>([]); 
 
   const [index, setIndex] = React.useState(0);
   const [routes] = React.useState([
@@ -59,9 +59,33 @@ export default function TaskRelavantAssessmentScreen({ navigation, route }: Root
       });
     };
 
-    getKeyActList();
+    const getLogList = () => {
+      setIsLoading(true);
 
-    return () => { }
+      fetch(`${environment.apiRaUrl}/api/KeyAction/GetLoggingAssessment?taskId=${taskId}&process=${TaskProcess.Relevant}`, {
+        method: "GET",
+        headers: {
+          'Accept': 'application/json',
+          'Content-Type': 'application/json'
+        },
+      })
+      .then((response) => response.json())
+      .then((res) => {
+        console.log(res.data)
+        setLoggingList(res.data);
+        setIsLoading(false);
+      })
+      .catch((error) => {
+        console.error(error);
+      });
+    };
+
+    getKeyActList();
+    if (taskProcess > TaskProcess.Relevant) {
+      getLogList();
+    }
+
+    return () => { setLoggingList([]); setDatalist([]); setData({})  }
   }, []);
 
   useEffect(() => {
@@ -416,6 +440,13 @@ export default function TaskRelavantAssessmentScreen({ navigation, route }: Root
   const ApproveRelevantAssessmentContainer = () => {
     const [approve, setApprove] = useState(data?.isApprove === undefined ? false : data?.isApprove);
     const [disapprove, setDisapprove] = useState(data?.isApprove === undefined ? false : !data?.isApprove);
+    const [notation, setNotation] = useState<string>();
+    const [isRelated, setIsRelated] = useState<boolean>();
+
+    useEffect(() => {
+      setNotation(loggingList[keyorder - 1].notation ?? '');
+      setIsRelated(loggingList[keyorder - 1].status);
+    }, [])
 
     const updateKeyActData = () => {
       let keyActList = datalist;
@@ -429,7 +460,10 @@ export default function TaskRelavantAssessmentScreen({ navigation, route }: Root
 
     return (
       <View style={[styles.GreenCard]}>
-        <Text style={[TextStyle.Heading,{fontSize: 19, color: '#13AF82'}]}>{ getAssessemntLabel() }</Text>
+        <View style={{ backgroundColor: 'white', padding: 10, borderRadius: 10, width: '100%' }}>
+          <Text style={[TextStyle.Heading,{fontSize: 18}]}>ความเกี่ยวข้อง : { isRelated ? 'เกี่ยวข้อง':'ไม่เกี่ยวข้อง' }</Text>
+          <Text style={[TextStyle.Heading,{fontSize: 18}]}>หมายเหตุ : { notation }</Text>
+        </View>
         <View style={{flexDirection:'row',backgroundColor:'transparent', justifyContent: 'center', width: '100%' }}>
           <CheckBox
             center
@@ -586,7 +620,7 @@ export default function TaskRelavantAssessmentScreen({ navigation, route }: Root
         <SafeAreaView style={{ width: '100%' }}>
           <View style={{ backgroundColor: 'white', paddingTop: 10 }}>
             <Pressable style={styles.ButtonSubmit}
-              onPress={()=> navigation.navigate('TaskResultContainer', { taskId: taskId, keyactList: datalist })}>
+              onPress={()=> navigation.navigate('TaskResultContainer', { taskId: taskId, keyactList: datalist, taskProcess: taskProcess })}>
               <Text style={[TextStyle.Heading, { color: 'white', textAlign: 'center' }]}>สรุปแบบประเมิน</Text>
             </Pressable>
           </View>
