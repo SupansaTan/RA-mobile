@@ -11,9 +11,10 @@ import { ColorStyle } from '../style/ColorStyle';
 import { KeyActModel } from '../model/KeyAct.model';
 import { ViewStyle } from '../style/ViewStyle';
 import Colors from '../constants/Colors';
+import { TaskProcess } from '../enum/TaskProcess.enum';
 
 
-export default function TaskResultScreen({ taskId, keyactList }: { taskId: string, keyactList: Array<KeyActModel>}) {
+export default function TaskResultScreen({ taskId, keyactList, taskProcess }: { taskId: string, keyactList: Array<KeyActModel>, taskProcess: number}) {
     const [ taskData, setTaskData ] = useState<TaskDataModel>();
     const [ totalChecked, setTotalChecked ] = useState<number>(0);
     const [ totalUncheck, setTotalUncheck ] = useState<number>(0);
@@ -50,6 +51,23 @@ export default function TaskResultScreen({ taskId, keyactList }: { taskId: strin
       setTotalNotDo(notDo);
     }, []);
 
+    const getLabel = (isChecked: boolean) => {
+      switch(taskProcess) {
+        case TaskProcess.Relevant:
+          return isChecked ? 'เกี่ยวข้อง' : 'ไม่เกี่ยวข้อง';
+        case TaskProcess.Consistance:
+          return isChecked ? 'สอดคล้อง' : 'ไม่สอดคล้อง';
+        case TaskProcess.ApproveRelevant:
+          return isChecked ? 'อนุมัติ' : 'ไม่อนุมัติ';
+        case TaskProcess.ApproveConsistance:
+          return isChecked ? 'อนุมัติ' : 'ไม่อนุมัติ';
+        case TaskProcess.Response:
+          return isChecked ? 'สอดคล้อง' : 'ไม่สอดคล้อง';
+        case TaskProcess.ApproveResponse:
+          return isChecked ? 'อนุมัติ' : 'ไม่อนุมัติ';
+      }
+    }
+
     const ContentElement = keyactList.map((content,index) => {
       return(
         <View key={index} style={{ width: '100%' }}>
@@ -62,7 +80,7 @@ export default function TaskResultScreen({ taskId, keyactList }: { taskId: strin
               ข้อ {content.order} {content.keyReq}
             </Text>
             <Text style={styles.TextContent}>
-              {content.isChecked === undefined? 'ยังไม่ประเมิน': content.isChecked ? 'เกี่ยวข้อง':'ไม่เกี่ยวข้อง'}
+              { content.isChecked === undefined? 'ยังไม่ประเมิน': getLabel(content.isChecked) }
             </Text>
           </View>
           {

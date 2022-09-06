@@ -77,7 +77,7 @@ export default function TaskResultContainerScreen({ navigation, route }: RootSta
   return (
     <View style={styles.Container}>
       <View style={[ViewStyle.RowContainer, { paddingHorizontal: 0}]}>
-        <TaskResultScreen taskId={taskId} keyactList={keyactList} />
+        <TaskResultScreen taskId={taskId} keyactList={keyactList} taskProcess={taskProcess} />
       </View>
 
       <SafeAreaView style={{ width: '100%' }}>
