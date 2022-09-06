@@ -64,7 +64,7 @@ export default function TaskAssessmentScreen({ navigation, route }: RootStackScr
     const getLogList = () => {
       setIsLoading(true);
 
-      fetch(`${environment.apiRaUrl}/api/KeyAction/GetLoggingAssessment?taskId=${taskId}&process=${TaskProcess.Relevant}`, {
+      fetch(`${environment.apiRaUrl}/api/KeyAction/GetLoggingAssessment?taskId=${taskId}&process=${taskProcess - 1}`, {
         method: "GET",
         headers: {
           'Accept': 'application/json',
@@ -477,6 +477,53 @@ export default function TaskAssessmentScreen({ navigation, route }: RootStackScr
     )
   }
 
+  const ResponsibleAssessmentContainer = () => {
+    const [consisted, setConsist] = useState(data?.isChecked === undefined ? false : data?.isChecked);
+    const [inconsisted, setInconsisted] = useState(data?.isChecked === undefined ? false : !data?.isChecked);
+
+    const updateKeyActData = (consisted: boolean, inconsisted: boolean) => {
+      let keyActList = datalist;
+      keyActList.forEach((x) => {
+        if (x.order === keyorder) {
+          x.isChecked = (!consisted && !inconsisted) ? undefined : consisted;
+        }
+      })
+      setConsist(consisted);
+      setInconsisted(inconsisted);
+      setDatalist(keyActList);
+    }
+
+    return (
+      <View style={[styles.GreenCard]}>
+        <Text style={[TextStyle.Heading,{fontSize: 19, color: '#13AF82'}]}>{ getAssessemntLabel() }</Text>
+        <View style={{flexDirection:'row',backgroundColor:'transparent', justifyContent: 'center', width: '100%' }}>
+          <CheckBox 
+            center
+            title={<Text style={[TextStyle.Content, { fontSize: 18, marginLeft: 5 }]}>สอดคล้อง</Text>}
+            checked={consisted}
+            checkedColor={'#13AF82'}
+            iconType='font-awesome'
+            checkedIcon="check-square"
+            uncheckedIcon="square"
+            onPress={()=> { updateKeyActData(!consisted, false) }}
+            containerStyle={{backgroundColor:'transparent', borderColor:'transparent'}}
+          />
+          <CheckBox
+            center
+            title={<Text style={[TextStyle.Content, { fontSize: 18, marginLeft: 5 }]}>ไม่สอดคล้อง</Text>} 
+            checked={inconsisted}
+            checkedColor={'#FF4F4F'}
+            iconType='font-awesome'
+            checkedIcon="minus-square"
+            uncheckedIcon="square"
+            onPress={()=> { updateKeyActData(false, !inconsisted) }}
+            containerStyle={{backgroundColor:'transparent', borderColor:'transparent'}}
+          />
+        </View>
+      </View>
+    )
+  }
+
   const ApproveRelevantAssessmentContainer = () => {
     const [approve, setApprove] = useState(data?.isChecked === undefined ? false : data?.isChecked);
     const [disapprove, setDisapprove] = useState(data?.isChecked === undefined ? false : !data?.isChecked);
@@ -504,6 +551,134 @@ export default function TaskAssessmentScreen({ navigation, route }: RootStackScr
       <View style={[styles.GreenCard]}>
         <View style={{ backgroundColor: 'white', padding: 10, borderRadius: 10, width: '100%' }}>
           <Text style={[TextStyle.Heading,{fontSize: 18}]}>ความเกี่ยวข้อง : { isRelated ? 'เกี่ยวข้อง':'ไม่เกี่ยวข้อง' }</Text>
+          <Text style={[TextStyle.Heading,{fontSize: 18}]}>หมายเหตุ : { notation }</Text>
+        </View>
+        <View style={{flexDirection:'row',backgroundColor:'transparent', justifyContent: 'center', width: '100%' }}>
+          <CheckBox
+            center
+            title={<Text style={[TextStyle.Content, { fontSize: 18, marginLeft: 5 }]}>อนุมัติ</Text>}
+            checked={approve}
+            checkedColor={'#13AF82'}
+            iconType='font-awesome'
+            checkedIcon="check-square"
+            uncheckedIcon="square"
+            onPress={()=> { updateKeyActData(!approve, false) }}
+            containerStyle={{backgroundColor:'transparent', borderColor:'transparent'}}
+          />
+          <CheckBox
+            center
+            title={<Text style={[TextStyle.Content, { fontSize: 18, marginLeft: 5 }]}>ไม่อนุมัติ</Text>} 
+            checked={disapprove}
+            checkedColor={'#FF4F4F'}
+            iconType='font-awesome'
+            checkedIcon="minus-square"
+            uncheckedIcon="square"
+            onPress={()=> { updateKeyActData(false, !disapprove) }}
+            containerStyle={{backgroundColor:'transparent', borderColor:'transparent'}}
+          />
+        </View>
+      </View>
+    )
+  }
+
+  const ApproveConsistanceAssessmentContainer = () => {
+    const [approve, setApprove] = useState(data?.isChecked === undefined ? false : data?.isChecked);
+    const [disapprove, setDisapprove] = useState(data?.isChecked === undefined ? false : !data?.isChecked);
+    const [notation, setNotation] = useState<string>();
+    const [isChecked, setIsChecked] = useState<boolean>();
+    const [cost, setCost] = useState<number>();
+    const [responsePersonList, setResponsePersonList] = useState<Array<string>>();
+    const [dueDate, setDueDate] = useState<Date>();
+
+    useEffect(() => {
+      setNotation(loggingList[keyorder - 1]?.notation ?? '');
+      setIsChecked(loggingList[keyorder - 1]?.status);
+    }, [])
+
+    const updateKeyActData = (approve: boolean, disapprove: boolean) => {
+      let keyActList = datalist;
+      keyActList.forEach((x) => {
+        if (x.order === keyorder) {
+          x.isChecked = (!approve && !disapprove) ? undefined : approve;
+        }
+      })
+      setApprove(approve);
+      setDisapprove(disapprove);
+      setDatalist(keyActList);
+    }
+
+    return (
+      <View style={[styles.GreenCard]}>
+        <View style={{ backgroundColor: 'white', padding: 10, borderRadius: 10, width: '100%' }}>
+          <Text style={[TextStyle.Heading,{fontSize: 18}]}>ความสอดคล้อง : { isChecked ? 'สอดคล้อง':'ไม่สอดคล้อง' }</Text>
+          <Text style={[TextStyle.Heading,{fontSize: 18}]}>หมายเหตุ : { notation }</Text>
+          {
+            !isChecked
+            ? (
+              <View style={{ backgroundColor: 'white', width: '100%' }}>
+                <Text style={[TextStyle.Heading,{fontSize: 18}]}>ผู้รับผิดชอบ</Text>
+                <Text style={[TextStyle.Heading,{fontSize: 18}]}>งบประมาณ :</Text>
+                <Text style={[TextStyle.Heading,{fontSize: 18}]}>กำหนดวันเสร็จ :</Text>
+              </View>
+            )
+            : <></>
+          }
+        </View>
+        <View style={{flexDirection:'row',backgroundColor:'transparent', justifyContent: 'center', width: '100%' }}>
+          <CheckBox
+            center
+            title={<Text style={[TextStyle.Content, { fontSize: 18, marginLeft: 5 }]}>อนุมัติ</Text>}
+            checked={approve}
+            checkedColor={'#13AF82'}
+            iconType='font-awesome'
+            checkedIcon="check-square"
+            uncheckedIcon="square"
+            onPress={()=> { updateKeyActData(!approve, false) }}
+            containerStyle={{backgroundColor:'transparent', borderColor:'transparent'}}
+          />
+          <CheckBox
+            center
+            title={<Text style={[TextStyle.Content, { fontSize: 18, marginLeft: 5 }]}>ไม่อนุมัติ</Text>} 
+            checked={disapprove}
+            checkedColor={'#FF4F4F'}
+            iconType='font-awesome'
+            checkedIcon="minus-square"
+            uncheckedIcon="square"
+            onPress={()=> { updateKeyActData(false, !disapprove) }}
+            containerStyle={{backgroundColor:'transparent', borderColor:'transparent'}}
+          />
+        </View>
+      </View>
+    )
+  }
+
+  const ApproveResponseAssessmentContainer = () => {
+    const [approve, setApprove] = useState(data?.isChecked === undefined ? false : data?.isChecked);
+    const [disapprove, setDisapprove] = useState(data?.isChecked === undefined ? false : !data?.isChecked);
+    const [notation, setNotation] = useState<string>();
+    const [isConsisted, setIsConsisted] = useState<boolean>();
+
+    useEffect(() => {
+      setNotation(loggingList[keyorder - 1]?.notation ?? '');
+      setIsConsisted(loggingList[keyorder - 1]?.status);
+    }, [])
+
+    const updateKeyActData = (approve: boolean, disapprove: boolean) => {
+      let keyActList = datalist;
+      keyActList.forEach((x) => {
+        if (x.order === keyorder) {
+          x.isChecked = (!approve && !disapprove) ? undefined : approve;
+        }
+      })
+      setApprove(approve);
+      setDisapprove(disapprove);
+      setDatalist(keyActList);
+    }
+
+    return (
+      <View style={[styles.GreenCard]}>
+        <View style={{ backgroundColor: 'white', padding: 10, borderRadius: 10, width: '100%' }}>
+          <Text style={[TextStyle.Heading,{fontSize: 18}]}>ความสอดคล้อง : { isConsisted ? 'สอดคล้อง':'ไม่สอดคล้อง' }</Text>
           <Text style={[TextStyle.Heading,{fontSize: 18}]}>หมายเหตุ : { notation }</Text>
         </View>
         <View style={{flexDirection:'row',backgroundColor:'transparent', justifyContent: 'center', width: '100%' }}>
@@ -627,6 +802,12 @@ export default function TaskAssessmentScreen({ navigation, route }: RootStackScr
         return <ConsistanceAssessmentContainer/>
       case TaskProcess.ApproveRelevant:
         return <ApproveRelevantAssessmentContainer/>
+      case TaskProcess.ApproveConsistance:
+        return <ApproveConsistanceAssessmentContainer/>;
+      case TaskProcess.Response:
+        return <ResponsibleAssessmentContainer/>;
+      case TaskProcess.ApproveResponse:
+        return <ApproveResponseAssessmentContainer/>;
     }
   }
 
@@ -655,7 +836,7 @@ export default function TaskAssessmentScreen({ navigation, route }: RootStackScr
 
   const LoggingWrapper = (log: KeyActLoggingModel, index: number) => {
     return (
-      <View style={{ backgroundColor: 'white', flexDirection: 'row', alignItems: 'flex-end', marginBottom: 5 }}>
+      <View key={'logging-'+index} style={{ backgroundColor: 'white', flexDirection: 'row', alignItems: 'flex-end', marginBottom: 5 }}>
         <View style={{ backgroundColor: ColorStyle.LightGrey.color, borderRadius: 8, paddingHorizontal: 5 }}>
           <Text style={TextStyle.Content}>{log.employeeName} : {log.taskProcessTitle}</Text>
         </View>
