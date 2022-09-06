@@ -10,7 +10,7 @@ import { MaterialIcons, Text, View } from '../components/Themed';
 import { RootStackScreenProps } from '../types';
 import { environment } from '../environment';
 import { KeyActModel } from '../model/KeyAct.model';
-import { KeyActAssessmentDetail, LoggingAssessmentModel, RelevantAssessmentModel } from '../model/Logging.model';
+import { AllKeyActLoggingAssessmentModel, KeyActLoggingModel, LoggingAssessmentModel,  } from '../model/Logging.model';
 import { ViewStyle } from '../style/ViewStyle';
 import Colors from '../constants/Colors';
 import { TextStyle } from '../style/TextStyle';
@@ -18,12 +18,14 @@ import { TaskProcess } from '../enum/TaskProcess.enum';
 import MultiSelect from 'react-native-multiple-select';
 import { ColorStyle } from '../style/ColorStyle';
 import { EmployeeInfoModel } from '../model/Employee.model';
+import { format } from 'date-fns';
 
-export default function TaskRelavantAssessmentScreen({ navigation, route }: RootStackScreenProps<'Assessment'>) {
+export default function TaskAssessmentScreen({ navigation, route }: RootStackScreenProps<'Assessment'>) {
   const layout = useWindowDimensions();
   const [datalist, setDatalist] = useState<Array<KeyActModel>>([])
   const [keyorder, setKeyorder] = useState(1)
   const [data, setData] = useState(datalist[(keyorder-1)]);
+  const [allLogging, setAllLogging] = useState<Array<AllKeyActLoggingAssessmentModel>>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [loggingList, setLoggingList] = useState<Array<LoggingAssessmentModel>>([]);
   const { taskId, taskProcess } = route.params;
@@ -71,8 +73,27 @@ export default function TaskRelavantAssessmentScreen({ navigation, route }: Root
       })
       .then((response) => response.json())
       .then((res) => {
-        console.log(res.data)
         setLoggingList(res.data);
+        setIsLoading(false);
+      })
+      .catch((error) => {
+        console.error(error);
+      });
+    };
+
+    const getAllLogList = () => {
+      setIsLoading(true);
+
+      fetch(`${environment.apiRaUrl}/api/KeyAction/GetAllLoggingAssessment?taskId=${taskId}`, {
+        method: "GET",
+        headers: {
+          'Accept': 'application/json',
+          'Content-Type': 'application/json'
+        },
+      })
+      .then((response) => response.json())
+      .then((res) => {
+        setAllLogging(res.data);
         setIsLoading(false);
       })
       .catch((error) => {
@@ -83,6 +104,7 @@ export default function TaskRelavantAssessmentScreen({ navigation, route }: Root
     getKeyActList();
     if (taskProcess > TaskProcess.Relevant) {
       getLogList();
+      getAllLogList();
     }
 
     return () => { setLoggingList([]); setDatalist([]); setData(new KeyActModel())  }
@@ -168,7 +190,7 @@ export default function TaskRelavantAssessmentScreen({ navigation, route }: Root
             '2': () => KeyActContainer(data?.standard),
             '3': () => KeyActContainer(data?.frequency),
             '4': () => KeyActContainer(data?.practice),
-            '5': () => KeyActContainer('')
+            '5': () => AssessemntHistoryContainer(allLogging[keyorder - 1]?.loggingList ?? [])
           })
         }
         onIndexChange={setIndex}
@@ -444,8 +466,8 @@ export default function TaskRelavantAssessmentScreen({ navigation, route }: Root
     const [isRelated, setIsRelated] = useState<boolean>();
 
     useEffect(() => {
-      setNotation(loggingList[keyorder - 1].notation ?? '');
-      setIsRelated(loggingList[keyorder - 1].status);
+      setNotation(loggingList[keyorder - 1]?.notation ?? '');
+      setIsRelated(loggingList[keyorder - 1]?.status);
     }, [])
 
     const updateKeyActData = () => {
@@ -602,6 +624,45 @@ export default function TaskRelavantAssessmentScreen({ navigation, route }: Root
           <View style={[ViewStyle.ColumnContainer, { backgroundColor: 'white' }]}>
             <Text style={[styles.TextHeader, { color: '#6C6C6C' }]}>{ getTabLabel() }</Text>
             <Text style={[TextStyle.Content, { fontSize: 18 }]}>{content}</Text>
+          </View>
+        </View>
+
+        { getAssessmentContainer() }
+        <NotationContainer/>
+      </ScrollView>
+    )
+  }
+
+  const LoggingWrapper = (log: KeyActLoggingModel, index: number) => {
+    return (
+      <View style={{ backgroundColor: 'white', flexDirection: 'row', alignItems: 'flex-end' }}>
+        <View style={{ backgroundColor: ColorStyle.LightGrey.color, borderRadius: 8, paddingHorizontal: 5 }}>
+          <Text style={TextStyle.Content}>{log.employeeName} : {log.taskProcessTitle}</Text>
+        </View>
+        <Text style={[TextStyle.Content, { fontSize: 12, marginLeft: 5 }]}>{ format(new Date(log.createDate), 'dd/MM/yyyy HH:mm') }</Text>
+      </View>
+    )
+  }
+
+  const AssessemntHistoryContainer = (content: Array<KeyActLoggingModel>) => {
+    const ScrollViewRef = useRef() as LegacyRef<ScrollView>;
+    
+    return(
+      <ScrollView 
+        contentContainerStyle={{ height: 'auto' }}
+        ref={ScrollViewRef}
+        scrollEventThrottle={400}>
+        <View style={[ViewStyle.RowContainer, { paddingVertical: 10, backgroundColor: 'white' }]} >
+          { getTabIcon() }
+
+          <View style={[ViewStyle.ColumnContainer, { backgroundColor: 'white' }]}>
+            <Text style={[styles.TextHeader, { color: '#6C6C6C' }]}>{ getTabLabel() }</Text>
+            <View style={{ flexDirection: 'column', backgroundColor: 'white' }}>
+              { content.length > 0
+                ? content.map((log, index) => LoggingWrapper(log, index))
+                : <Text style={TextStyle.Content}>ไม่มีประวัติการประเมิน</Text>
+              }
+            </View>
           </View>
         </View>
 

@@ -33,10 +33,10 @@ import LinkingConfiguration from './LinkingConfiguration';
 import { BottomTabStyle, BottomTabLabelStyle, HeaderTitleStyle } from '../constants/NavigationStyle';
 import { TabBarFeatherIcon, TabBarSimpleLineIcon, TabBarMaterialIcon } from './TabBarIcon';
 import { useNavigation } from '@react-navigation/native';
-import AssessmentScreen from '../shared/AssessmentScreen';
 import LawDetailContainerScreen from '../shared/LawDetailContainer';
 import TaskDetailContainerScreen from '../shared/TaskDetailContainer';
 import TaskResultContainerScreen from '../shared/TaskResultContainer';
+import TaskAssessmentScreen from '../shared/AssessmentScreen';
 
 export default function Navigation({ colorScheme }: { colorScheme: ColorSchemeName }) {
   return (
@@ -156,7 +156,7 @@ function RootNavigator() {
           headerTintColor: 'white',
           headerLeft: () => <FontAwesome name="angle-left" size={40} color="white" onPress={() => navigation.goBack()} />,
         }} />
-        <Stack.Screen name="Assessment" component={AssessmentScreen} 
+        <Stack.Screen name="Assessment" component={TaskAssessmentScreen} 
         options={{ 
           animation: 'slide_from_right',
           title: '',

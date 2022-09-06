@@ -19,3 +19,14 @@ export class LoggingAssessmentModel {
     notation: string;
     keyActId: string;
 }
+
+export class AllKeyActLoggingAssessmentModel {
+    keyActOrder: number;
+    loggingList: Array<KeyActLoggingModel>;
+}
+
+export class KeyActLoggingModel {
+    createDate: Date;
+    employeeName: string;
+    taskProcessTitle: string;
+}

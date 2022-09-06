@@ -5,7 +5,7 @@ import { SimpleLineIcons, MaterialCommunityIcons } from '@expo/vector-icons';
 import Colors from '../../constants/Colors';
 import { Text, View } from '../../components/Themed';
 import { NotifyContentModel, NotificationListDataModel } from '../../model/Notification.model';
-import { NotifyList, getIconBgColor, getIconColor } from '../../constants/Notification';
+import { getIconBgColor, getIconColor } from '../../constants/Notification';
 import { environment } from '../../environment';
 import { User } from '../../constants/UserInfo';
 import { ViewStyle } from '../../style/ViewStyle';
@@ -105,7 +105,7 @@ export default function NotificationScreen({ path }: { path: string }) {
       </ScrollView>
     </View>
     )
-  }
+  }  
 
   return isLoading? <LoadingElement/> : <NotificationContainer/>
 }
