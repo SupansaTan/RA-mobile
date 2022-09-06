@@ -81,6 +81,26 @@ export default function TaskAssessmentScreen({ navigation, route }: RootStackScr
       });
     };
 
+    const getConsistanceLogList = () => {
+      setIsLoading(true);
+
+      fetch(`${environment.apiRaUrl}/api/KeyAction/GetConsistanceLogList?taskId=${taskId}`, {
+        method: "GET",
+        headers: {
+          'Accept': 'application/json',
+          'Content-Type': 'application/json'
+        },
+      })
+      .then((response) => response.json())
+      .then((res) => {
+        setLoggingList(res.data);
+        setIsLoading(false);
+      })
+      .catch((error) => {
+        console.error(error);
+      });
+    };
+
     const getAllLogList = () => {
       setIsLoading(true);
 
@@ -102,7 +122,11 @@ export default function TaskAssessmentScreen({ navigation, route }: RootStackScr
     };
 
     getKeyActList();
-    if (taskProcess > TaskProcess.Relevant) {
+    if (taskProcess === TaskProcess.ApproveConsistance) {
+      getConsistanceLogList();
+      getAllLogList();
+    }
+    else if (taskProcess > TaskProcess.Relevant) {
       getLogList();
       getAllLogList();
     }
@@ -593,6 +617,9 @@ export default function TaskAssessmentScreen({ navigation, route }: RootStackScr
     useEffect(() => {
       setNotation(loggingList[keyorder - 1]?.notation ?? '');
       setIsChecked(loggingList[keyorder - 1]?.status);
+      setCost(loggingList[keyorder - 1]?.cost ?? 0);
+      setResponsePersonList(loggingList[keyorder - 1]?.responsiblePersonList ?? []);
+      setDueDate(loggingList[keyorder - 1]?.dueDate ?? new Date());
     }, [])
 
     const updateKeyActData = (approve: boolean, disapprove: boolean) => {
@@ -611,14 +638,19 @@ export default function TaskAssessmentScreen({ navigation, route }: RootStackScr
       <View style={[styles.GreenCard]}>
         <View style={{ backgroundColor: 'white', padding: 10, borderRadius: 10, width: '100%' }}>
           <Text style={[TextStyle.Heading,{fontSize: 18}]}>ความสอดคล้อง : { isChecked ? 'สอดคล้อง':'ไม่สอดคล้อง' }</Text>
-          <Text style={[TextStyle.Heading,{fontSize: 18}]}>หมายเหตุ : { notation }</Text>
+          {
+            notation
+            ? <Text style={[TextStyle.Heading,{fontSize: 18}]}>หมายเหตุ : { notation }</Text>
+            : <></>
+          }
+
           {
             !isChecked
             ? (
               <View style={{ backgroundColor: 'white', width: '100%' }}>
-                <Text style={[TextStyle.Heading,{fontSize: 18}]}>ผู้รับผิดชอบ</Text>
-                <Text style={[TextStyle.Heading,{fontSize: 18}]}>งบประมาณ :</Text>
-                <Text style={[TextStyle.Heading,{fontSize: 18}]}>กำหนดวันเสร็จ :</Text>
+                <Text style={[TextStyle.Heading,{fontSize: 18}]}>ผู้รับผิดชอบ : { responsePersonList ? responsePersonList[0] : '' }</Text>
+                <Text style={[TextStyle.Heading,{fontSize: 18}]}>งบประมาณ : {cost}</Text>
+                <Text style={[TextStyle.Heading,{fontSize: 18}]}>กำหนดวันเสร็จ : { format(new Date(dueDate ?? new Date()), 'dd/MM/yyyy') }</Text>
               </View>
             )
             : <></>

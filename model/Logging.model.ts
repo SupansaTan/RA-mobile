@@ -18,6 +18,9 @@ export class LoggingAssessmentModel {
     status: boolean;
     notation: string;
     keyActId: string;
+    cost?: number;
+    dueDate?: Date;
+    responsiblePersonList?: Array<string>;
 }
 
 export class AllKeyActLoggingAssessmentModel {
