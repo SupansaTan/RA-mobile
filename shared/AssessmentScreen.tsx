@@ -304,6 +304,20 @@ export default function TaskAssessmentScreen({ navigation, route }: RootStackScr
       return () => { setEmployee([]) }
     }, []);
 
+    const onSaveAssign = () => {
+      let keyActList = datalist;
+      keyActList.forEach((x) => {
+        if (x.order === keyorder) {
+          x.responsePersonList = employeeSelect;
+          x.responsePersonListLabel = employeeLabel;
+          x.dueDate = dueDate;
+          x.cost = Number(cost);
+        }
+      })
+      setDatalist(keyActList);
+      setShowAssign(!showAssign);
+    }
+
     const updateKeyActData = (consist: boolean, nonConsist: boolean) => {
       let keyActList = datalist;
       keyActList.forEach((x) => {
@@ -382,7 +396,7 @@ export default function TaskAssessmentScreen({ navigation, route }: RootStackScr
               
             <View style={{ flexDirection: 'column', height: '100%' }}>
               <View style={{ flex:1, justifyContent:'flex-start', width: '100%', backgroundColor: 'white' }}>
-                <Text style={[TextStyle.Heading, { marginVertical: 10 }]}>ผู้รับผิดชอบ</Text>
+                <Text style={[TextStyle.Heading, { marginVertical: 10 }]}>ผู้รับผิดชอบ <Text style={ColorStyle.Danger}>*</Text></Text>
                 <View style={{ width:'100%', backgroundColor:'transparent'}}>
                   <MultiSelect
                     hideTags
@@ -422,7 +436,7 @@ export default function TaskAssessmentScreen({ navigation, route }: RootStackScr
                 )}
 
                 <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', backgroundColor: 'transparent', marginTop:10}}>
-                  <Text style={TextStyle.Heading}>กำหนดวันเสร็จ</Text>
+                  <Text style={TextStyle.Heading}>กำหนดวันเสร็จ <Text style={ColorStyle.Danger}>*</Text></Text>
                   <DateTimePicker
                     testID="duedatePicker"
                     value={dueDate}
@@ -436,7 +450,7 @@ export default function TaskAssessmentScreen({ navigation, route }: RootStackScr
                   />
                 </View>
                 
-                <Text style={[TextStyle.Heading, {marginTop:10}]}>งบประมาณ</Text>
+                <Text style={[TextStyle.Heading, {marginTop:10}]}>งบประมาณ <Text style={ColorStyle.Danger}>*</Text></Text>
                 <TextInput 
                   style={[styles.InputText, {borderColor: '#B9B9B9', width:'100%' }]}
                   defaultValue={'0'}
@@ -451,7 +465,7 @@ export default function TaskAssessmentScreen({ navigation, route }: RootStackScr
 
               <SafeAreaView>
                 <Pressable 
-                  onPress={() => setShowAssign(!showAssign)} 
+                  onPress={() => onSaveAssign()} 
                   style={{backgroundColor:'#13AF82', width:'100%', alignItems:'center', justifyContent:'center',borderRadius: 8, height:50 }} >
                   <Text style={[styles.TextHeader, {color:'#fff'}]}>บันทึก</Text>
                 </Pressable>
@@ -641,7 +655,7 @@ export default function TaskAssessmentScreen({ navigation, route }: RootStackScr
 
   const LoggingWrapper = (log: KeyActLoggingModel, index: number) => {
     return (
-      <View style={{ backgroundColor: 'white', flexDirection: 'row', alignItems: 'flex-end' }}>
+      <View style={{ backgroundColor: 'white', flexDirection: 'row', alignItems: 'flex-end', marginBottom: 5 }}>
         <View style={{ backgroundColor: ColorStyle.LightGrey.color, borderRadius: 8, paddingHorizontal: 5 }}>
           <Text style={TextStyle.Content}>{log.employeeName} : {log.taskProcessTitle}</Text>
         </View>
