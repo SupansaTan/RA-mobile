@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { StyleSheet, Pressable } from 'react-native';
 
 import { Text, View } from '../components/Themed';
@@ -9,10 +9,35 @@ import { KeyActionAssessmentModel, TaskAssessmentModel } from '../model/Task.mod
 import { User } from '../constants/UserInfo';
 import { environment } from '../environment';
 import TaskResultScreen from './TaskResultScreen';
+import { TaskProcess } from '../enum/TaskProcess.enum';
+import { ColorStyle } from '../style/ColorStyle';
 
 
 export default function TaskResultContainerScreen({ navigation, route }: RootStackScreenProps<'TaskResultContainer'>) {
-  const { taskId, keyactList } = route.params;
+  const { taskId, keyactList, taskProcess } = route.params;
+  const [ disableButton, setDisableBtn ] = useState<boolean>(true);
+
+  useEffect(() => {
+    const totalNotDo = keyactList.filter(x => x.isChecked === undefined).length;
+    setDisableBtn(totalNotDo > 0);
+  }, [])
+
+  const getApiPath = () => {
+    switch(taskProcess) {
+      case TaskProcess.Relevant:
+        return 'UpdateTaskRelevant';
+      case TaskProcess.ApproveRelevant:
+        return 'UpdateTaskApproveRelevant';
+      case TaskProcess.Consistance:
+        return 'UpdateTaskConsistance';
+      case TaskProcess.ApproveConsistance:
+        return 'UpdateTaskApproveConsistance';
+      case TaskProcess.Response:
+        return 'UpdateTaskResponse';
+      case TaskProcess.ApproveResponse:
+        return 'UpdateTaskApproveResponse';
+    }
+  }
 
   const SaveAssessment = () => {
     let element = new KeyActionAssessmentModel();
@@ -20,7 +45,7 @@ export default function TaskResultContainerScreen({ navigation, route }: RootSta
     keyactList.forEach(x => {
       element = new KeyActionAssessmentModel();
       element.keyActId = x.id;
-      element.isChecked = x.isRelated ?? false;
+      element.isChecked = x.isChecked ?? false;
       element.notation = x.notation ?? '';
       assessmentList.push(element)
     });
@@ -31,7 +56,7 @@ export default function TaskResultContainerScreen({ navigation, route }: RootSta
     request.process = 1;
     request.keyActionList = assessmentList;
 
-    fetch(`${environment.apiRaUrl}/api/Task/UpdateTaskRelevant`, {
+    fetch(`${environment.apiRaUrl}/api/Task/${getApiPath()}`, {
       method: "POST",
       headers: {
         'Accept': 'application/json',
@@ -56,8 +81,9 @@ export default function TaskResultContainerScreen({ navigation, route }: RootSta
       </View>
 
       <SafeAreaView style={{ width: '100%' }}>
-        <Pressable style={styles.button} onPress={() => SaveAssessment()}>
-          <Text style={[styles.TextHeader, {color:'#fff'}]}>ส่งอนุมติ</Text>
+        <Pressable style={[styles.button, { backgroundColor: disableButton? ColorStyle.LightGrey.color : ColorStyle.Green.color}]}
+          onPress={() => SaveAssessment()} disabled={disableButton}>
+          <Text style={[styles.TextHeader, {color: disableButton? ColorStyle.Grey.color:'#fff'}]}>ส่งอนุมติ</Text>
         </Pressable>
       </SafeAreaView>
     </View>

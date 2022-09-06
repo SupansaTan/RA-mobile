@@ -85,7 +85,7 @@ export default function TaskRelavantAssessmentScreen({ navigation, route }: Root
       getLogList();
     }
 
-    return () => { setLoggingList([]); setDatalist([]); setData({})  }
+    return () => { setLoggingList([]); setDatalist([]); setData(new KeyActModel())  }
   }, []);
 
   useEffect(() => {
@@ -201,14 +201,14 @@ export default function TaskRelavantAssessmentScreen({ navigation, route }: Root
   }
 
   const AssessmentContainer = () => {
-    const [related, setRelated] = useState(data?.isRelated === undefined ? false : data?.isRelated);
-    const [nonRelated, setNonRelated] = useState(data?.isRelated === undefined ? false : !data?.isRelated);
+    const [related, setRelated] = useState(data?.isChecked === undefined ? false : data?.isChecked);
+    const [nonRelated, setNonRelated] = useState(data?.isChecked === undefined ? false : !data?.isChecked);
 
     const updateKeyActData = () => {
       let keyActList = datalist;
       keyActList.forEach((x) => {
         if (x.order === keyorder) {
-          x.isRelated = !related;
+          x.isChecked = !related;
         }
       })
       setDatalist(keyActList);
@@ -246,8 +246,8 @@ export default function TaskRelavantAssessmentScreen({ navigation, route }: Root
   }
 
   const ConsistanceAssessmentContainer = () => {
-    const [consist, setConsist] = useState(data?.isConsist === undefined ? false : data?.isConsist);
-    const [nonConsist, setNonConsist] = useState(data?.isConsist === undefined ? false : !data?.isConsist);
+    const [consist, setConsist] = useState(data?.isChecked === undefined ? false : data?.isChecked);
+    const [nonConsist, setNonConsist] = useState(data?.isChecked === undefined ? false : !data?.isChecked);
     const [showAssign, setShowAssign] = useState<boolean>(false);
     const [dueDate, setDueDate] = useState<Date>(new Date());
     const [employee, setEmployee] = useState([]);
@@ -284,7 +284,7 @@ export default function TaskRelavantAssessmentScreen({ navigation, route }: Root
       let keyActList = datalist;
       keyActList.forEach((x) => {
         if (x.order === keyorder) {
-          x.isRelated = !consist;
+          x.isChecked = !consist;
         }
       })
       setDatalist(keyActList);
@@ -438,8 +438,8 @@ export default function TaskRelavantAssessmentScreen({ navigation, route }: Root
   }
 
   const ApproveRelevantAssessmentContainer = () => {
-    const [approve, setApprove] = useState(data?.isApprove === undefined ? false : data?.isApprove);
-    const [disapprove, setDisapprove] = useState(data?.isApprove === undefined ? false : !data?.isApprove);
+    const [approve, setApprove] = useState(data?.isChecked === undefined ? false : data?.isChecked);
+    const [disapprove, setDisapprove] = useState(data?.isChecked === undefined ? false : !data?.isChecked);
     const [notation, setNotation] = useState<string>();
     const [isRelated, setIsRelated] = useState<boolean>();
 
@@ -452,7 +452,7 @@ export default function TaskRelavantAssessmentScreen({ navigation, route }: Root
       let keyActList = datalist;
       keyActList.forEach((x) => {
         if (x.order === keyorder) {
-          x.isApprove = !approve;
+          x.isChecked = !approve;
         }
       })
       setDatalist(keyActList);
