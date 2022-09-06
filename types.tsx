@@ -7,6 +7,7 @@ import { BottomTabScreenProps } from '@react-navigation/bottom-tabs';
 import { CompositeScreenProps, NavigatorScreenParams } from '@react-navigation/native';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { KeyActModel, KeyActApproveModel } from './model/KeyAct.model';
+import { TrackingModel } from './model/Tracking.model';
 
 declare global {
   namespace ReactNavigation {
@@ -19,7 +20,7 @@ export type RootStackParamList = {
   Profile: undefined;
   Task: undefined;
   Tracking: undefined;
-  TrackingLocation: undefined;
+  TrackingLocation: { trackinglist: TrackingModel};
   LawDetailContainer: { taskId: string, taskProcess: number }
   TaskDetailContainer: { taskId: string, taskProcess: number }
   TaskLocation: { locationId: string };

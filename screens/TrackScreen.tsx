@@ -1,25 +1,60 @@
-import React, { useState } from 'react';
-import { ScrollView, StyleSheet, TouchableOpacity } from 'react-native';
+import React, { useState, useEffect } from 'react';
+import { ScrollView, StyleSheet, TouchableOpacity, ActivityIndicator } from 'react-native';
 import { Text, View, MaterialIcons } from '../components/Themed';
 import { MaterialCommunityIcons, Fontisto } from '@expo/vector-icons';
-import { TrackLocationList, TrackTask } from '../constants/Track';
-import { TaskContentModel } from '../model/Task';
 
-import { useNavigation } from '@react-navigation/native';
 import Avatar from '../assets/images/avatar.svg';
 import { ViewStyle } from '../style/ViewStyle';
 import { CardStyle } from '../style/CardStyle';
 import { TaskDatetimeStatus } from '../enum/TaskDatetimeStatus.enum';
 import { ColorStyle } from '../style/ColorStyle';
 
-export function TrackScreen() {
-  const [locationList, setLocationList] = useState(TrackLocationList)
-  const navigation = useNavigation()
+import { LocationContentModel } from '../model/Location.model';
+import { User } from '../constants/UserInfo';
+import { environment } from '../environment';
+import { RootStackScreenProps } from '../types';
+import { TrackingModel, ResponsibilityDetail } from '../model/Tracking.model';
 
-  const LocationElement = locationList.map((item, index)  => {
+import Colors from '../constants/Colors';
+import { TextStyle } from '../style/TextStyle';
+import { format } from 'date-fns'
+
+export function TrackScreen({ navigation }: RootStackScreenProps<'Tracking'>) {
+  const [ locationList, setLocationList ] = useState<Array<LocationContentModel>>([]);
+  const [ isLoading, setIsLoading ] = useState<boolean>(true);
+  const [ trackingList, setTrackingList ] = useState<Array<TrackingModel>>([]);
+
+  useEffect(() => {
+    async function getLocationList() {
+      setTrackingList([]);
+      const response = await (await fetch(`${environment.apiRaUrl}/api/Location/GetLocationListByEmpId?empId=${User.emdId}`)).json()
+        .then(res => {
+          setLocationList(res.data);
+      });
+    }
+
+    getLocationList();
+  }, []);
+
+  useEffect(() => {
+    async function fetchTrackData(locationId: string) {
+      setIsLoading(true)
+      const response = await fetch(`${environment.apiRaUrl}/api/Responsibility/GetTrackingDataByLocationId?locationId=${locationId}`);
+      await response.json().then(res => { 
+        trackingList.push(res.data);
+        setIsLoading(false)
+      })
+    }
+
+    locationList.forEach(x => {
+      fetchTrackData(x.locationId)
+    })
+  }, [locationList]);
+
+  const LocationElement = trackingList.map((item, index)  => {
     return(
       <View key={index} >
-        <TouchableOpacity activeOpacity={1} onPress={() => navigation.navigate('TrackingLocation')}>
+        <TouchableOpacity activeOpacity={1} onPress={() => navigation.navigate('TrackingLocation', { trackinglist : item})}>
           <View style={styles.LocationWrapper}>
             {/* icon */}
             <View style={styles.IconWrapper}>
@@ -27,7 +62,7 @@ export function TrackScreen() {
             </View>
 
             {/* title & content */}
-            <Text style={[styles.TextHeader, ColorStyle.Grey]}>{ item.location }</Text>
+            <Text style={[styles.TextHeader, ColorStyle.Grey]}>{ item.locationName }</Text>
 
             {/* icon */}
             <View style={styles.MoreWrapper}>
@@ -42,7 +77,7 @@ export function TrackScreen() {
                 {/* total in process task */}
                 <View style={styles.NumberWrapper}>
                   <View style={[styles.NumberCard, {backgroundColor: '#FFDBDB'}]}>
-                    <Text style={[styles.TextContent, {color:'#FF4F4F'}]}> {item.inprogress} </Text>
+                    <Text style={[styles.TextContent, {color:'#FF4F4F'}]}> {item.inProgressTask.length} </Text>
                   </View>
               </View>
             </View>
@@ -51,7 +86,7 @@ export function TrackScreen() {
                 {/* total successful task */}
                 <View style={styles.NumberWrapper}>
                   <View style={[styles.NumberCard, {backgroundColor: '#DEF4EC'}]}>
-                    <Text style={[styles.TextContent, {color:'#13AF82'}]}> {item.successful} </Text>
+                    <Text style={[styles.TextContent, {color:'#13AF82'}]}> {item.doneTask.length} </Text>
                   </View>
                 </View>
             </View>
@@ -61,39 +96,43 @@ export function TrackScreen() {
     )
   })
 
-  return(
+  const TrackingElement = () => {
+    return (
       <View style={ViewStyle.RowContainer}>
         <ScrollView contentContainerStyle={{ flexGrow:1 }}>
           {LocationElement}
         </ScrollView>
       </View>
-  )
+    )
+  }
+
+  return isLoading? <LoadingElement/> : <TrackingElement/>
 }
 
-export function TrackLocationScreen() {
-  const [taskList, setTaskList] = useState(TrackTask)
+export function TrackLocationScreen({ navigation, route }: RootStackScreenProps<'TrackingLocation'>) {
   const [status, setStatus] = useState('inprogress')
+  const { trackinglist } = route.params
 
-  const TaskElement = (contentItem: TaskContentModel, i: number) => {
+  const TaskElement = (contentItem: ResponsibilityDetail, i: number) => {
     return(
       <View key={'content' + i}>
         <TouchableOpacity>
-          <View style={ getCardColorClass(contentItem.timestatus) }>
-            <Text style={styles.TextHeader}>{ contentItem.title }</Text>
+          <View style={ getCardColorClass(contentItem.datetimeStatus) }>
+            <Text style={styles.TextHeader}>{ contentItem.taskTitle }</Text>
 
             <View style={styles.DatetimeWrapper}>
               <MaterialCommunityIcons name="calendar-clock" size={20}
-                color={ getTextColor(contentItem.timestatus) } 
+                color={ getTextColor(contentItem.datetimeStatus) } 
                 style={{ marginRight: 5 }} />
               <Text style={[styles.TextContent, 
-                { color: getTextColor(contentItem.timestatus) }]}>
-                { contentItem.datetime }
+                { color: getTextColor(contentItem.datetimeStatus) }]}>
+                { format(new Date(contentItem.dueDate), 'dd/MM/yyyy HH:mm') }
               </Text>
             </View>
 
             <View style={styles.AssignWrapper}>
               <Avatar  width={20} height={20} marginRight={10}/>
-              <Text style={styles.TextContent}>{ contentItem.assign }</Text> 
+              <Text style={styles.TextContent}>{ contentItem.employeeName }</Text> 
             </View>
           </View>
         </TouchableOpacity>
@@ -101,9 +140,9 @@ export function TrackLocationScreen() {
     )
   }
 
-  const TaskElementList = (contentData: Array<TaskContentModel>) => {
+  const TaskElementList = (contentData: Array<ResponsibilityDetail>) => {
     return (
-      contentData.map((content: TaskContentModel, index: number) => {
+      contentData.map((content: ResponsibilityDetail, index: number) => {
         return TaskElement(content, index)
       })
     )
@@ -118,7 +157,7 @@ export function TrackLocationScreen() {
           </View>
 
           {/* title & content */}
-          <Text style={[styles.TextHeader, ColorStyle.Grey]}>{ taskList.location }</Text>
+          <Text style={[styles.TextHeader, ColorStyle.Grey]}>{ trackinglist.locationName }</Text>
       </View>
 
       <View style={{flexDirection:'row', position:'relative'}}>
@@ -140,12 +179,19 @@ export function TrackLocationScreen() {
 
       <View style={[ViewStyle.RowContainer, { marginVertical: 10 }]}>
         <ScrollView contentContainerStyle={{ flexGrow:1 }}>
-        { status==='inprogress' ? TaskElementList(taskList.inprogress):TaskElementList(taskList.successful)}
+        { status==='inprogress' ? TaskElementList(trackinglist.inProgressTask):TaskElementList(trackinglist.doneTask)}
         </ScrollView>
       </View>
     </View>
   )
 }
+
+const LoadingElement = () => (
+  <View style={ViewStyle.LoadingWrapper}>
+    <ActivityIndicator color={Colors.light.tint} size="large" />
+    <Text style={TextStyle.Loading}>Loading</Text>
+  </View>
+)
 
 const getCardColorClass = (status: TaskDatetimeStatus) => {
   switch(status) {
