@@ -1,17 +1,11 @@
-import { Feather, SimpleLineIcons, MaterialCommunityIcons } from '@expo/vector-icons';
+import { Feather, MaterialCommunityIcons } from '@expo/vector-icons';
+import React from 'react';
 
 export function TabBarFeatherIcon(props: {
   name: React.ComponentProps<typeof Feather>['name'];
   color: string;
 }) {
   return <Feather size={28} style={{ marginBottom: -10 }} {...props} />;
-}
-
-export function TabBarSimpleLineIcon(props: {
-  name: React.ComponentProps<typeof SimpleLineIcons>['name'];
-  color: string;
-}) {
-  return <SimpleLineIcons size={28} style={{ marginBottom: -10 }} {...props} />;
 }
 
 export function TabBarMaterialIcon(props: {

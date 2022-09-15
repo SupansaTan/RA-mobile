@@ -7,7 +7,6 @@ import { Feather, FontAwesome } from '@expo/vector-icons';
 
 import Colors from '../constants/Colors';
 import useColorScheme from '../hooks/useColorScheme';
-import NotFoundScreen from '../screens/NotFoundScreen';
 import HomeScreen from '../screens/HomeScreen';
 import SettingScreen from '../screens/setting/SettingScreen';
 import TaskScreen from '../screens/task/TaskScreen';
@@ -173,7 +172,6 @@ function RootNavigator() {
             headerRight: () => <Feather name="x" size={34} color="black" onPress={() => navigation.navigate('Task')} />
           }} />
 
-      <Stack.Screen name="NotFound" component={NotFoundScreen} options={{ title: 'Oops!' }} />
       <Stack.Screen name="SignIn" component={SignInScreen} 
         options={{ 
           title: 'เข้าสู่ระบบ',
@@ -182,9 +180,6 @@ function RootNavigator() {
         options={{ 
           title: 'ตั้งรหัสผ่านใหม่',
         }} />
-      {/* <Stack.Group screenOptions={{ presentation: 'modal' }}>
-        <Stack.Screen name="Modal" component={ModalScreen} />
-      </Stack.Group> */}
     </Stack.Navigator>
   );
 }
