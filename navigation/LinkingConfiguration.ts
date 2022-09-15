@@ -17,17 +17,12 @@ const linking: LinkingOptions<RootStackParamList> = {
         screens: {
           Home: {
             screens: {
-              TabOneScreen: 'one',
+              HomeScreen: 'home',
             },
           },
-          Task: {
+          Search: {
             screens: {
-              TaskScreen: 'task',
-            },
-          },
-          Menu: {
-            screens: {
-              MenuScreen: 'menu',
+              MenuScreen: 'search',
             },
           },
           Notification: {
@@ -42,7 +37,22 @@ const linking: LinkingOptions<RootStackParamList> = {
           }
         },
       },
+      Profile: 'profile',
+      Task: 'task',
+      LawDetailContainer: 'lawDetailContainer',
+      TaskLocation: 'tasklocation',
+      TaskResultContainer: 'taskResultContainer',
+      Assessment: 'assessment',
+      Tracking: 'tracking',
+      TrackingLocation: 'trackinglocation',
+      LawSearchDetail: 'lawsearchdetail',
+      Report: 'report',
+      ReportLocation: 'reportlocation',
+      ReportTaskProgress: 'reporttaskprogress',
+      ReportTaskDetail: 'reporttaskdetail',
       Modal: 'modal',
+      SignIn: 'signin',
+      ResetPassword: 'resetpassword',
       NotFound: '*',
     },
   },

@@ -1,56 +1,3 @@
-export const NotifyList = [
-  {
-    date: 'วันนี้',
-    data: [
-      {
-        type: 'consistance',
-        title: 'การประเมินความสอดคล้อง',
-        content: 'พ.ร.บ.พลังงานนิวเคลียร์',
-        time: '13.00',
-        readStatus: false
-      },
-      {
-        type: 'approve',
-        title: 'ผู้บริหารอนุมัติ',
-        content: 'พ.ร.บ.พลังงานนิวเคลียร์',
-        time: '13.00',
-        readStatus: false
-      },
-    ]
-  },
-  {
-    date: '2 มี.ค. 2565',
-    data: [
-      {
-        type: 'consistance',
-        title: 'การประเมินความสอดคล้อง',
-        content: 'พ.ร.บ.ความปลอดภัย 2554',
-        time: '09.00',
-        readStatus: false
-      },
-      {
-        type: 'approve',
-        title: 'ผู้บริหารอนุมัติ',
-        content: 'พ.ร.บ.ความปลอดภัย 2554',
-        time: '13.00',
-        readStatus: true
-      }
-    ]
-  },
-  {
-    date: '1 มี.ค. 2565',
-    data: [
-      {
-        type: 'relevant',
-        title: 'การประเมินความเกี่ยวข้อง',
-        content: 'พ.ร.บ.ความปลอดภัย 2554',
-        time: '13.00',
-        readStatus: true
-      }
-    ]
-  }
-]
-
 export const NotifyIcon = {
   relevant: {
     bgColor: '#FFFADE',
@@ -81,6 +28,7 @@ export const getIconBgColor = (notiType: string) => {
     case 'approve':
       return NotifyIcon.approve.bgColor
   }
+  return NotifyIcon.relevant.bgColor
 }
 
 export const getIconColor = (notiType: string) => {
@@ -92,4 +40,5 @@ export const getIconColor = (notiType: string) => {
     case 'approve':
       return NotifyIcon.approve.iconColor
   }
+  return NotifyIcon.relevant.iconColor;
 }
